@@ -5,7 +5,8 @@ HtmlToJavaWindowsBuilder
 
 使用方法: 
 1. 安裝Eclipse:
-   先下載"Eclipse" http://www.eclipse.org/downloads/，建議使用Eclipse Classic 4.2.1，點選Windows 32 Bit or Windows 64 Bit下載
+   先下載"Eclipse" http://www.eclipse.org/downloads/，建議使用Eclipse Classic 4.2.1，點選Windows 32 Bit or Windows 64    
+Bit下載
 2. 解壓縮後，點選Eclipse圖示執行。
    接著安裝"Egit":
    最上面一排點選Help -> Install New Software -> Add 
