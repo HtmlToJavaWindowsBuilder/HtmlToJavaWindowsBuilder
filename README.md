@@ -9,7 +9,7 @@ HtmlToJavaWindowsBuilder
 1.  **安裝Eclipse**  
     先下載[Eclipse](http://www.eclipse.org/downloads/)，建議使用[Eclipse Classic 4.2.1](http://www.eclipse.org/downloads/packages/eclipse-classic-421/junosr1)，點選Windows 32 Bit or Windows 64 Bit下載
 2.  **安裝Egit**  
-    最上面一排點選Help -> Install New Software -> Add-> Name[Egit] Location[http://download.eclipse.org/egit/updates] -> 點選OK -> 此時下面點選[Eclipse Git Team Provider][JGit] -> next...finish
+    最上面一排點選Help -> Install New Software -> Add-> Name[Egit] Location[http://download.eclipse.org/egit/updates] -> 點選OK -> 勾選Eclipse Git Team Provider以及JGit -> next...finish
 3.  **"Import" Github上的repository**    
     File -> import -> Git -> Projects from Git -> URI填入https://github.com/HtmlToJavaWindowsBuilder/HtmlToJavaWindowsBuilder.git -> next到底 -> finish  
     附上[教學網址](http://puremonkey2010.blogspot.tw/2012/05/eclipse-plugin-egit-github-import.html)
