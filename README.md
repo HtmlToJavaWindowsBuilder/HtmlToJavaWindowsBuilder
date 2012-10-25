@@ -3,6 +3,8 @@ HtmlToJavaWindowsBuilder
 
 ##SOFTWARE DEVELOPMENT FOR LARGE AND OPEN SOURCE PROJECTS
 ### HW1  
+####目的:
+實作四種Sort Algorithm(Heap Sort ，Merge Sort ，Inertion Sort ，Bubble Sort) 並利用JUnit作單元測試
 
 ####使用方法:  
 
