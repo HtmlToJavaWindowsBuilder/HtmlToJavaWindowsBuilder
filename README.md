@@ -1,7 +1,24 @@
 HtmlToJavaWindowsBuilder
 ========================
 
+##What's this?
+這是一個能用HTML來寫視窗程式的Library
+
+##Why to use?
+希望會寫網頁的程式設計師可以直接套用此Library來撰寫視窗程式
+
+
+
 ##SOFTWARE DEVELOPMENT FOR LARGE AND OPEN SOURCE PROJECTS
+###HW2
+* [Reference Open Source Project] (https://github.com/HtmlToJavaWindowsBuilder/HtmlToJavaWindowsBuilder/wiki/Cookswing)
+* [Architecture] (https://github.com/HtmlToJavaWindowsBuilder/HtmlToJavaWindowsBuilder/wiki/System-Architecture)
+* Flow Chart: 
+因為這是一個Library 所以沒有Flow Chart
+
+---
+
+
 ### HW1  
 ####目的:
 實作四種Sort Algorithm(Heap Sort ，Merge Sort ，Inertion Sort ，Bubble Sort) 並利用JUnit作單元測試
