@@ -10,6 +10,20 @@ HtmlToJavaWindowsBuilder
 
 
 ##SOFTWARE DEVELOPMENT FOR LARGE AND OPEN SOURCE PROJECTS
+
+
+###HW3
+
+1.  從git pull hw1的branch
+2.  在project根目錄執行   
+    `java -jar lib\ant-launcher.jar buildAndTest`  
+    就會compile 並進行Unit Test
+
+
+
+---
+
+
 ###HW2
 * [Reference Open Source Project] (https://github.com/HtmlToJavaWindowsBuilder/HtmlToJavaWindowsBuilder/wiki/Cookswing)
 * [Architecture] (https://github.com/HtmlToJavaWindowsBuilder/HtmlToJavaWindowsBuilder/wiki/System-Architecture)
