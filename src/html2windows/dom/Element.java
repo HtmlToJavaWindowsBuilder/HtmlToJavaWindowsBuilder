@@ -1,4 +1,6 @@
 package html2windows.dom;
+import java.util.HashMap;
+
 import javax.swing.JComponent;
 
 import org.w3c.dom.DOMException;
@@ -9,28 +11,40 @@ import org.w3c.dom.events.EventListener;
 
 public class Element extends JComponent implements Node{
     
-	int test;
+	
+	private HashMap<String, String> attribute=new HashMap<String, String>();
+	
 	public String tagName(){
         return null;
     }
     
     public String getAttribute(String name){
-        return name;
+    	if(attribute.containsKey(name)){
+    		return attribute.get(name);
+    	}
+    	else{
+    		return "";
+    	}
     }
     
-    public void setAttribute(String name, String value) throws DOMException{}
+    public void setAttribute(String name, String value) throws DOMException{
+    	attribute.put(name, value);
+    }
     
-    public void removeAttribute(String name) throws DOMException{}
+    public void removeAttribute(String name) throws DOMException{
+    	
+    	attribute.remove(name);
+    }
     
-    public Attr getNode(String name){
+    public Attr getAttributeNode(String name){
         return null;
     }
     
-    public Attr setNode(Attr newAttr) throws DOMException{
+    public Attr setAttributeNode(Attr newAttr) throws DOMException{
         return newAttr;
     }
     
-    public Attr removeNode(Attr oldAttr) throws DOMException{
+    public Attr removeAttributeNode(Attr oldAttr) throws DOMException{
         return oldAttr;
     }
     
@@ -38,8 +52,12 @@ public class Element extends JComponent implements Node{
         return null;
     }
     
-    public boolean has(String name){
-        return false;
+    public boolean hasAttribute(String name){
+    	if(attribute.containsKey(name))
+    		return true;
+    	else
+    		return false;
+		
     }
 
     @Override
