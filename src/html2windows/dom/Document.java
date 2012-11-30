@@ -8,6 +8,7 @@ import org.w3c.dom.events.EventListener;
 
 
 /**
+ * Document is top window.
  * The Document is not standard DOM Document. It removes some methods which
  * handle namespace and prefix.
  * 
