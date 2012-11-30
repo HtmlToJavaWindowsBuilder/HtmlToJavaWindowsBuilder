@@ -13,6 +13,7 @@ public class Element extends JComponent implements Node{
     
 	
 	private HashMap<String, String> attribute=new HashMap<String, String>();
+	private NodeList ChildNodeList=new NodeList();
 	
 	public String tagName(){
         return null;
@@ -63,7 +64,7 @@ public class Element extends JComponent implements Node{
     @Override
     public String nodeName() {
         // TODO Auto-generated method stub
-        return null;
+        return attribute.get("tagname");
     }
 
     @Override
@@ -75,7 +76,7 @@ public class Element extends JComponent implements Node{
     @Override
     public short nodeType() {
         // TODO Auto-generated method stub
-        return 0;
+        return ELEMENT_NODE;
     }
 
     @Override
@@ -87,19 +88,26 @@ public class Element extends JComponent implements Node{
     @Override
     public NodeList childNodes() {
         // TODO Auto-generated method stub
-        return null;
-    }
+        return ChildNodeList;
+    	}
 
     @Override
     public Node firstChild() {
         // TODO Auto-generated method stub
-        return null;
+    	if(ChildNodeList.length()>0)
+    		return ChildNodeList.get(0);
+    	else
+    		return null;
+    	
     }
 
     @Override
     public Node lastChild() {
-        // TODO Auto-generated method stub
-        return null;
+        int NodeListLength=(int) ChildNodeList.length();
+        if(NodeListLength>0)
+        	return ChildNodeList.get(NodeListLength-1);
+        else
+        	return null;
     }
 
     @Override
@@ -129,8 +137,18 @@ public class Element extends JComponent implements Node{
     @Override
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
         // TODO Auto-generated method stub
+    	if(newChild==null)
+    		return null;
+    	else if(refChild==null){
+    		ChildNodeList.add(newChild);
+    		return newChild;
+    	}
+    	else{
+    		
+    		
+    	}
         return null;
-    }
+    }	
 
     @Override
     public Node replaceChild(Node newChilde, Node oldChild) throws DOMException {
@@ -147,7 +165,9 @@ public class Element extends JComponent implements Node{
     @Override
     public Node appendChild(Node newChild) throws DOMException {
         // TODO Auto-generated method stub
-        return null;
+    	
+    	ChildNodeList.add(newChild);
+        return newChild;
     }
 
     @Override
@@ -159,7 +179,10 @@ public class Element extends JComponent implements Node{
     @Override
     public boolean hasAttributes() {
         // TODO Auto-generated method stub
-        return false;
+    	if(attribute.size()>0)
+    		return true;
+    	else
+    		return false;
     }
 
     @Override
