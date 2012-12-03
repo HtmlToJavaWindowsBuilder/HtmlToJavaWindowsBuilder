@@ -46,5 +46,4 @@ public interface Node extends EventTarget{
     //public String localName();
     public boolean hasAttributes();
 
-    private Node setParent(Node parentNode);
 }
