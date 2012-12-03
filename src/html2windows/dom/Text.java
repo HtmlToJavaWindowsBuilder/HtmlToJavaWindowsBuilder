@@ -6,30 +6,40 @@ import org.w3c.dom.events.EventListener;
 
 
 public class Text implements Node {
+	
+	 public String data;
+	
+	
+	public Text(String data){
+		this.data=data;
+	}
+	
     public Text splitText(long offset) throws DOMException{
         return null;
     }
     
-    public String data(){
-        return null;
-    }
-    
     public void setData(String data){
-        
+        this.data=data;
     }
 
     public long length(){
-        return 0;
+        return data.length();
     }
     
     public String substringData(long offset, long count) throws DOMException{
-        return null;
+        return data.substring((int)offset,(int)offset+(int)count);
     }
     
     public void appendData(String arg) throws DOMException{
+    	data.concat("arg");
     }
     
     public void insertData(long offset, String arg) throws DOMException{
+    	String newData=null;
+    	newData+=data.substring(0, (int)offset);
+    	newData+=arg;
+    	newData+=data.substring((int)offset+1);
+    	
     }
     
     public void deleteData(long offset, long count) throws DOMException{
