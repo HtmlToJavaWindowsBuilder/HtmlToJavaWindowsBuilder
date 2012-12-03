@@ -1,4 +1,5 @@
 package html2windows.dom;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.JComponent;
@@ -12,37 +13,70 @@ import org.w3c.dom.events.EventListener;
 public class Element extends JComponent implements Node{
     
 	
-	private HashMap<String, String> attribute=new HashMap<String, String>();
-	private NodeList ChildNodeList=new NodeList();
+	private ArrayList<Attr> attributeList=new ArrayList<>();
+	private NodeList childNodeList=new NodeList();
+	private String tagNameValue;
 	
 	public String tagName(){
-        return null;
-    }
-    
+		
+		return tagNameValue;
+	}
+	
+	
+	public Element(String tagName){
+		tagNameValue=tagName;
+	}
+
     public String getAttribute(String name){
-    	if(attribute.containsKey(name)){
-    		return attribute.get(name);
+    	for(int i=0;i<attributeList.size();i++){
+    		if(attributeList.get(i).name()==name){
+    			
+    			return attributeList.get(i).value();
+    		}
     	}
-    	else{
-    		return "";
-    	}
+    	
+    	
+    	return null;
     }
     
     public void setAttribute(String name, String value) throws DOMException{
-    	attribute.put(name, value);
+    	Attr newAttr=new Attr(name);
+    	newAttr.setValue(value);
+    	attributeList.add(newAttr);
+    	
     }
     
     public void removeAttribute(String name) throws DOMException{
+    	for(int i=0;i<attributeList.size();i++){
+    		if(attributeList.get(i).name()==name){
+    			
+    		}
+    	}
     	
-    	attribute.remove(name);
     }
     
     public Attr getAttributeNode(String name){
+    	for(int i=0;i<attributeList.size();i++){
+    		Attr AttributeNode=attributeList.get(i);
+    		if(AttributeNode.name()==name)
+    			return AttributeNode;
+    	}
         return null;
     }
     
     public Attr setAttributeNode(Attr newAttr) throws DOMException{
-        return newAttr;
+    	Attr returnAttr=null;
+    	String newAttrName=newAttr.name();
+    	for(int i=0;i<attributeList.size();i++){
+    		Attr attributeNode=attributeList.get(i);
+    		if(attributeNode.name()==newAttrName){
+    			returnAttr=attributeNode;
+    			attributeList.remove(i);
+    			break;
+    		}
+    	}
+    	attributeList.add(newAttr);
+        return returnAttr;
     }
     
     public Attr removeAttributeNode(Attr oldAttr) throws DOMException{
@@ -50,21 +84,29 @@ public class Element extends JComponent implements Node{
     }
     
     public NodeList getElementsByTagName(String name){
-        return null;
+    	
+    	NodeList elementList=new NodeList();
+
+        return elementList;
     }
     
     public boolean hasAttribute(String name){
-    	if(attribute.containsKey(name))
-    		return true;
-    	else
-    		return false;
+    	
+    	for(int i=0;i<attributeList.size();i++){
+    		if(attributeList.get(i).name()==name)
+    			return true;
+    		
+    	}
+    	
+    	
+    	return false;
 		
     }
 
     @Override
     public String nodeName() {
         // TODO Auto-generated method stub
-        return attribute.get("tagname");
+        return tagName();
     }
 
     @Override
@@ -82,20 +124,27 @@ public class Element extends JComponent implements Node{
     @Override
     public Node parentNode() {
         // TODO Auto-generated method stub
-        return null;
+    	if(getParent() instanceof Node){
+    		return null;	
+    	}
+    	else{
+        	return (Node)getParent();
+        	
+        }
     }
 
     @Override
     public NodeList childNodes() {
         // TODO Auto-generated method stub
-        return ChildNodeList;
+
+        return childNodeList;
     	}
 
     @Override
     public Node firstChild() {
         // TODO Auto-generated method stub
-    	if(ChildNodeList.length()>0)
-    		return ChildNodeList.get(0);
+    	if(childNodeList.length()>0)
+    		return childNodeList.get(0);
     	else
     		return null;
     	
@@ -103,9 +152,9 @@ public class Element extends JComponent implements Node{
 
     @Override
     public Node lastChild() {
-        int NodeListLength=(int) ChildNodeList.length();
+        int NodeListLength=(int) childNodeList.length();
         if(NodeListLength>0)
-        	return ChildNodeList.get(NodeListLength-1);
+        	return childNodeList.get(NodeListLength-1);
         else
         	return null;
     }
@@ -113,13 +162,28 @@ public class Element extends JComponent implements Node{
     @Override
     public Node previousSibling() {
         // TODO Auto-generated method stub
-        return null;
+    	NodeList siblingList=((Node)getParent()).childNodes();
+    	
+    	int index=siblingList.indexOf(this);
+    	if(index==-1){
+    		return siblingList.item(index-1);
+    	}
+    	else{
+    		return null;
+    	}
     }
 
     @Override
     public Node nextSibling() {
         // TODO Auto-generated method stub
-        return null;
+    	NodeList siblingList=((Node)getParent()).childNodes();
+    	int index=siblingList.indexOf(this);
+    	if(index==siblingList.size()-1){
+    		return null;
+    	}
+    	else{
+    		return siblingList.item(index+1);
+    	}
     }
 
     @Override
@@ -140,11 +204,12 @@ public class Element extends JComponent implements Node{
     	if(newChild==null)
     		return null;
     	else if(refChild==null){
-    		ChildNodeList.add(newChild);
+    		childNodeList.add(newChild);
     		return newChild;
     	}
     	else{
-    		
+    		int index=childNodeList.indexOf(refChild);
+    		childNodeList.add(index-1, newChild);
     		
     	}
         return null;
@@ -153,7 +218,16 @@ public class Element extends JComponent implements Node{
     @Override
     public Node replaceChild(Node newChilde, Node oldChild) throws DOMException {
         // TODO Auto-generated method stub
-        return null;
+    	int index=childNodeList.indexOf(oldChild);
+    	if(index==-1){
+    		return null;
+    	}
+    	else{
+    		
+    		childNodeList.remove(index);
+    		childNodeList.add(index, newChilde);
+    		return oldChild;
+    	}
     }
 
     @Override
@@ -166,20 +240,27 @@ public class Element extends JComponent implements Node{
     public Node appendChild(Node newChild) throws DOMException {
         // TODO Auto-generated method stub
     	
-    	ChildNodeList.add(newChild);
+    	childNodeList.add(newChild);
         return newChild;
     }
 
     @Override
     public boolean hasChildNodes() {
         // TODO Auto-generated method stub
-        return false;
+    	if(childNodeList.size()==0)
+    	{
+    		return false;
+    	}
+    	else
+    	{
+    		return true;
+    	}
     }
 
     @Override
     public boolean hasAttributes() {
         // TODO Auto-generated method stub
-    	if(attribute.size()>0)
+    	if(attributeList.size()>0)
     		return true;
     	else
     		return false;
