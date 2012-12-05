@@ -35,7 +35,7 @@ public interface Node extends EventTarget{
     public Node replaceChild(Node newChilde, Node oldChild) throws DOMException;
     public Node removeChild(Node oldChild) throws DOMException;
     public Node appendChild(Node newChild) throws DOMException;
-    
+
     public boolean hasChildNodes();
     //public Node cloneNode(boolean deep);
     //public void normalize();
@@ -45,4 +45,5 @@ public interface Node extends EventTarget{
     //public String prefix() throws DOMException;
     //public String localName();
     public boolean hasAttributes();
+
 }

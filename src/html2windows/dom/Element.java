@@ -61,10 +61,11 @@ public class Element extends JComponent implements Node{
     		if(AttributeNode.name()==name)
     			return AttributeNode;
     	}
-        return null;
+    	return null;
     }
     
     public Attr setAttributeNode(Attr newAttr) throws DOMException{
+
     	Attr returnAttr=null;
     	String newAttrName=newAttr.name();
     	for(int i=0;i<attributeList.size();i++){
@@ -77,6 +78,7 @@ public class Element extends JComponent implements Node{
     	}
     	attributeList.add(newAttr);
         return returnAttr;
+
     }
     
     public Attr removeAttributeNode(Attr oldAttr) throws DOMException{
@@ -98,9 +100,7 @@ public class Element extends JComponent implements Node{
     		
     	}
     	
-    	
     	return false;
-		
     }
 
     @Override

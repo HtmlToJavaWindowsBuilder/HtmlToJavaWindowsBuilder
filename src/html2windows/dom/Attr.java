@@ -17,7 +17,10 @@ public class Attr implements Node{
     public String value(){
         return null;
     }
-    
+ 
+	public Attr(String name){
+	}
+
     public void setValue(String value){
         
     }
