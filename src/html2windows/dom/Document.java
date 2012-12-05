@@ -9,42 +9,49 @@ import org.w3c.dom.events.EventListener;
 
 /**
  * Document is top window.
+ *
  * The Document is not standard DOM Document. It removes some methods which
  * handle namespace and prefix.
  * 
  * One Document contains only one Node, whose type is Element.
  */
 public class Document extends JFrame implements Node{
-	private Element documentElement = null;
-	private 
-
     public Element documentElement(){
-        return documentElement;
+        try{
+			return (Element)getComponent(0);
+		}
+		catch(Exception ex){
+			return null;
+		}
     }
     
     public Element createElement(String tagName) throws DOMException{
-    	// TODO
-        return null;
+        return new Element(tagName);
     }
     
     public DocumentFragment createDocumentFragment(){
-    	// TODO
-        return null;
+        return new DocumentFragement();
     }
     
     public Text createTextNode(String data){
-    	// TODO
-        return null;
+        return new Text(data);
     }
     
     public Attr createAttribute(String name) throws DOMException{
-    	// TODO
-        return null;
+        return Attr(name);
     }
     
+    /**
+     * Get list of elements which have specific tag name.
+     *
+     * Now we do not support live NodeList but a static NodeList so you need to
+     * call this function right before you use it to get the correct snapshot.
+     */
     public NodeList getElementsByTagName(String tagname){
-    	// TODO
-        return null;
+    	if(documentElement() != null)
+			return documentElement().getElementsByTagName();
+		else
+        	return null;
     }
     
     public Node importNode(Node importedNode, boolean deep) throws DOMException{
@@ -53,8 +60,7 @@ public class Document extends JFrame implements Node{
     }
     
     public Element getElementById(String elementId){
-    	// TODO
-        return null;
+        return getElementByIdInternal(documentElement(), elementId);
     }
 
     @Override
@@ -79,7 +85,11 @@ public class Document extends JFrame implements Node{
 
     @Override
     public NodeList childNodes() {
-        return null;
+		NodeList list = new NodeList();
+		Node child = documentElement();
+		if(child != null)
+			list.add(child);
+        return list;
     }
     
     @Override
@@ -113,89 +123,54 @@ public class Document extends JFrame implements Node{
     }
 
     @Override
+    public Node appendChild(Node newChild) throws DOMException {
+    	if(newChild != null){
+			setDocumentElement(newChild);
+		}
+		else{
+			/* Not specified */
+		}
+        return newChild;
+    }
+
+   @Override
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-    	if(newChild.nodeType != ELEMENT_NODE){
-    		throw new DOMException(	DOMException.HIERARCHY_REQUEST_ERR,
-    								"Document only accepts Element Node");
-    	}
-    	else if(documentElement() != null){
-    		throw new DOMException(	DOMException.HIERARCHY_REQUEST_ERR,
-    								"The document already has one child element");
+		if(refChild == null){
+			appendChild(newChild);
 		}
-		else if(newChild.ownerDocument != this){
-    		throw new DOMException(	DOMException.WRONG_DOCUMENT_ERR,
-    								"The element is not created by the document");
+		else{
+			if(refChild != documentElement()){
+				throw new DOMException(DOMException.NOT_FOUND_ERR);
+			}
+			else{
+				if(newChild != documentElement()){
+					throw new DOMException(DOMException.HIERACHY_REQUEST_ERR);
+				}
+				else{
+					setDocumentElement(newChild);
+				}
+			}
 		}
-		else if(refChild != null){
-			/**
-			 * If refChild equals documentElement, HIERARCHY_REQUEST_ERR already throwed before
-			 */
-    		throw new DOMException(	DOMException.NOT_FOUND_ERR,
-    								"You never find reference child in a document");
-		}
-		
-		add((Element)newChild);
-		
         return newChild;
     }
 
     @Override
-    public Node replaceChild(Node newChilde, Node oldChild) throws DOMException {
-    	if(newChild.nodeType != ELEMENT_NODE){
-    		throw new DOMException(	DOMException.HIERARCHY_REQUEST_ERR,
-    								"Document only accepts Element Node");
-    	}
-		else if(newChild.ownerDocument != this){
-    		throw new DOMException(	DOMException.WRONG_DOCUMENT_ERR,
-    								"The element is not created by the document");
+    public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
+		if(oldChild != documentElement()){
+			throw new DOMException(DOMException.NOT_FOUND_ERR);
 		}
-		else if(oldChild != documentElement()){
-    		throw new DOMException(	DOMException.NOT_FOUND_ERR,
-    								documentElement() == null
-    									? "The document is empty"
-    									: "NOT_FOUND_ERR");
-		}
-		
-		/* Remove the old one */
-		remove(0);
-		
-		/* Append new one */
-		add((Element)newChild);
-		
-        return newChild;
+		setDocumentElement(newChild);
+		return newChild;
     }
 
     @Override
     public Node removeChild(Node oldChild) throws DOMException {
     	if(oldChild != documentElement){
-    		throw new DOMException(	DOMException.NOT_FOUND_ERR,
-    								"NOT_FOUND_ERR");
+    		throw new DOMException(DOMException.NOT_FOUND_ERR);
 		}
+		setDocumentElement(null);
 		
-		/* Remove the old one */
-		remove(0);
-		
-        return null;
-    }
-
-    @Override
-    public Node appendChild(Node newChild) throws DOMException {
-    	if(newChild.nodeType != ELEMENT_NODE){
-    		throw new DOMException(	DOMException.HIERARCHY_REQUEST_ERR,
-    								"Document only accepts Element Node");
-    	}
-    	else if(documentElement() != null){
-    		throw new DOMException(	DOMException.HIERARCHY_REQUEST_ERR,
-    								"The document already has one child element");
-		}
-		else if(newChild.ownerDocument != this){
-    		throw new DOMException(	DOMException.WRONG_DOCUMENT_ERR,
-    								"The element is not created by the document");
-		}
-		
-		add((Element)newChild);
-		
-        return newChild;
+        return oldChild;
     }
 
     @Override
@@ -228,19 +203,67 @@ public class Document extends JFrame implements Node{
         return false;
     }
     
-    /**
-     * Override the method to make childNodes list live
-     */
     @Override
     protected void addImpl(Component comp, Object constraints, int index){
-    	super.addImpl(comp, constraints, index);
+		if(documentElement == null){
+			if(comp instanceof Element){
+				super.addImpl(comp, constraints, index);
+			}
+		}
     }
-    
-    /**
-     * Override the method to make childNodes list live
-     */
-    @Override
-    public void remove(int index){
-    	super.remove(index);
-    }
+
+	private Element getElementByIdInternal(Element parent, String elementId){
+		if(parent != null){
+			String id = parent.getAttribute("id");
+			if(id != null && id.equals(elementId)){
+				return parent;
+			}
+			else{
+				for(Node childNode : childNodes()){
+					if(childNode.nodeType() == ELEMENT_NODE){
+						Element match = getElementByIdInternal((Element)childNode, elementId);
+						if(match != null){
+							return childNode;
+						}
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	private void setDocumentElement(Node node) throws DOMException{
+		switch(node.nodeType){
+			case ELEMENT_NODE : 
+				setDocumentElement((Element)node);
+				break;
+			case DOCUMENT_FRAGEMENT : 
+				setDocumentElement((DocumentFragement)node);
+				break;
+			default :
+				throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR);
+		}
+	}
+
+	private void setDocumentElement(Element element){
+		/*
+		if(element.ownerDocument() != this){
+			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR);
+		}
+		*/
+		Node oldChild = documentElement();
+		if(oldChild != null)
+			remove(oldChild);
+		if(node != null){
+			add(element);
+		}
+	}
+
+	private void setDocumentElement(DocumentFragement documentFragement) throws DOMException{
+		NodeList children = documentFragement.childNodes();
+		if(children.length() > 1){
+			throw new DOMException(DOMException.HEIRARCHY_REQUEST_ERR);
+		}
+		setDocumentElement(children.item(0));
+	}
 }
