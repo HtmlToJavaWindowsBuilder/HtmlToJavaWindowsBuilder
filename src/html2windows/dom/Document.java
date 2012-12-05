@@ -1,4 +1,6 @@
 package html2windows.dom;
+import java.awt.Component;
+
 import javax.swing.JFrame;
 
 import org.w3c.dom.DOMException;
@@ -30,7 +32,7 @@ public class Document extends JFrame implements Node{
     }
     
     public DocumentFragment createDocumentFragment(){
-        return new DocumentFragement();
+        return new DocumentFragment();
     }
     
     public Text createTextNode(String data){
@@ -38,7 +40,7 @@ public class Document extends JFrame implements Node{
     }
     
     public Attr createAttribute(String name) throws DOMException{
-        return Attr(name);
+        return new Attr(name);
     }
     
     /**
@@ -49,7 +51,7 @@ public class Document extends JFrame implements Node{
      */
     public NodeList getElementsByTagName(String tagname){
     	if(documentElement() != null)
-			return documentElement().getElementsByTagName();
+			return documentElement().getElementsByTagName(tagname);
 		else
         	return null;
     }
@@ -140,11 +142,11 @@ public class Document extends JFrame implements Node{
 		}
 		else{
 			if(refChild != documentElement()){
-				throw new DOMException(DOMException.NOT_FOUND_ERR);
+				throw new DOMException(DOMException.NOT_FOUND_ERR, "refChild is not found");
 			}
 			else{
 				if(newChild != documentElement()){
-					throw new DOMException(DOMException.HIERACHY_REQUEST_ERR);
+					throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Document has only one child node");
 				}
 				else{
 					setDocumentElement(newChild);
@@ -157,7 +159,7 @@ public class Document extends JFrame implements Node{
     @Override
     public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
 		if(oldChild != documentElement()){
-			throw new DOMException(DOMException.NOT_FOUND_ERR);
+			throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
 		}
 		setDocumentElement(newChild);
 		return newChild;
@@ -165,10 +167,10 @@ public class Document extends JFrame implements Node{
 
     @Override
     public Node removeChild(Node oldChild) throws DOMException {
-    	if(oldChild != documentElement){
-    		throw new DOMException(DOMException.NOT_FOUND_ERR);
+    	if(oldChild != documentElement()){
+    		throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
 		}
-		setDocumentElement(null);
+		setDocumentElement((Element)null);
 		
         return oldChild;
     }
@@ -205,7 +207,7 @@ public class Document extends JFrame implements Node{
     
     @Override
     protected void addImpl(Component comp, Object constraints, int index){
-		if(documentElement == null){
+		if(documentElement() == null){
 			if(comp instanceof Element){
 				super.addImpl(comp, constraints, index);
 			}
@@ -223,7 +225,7 @@ public class Document extends JFrame implements Node{
 					if(childNode.nodeType() == ELEMENT_NODE){
 						Element match = getElementByIdInternal((Element)childNode, elementId);
 						if(match != null){
-							return childNode;
+							return (Element) childNode;
 						}
 					}
 				}
@@ -233,15 +235,15 @@ public class Document extends JFrame implements Node{
 	}
 
 	private void setDocumentElement(Node node) throws DOMException{
-		switch(node.nodeType){
+		switch(node.nodeType()){
 			case ELEMENT_NODE : 
 				setDocumentElement((Element)node);
 				break;
-			case DOCUMENT_FRAGEMENT : 
-				setDocumentElement((DocumentFragement)node);
+			case DOCUMENT_FRAGMENT_NODE : 
+				setDocumentElement((DocumentFragment)node);
 				break;
 			default :
-				throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR);
+				throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Unacceptable node type");
 		}
 	}
 
@@ -251,18 +253,18 @@ public class Document extends JFrame implements Node{
 			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR);
 		}
 		*/
-		Node oldChild = documentElement();
+		Element oldChild = documentElement();
 		if(oldChild != null)
 			remove(oldChild);
-		if(node != null){
+		if(element != null){
 			add(element);
 		}
 	}
 
-	private void setDocumentElement(DocumentFragement documentFragement) throws DOMException{
+	private void setDocumentElement(DocumentFragment documentFragement) throws DOMException{
 		NodeList children = documentFragement.childNodes();
 		if(children.length() > 1){
-			throw new DOMException(DOMException.HEIRARCHY_REQUEST_ERR);
+			throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Document has only one child node");
 		}
 		setDocumentElement(children.item(0));
 	}
