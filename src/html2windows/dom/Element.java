@@ -8,7 +8,12 @@ import org.w3c.dom.events.EventListener;
 
 
 public class Element extends JComponent implements Node{
-    public String tagName(){
+    
+	public Element(String tagName){
+		
+	}
+	
+	public String tagName(){
         return null;
     }
     

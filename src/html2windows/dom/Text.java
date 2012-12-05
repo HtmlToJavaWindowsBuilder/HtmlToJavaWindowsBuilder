@@ -6,6 +6,11 @@ import org.w3c.dom.events.EventListener;
 
 
 public class Text implements Node {
+	
+	public Text(String data){
+		
+	}
+	
     public Text splitText(long offset) throws DOMException{
         return null;
     }
