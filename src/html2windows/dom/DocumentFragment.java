@@ -6,106 +6,125 @@ import org.w3c.dom.events.EventListener;
 
 
 public class DocumentFragment implements Node{
+	private List<Node> childNodes = new List<Node>();
 
     @Override
     public String nodeName() {
-        // TODO Auto-generated method stub
-        return null;
+        return "#document-fragment";
     }
 
     @Override
     public String nodeValue() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public short nodeType() {
-        // TODO Auto-generated method stub
-        return 0;
+        return DOCUMENT_FRAGMENT_NODE;
     }
 
     @Override
     public Node parentNode() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public NodeList childNodes() {
-        // TODO Auto-generated method stub
-        return null;
+        return new NodeList(childNodes);
     }
 
     @Override
     public Node firstChild() {
-        // TODO Auto-generated method stub
-        return null;
+    	if(!childNodes.isEmpty())
+	        return childNodes.get(0);
+        else
+        	return null;
     }
 
     @Override
     public Node lastChild() {
-        // TODO Auto-generated method stub
-        return null;
+    	if(!childNodes.isEmpty()){
+        	return null;
+        }
+        else
+        	return null;
     }
 
     @Override
     public Node previousSibling() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Node nextSibling() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public NamedNodeMap attributes() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Document ownerDocument() {
-        // TODO Auto-generated method stub
+        // TODO
         return null;
     }
 
     @Override
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        // TODO Auto-generated method stub
+    	if(refChild != null){
+			if(!childNodes.contains(refChild)){
+				throw new DOMException(DOMException.NOT_FOUND_ERR, "refChild is not found");
+			}
+			int index = childNodes.indexOf(refChild);
+			add(index, newChild);
+    	}
+    	else{
+    		appendChild(newChild);
+    	}
         return null;
     }
 
     @Override
-    public Node replaceChild(Node newChilde, Node oldChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
+    public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
+    	if(!childNodes.contains(oldChild)){
+    		throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
+    	}
+    	
+    	int index = childNodes.indexOf(oldChild);
+    	
+    	childNodes.remove(oldChild);
+    	//TODO : Unset oldChild's parentNode
+    	
+    	add(index, newChild);
+        
+        return oldChild;
     }
 
     @Override
     public Node removeChild(Node oldChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
+    	if(!childNodes.contains(oldChild)){
+    		throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
+    	}
+    	childNodes(oldChild);
+    	//TODO : Unset oldChild's parentNode
+        return oldChild;
     }
 
     @Override
     public Node appendChild(Node newChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
+    	add(childNodes.size() - 1, newChild);
+        return newChild;
     }
 
     @Override
     public boolean hasChildNodes() {
-        // TODO Auto-generated method stub
-        return false;
+        return !childNodes.isEmpty();
     }
 
     @Override
     public boolean hasAttributes() {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -127,6 +146,36 @@ public class DocumentFragment implements Node{
     public boolean dispatchEvent(Event evt) throws EventException {
         // TODO Auto-generated method stub
         return false;
+    }
+    
+    private void add(int index, Node newChild){
+    	switch(newChild.nodeType){
+    	case ELEMENT_NODE :
+    	case TEXT_NODE :
+    	{
+    		if(newChild.parentNode() == this && childNodes.indexOf(newChild) > index)
+    			index--;
+    		newChild.parentNode().removeChild(newChild);
+    		childNodes.add(index, newChild);
+    		//TODO : Set newChild's parentNode
+    	}
+    	break;
+    	
+    	case DOCUMENT_FRAGMENT_NODE :
+    	{
+    		if(child == this){
+    			throw DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Insert a ancester");
+    		}
+    		DocumentFragment df = (DocumentFragment)newChild;
+    		for(Node child : newChild.childNodes()){
+    			add(index++, child);
+    		}
+		}
+    	break;
+    	
+    	default :
+    		throw DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Unacceptable node type");
+    	}
     }
 
 }
