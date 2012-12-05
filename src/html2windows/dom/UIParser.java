@@ -1,55 +1,90 @@
 package html2windows.dom;
+
 import java.io.File;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.ByteArrayInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 public class UIParser {
-    public Document createDocument(){
-        return null;
-    }
-    
-    public Document parse(String input){
-    	try {
-
-    			File stocks = new File("Stocks.xml");
-	    		
-    			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-	    		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-	    		Document doc = (Document) dBuilder.parse(stocks);
-	    		//((org.w3c.dom.Node) doc.documentElement()).normalize();
-/*
-	    		System.out.println("root of xml file" + doc.documentElement().getName());
-	    		NodeList nodes = doc.getElementsByTagName("stock");
-	    		System.out.println("==========================");
-
-	    		for (int i = 0; i < nodes.length(); i++) {
-		    		Node node = nodes.item(i);
+	public Document createDocument() {
+		return null;
+	}
+	private Element parseElement(org.w3c.dom.Element element, Document document){
 		
-		    		if (node.nodeType() == Node.ELEMENT_NODE) {
-			    		Element element = (Element) node;
-			    		System.out.println("Stock Symbol: " + getValue("symbol", element));
-			    		System.out.println("Stock Price: " + getValue("price", element));
-			    		System.out.println("Stock Quantity: " + getValue("quantity", element));
-		    		}
-		    	}
-	*/	    	
-		    } catch (Exception ex) {
-		    	ex.printStackTrace();
-		    }
-	    return null;
-    }
-    
-    public Document parse(File input){
-        return null;
-    }
-    private static String getValue(String tag, Element element) {
-    	NodeList nodes = element.getElementsByTagName(tag).item(0).childNodes();
-    	Node node = (Node) nodes.item(0);
-    	return node.nodeValue();
-    }
-    
+		Element outputElement = document.createElement(element.getTagName());
 
+		org.w3c.dom.NamedNodeMap attributeMap = element.getAttributes();
+		for(int i = 0 ; i < attributeMap.getLength() ; i++){
+			org.w3c.dom.Node attribute  = attributeMap.item(i);	
+			String name = attribute.getNodeName();
+			String value = attribute.getNodeValue();
 
-    	
+			Attr outputAttribute = document.createAttribute(name);
+			outputAttribute.setValue(value);
+			outputElement.setAttributeNode(outputAttribute);
+		}
+		
+		org.w3c.dom.NodeList childNodes = element.getChildNodes();
+		for(int i = 0 ; i < childNodes.getLength(); i++){
+			org.w3c.dom.Node node = childNodes.item(i);
+			short type = node.getNodeType();
+			switch (type){
+				case org.w3c.dom.Node.TEXT_NODE:{
+					org.w3c.dom.Text text = (org.w3c.dom.Text) node;
+					Text outputText = document.createTextNode(text.getData());
+					
+					outputElement.appendChild(text);
+				}
+					break;
+				case org.w3c.dom.Node.ELEMENT_NODE:{
+					org.w3c.dom.Element childElement = (org.w3c.dom.Element) node;
+					Element outputChildElement = parseElement(childElement, document);
+
+					outputElement.appendChild(outputChildElement);
+				}
+					break;
+				default:
+					break;
+			}
+		}
+
+		return outputElement;
+	}
+
+	public Document parse(String input) {
+		try {
+			InputStream inputStream = new ByteArrayInputStream( input.getBytes(""));
+			Document outputDocument = parse(inputStream);
+			
+			return outputDocument;
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+	}
+
+	public Document parse(File input) {
+		InputStream inputStream = new FileInputStream(input); 
+		Document outputDocument = parse(inputStream);
+
+		return outputDocument;
+	}
+
+	public Document parse(InputStream input){
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		org.w3c.dom.Document doc = dBuilder.parse(input);
+		Document outputDocument = new Document();
+		Element outputElement = parseElement(doc.getDocumentElement(),outputDocument);
+		outputDocument.appendChild(outputElement);
+		
+		return outputDocument;
+	}
 }
