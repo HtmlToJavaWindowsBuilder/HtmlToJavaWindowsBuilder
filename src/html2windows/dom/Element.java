@@ -20,15 +20,15 @@ public class Element extends JComponent implements Node{
     
     public void removeAttribute(String name) throws DOMException{}
     
-    public Attr getNode(String name){
+    public Attr getAttributeNode(String name){
         return null;
     }
     
-    public Attr setNode(Attr newAttr) throws DOMException{
+    public Attr setAttributeNode(Attr newAttr) throws DOMException{
         return newAttr;
     }
     
-    public Attr removeNode(Attr oldAttr) throws DOMException{
+    public Attr removeAttributeNode(Attr oldAttr) throws DOMException{
         return oldAttr;
     }
     
@@ -36,7 +36,7 @@ public class Element extends JComponent implements Node{
         return null;
     }
     
-    public boolean has(String name){
+    public boolean hasAttribute(String name){
         return false;
     }
 
