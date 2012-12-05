@@ -1,24 +1,39 @@
 package html2windows.dom;
+import java.util.HashMap;
+
 import org.w3c.dom.DOMException;
 
-public class NamedNodeMap {
+public class NamedNodeMap extends HashMap<String, Node> {
     public Node getNamedItem(String name){
-        return null;
+        return get(name);
     }
     
     public Node setNamedItem(Node arg) throws DOMException{
-        return null;
+    	Node returnNode=null;
+    	String nodeName=arg.nodeName();
+    	if(containsKey(nodeName))
+    		returnNode=get(nodeName);
+    	put(nodeName, arg);
+
+    	return returnNode;
     }
     
     public Node removeNamedItem(String name) throws DOMException{
-        return null;
+        if(containsKey(name)==false){
+        	throw new DOMException(DOMException.NOT_FOUND_ERR, "There is no node named name in this map.");
+        }
+        else{
+        	remove(name);
+        	return get(name);
+        }
     }
     
     public Node item(long index){
+    	
         return null;
     }
     
     public long length(){
-        return 0;
+        return size();
     }
 }
