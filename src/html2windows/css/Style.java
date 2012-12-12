@@ -1,12 +1,13 @@
 package html2windows.css;
 
-import java.util.ArrayList;
+import java.util.TreeSet;
 
 import html2windows.dom.Element;
 
 public class Style {
 	Element element;
-	ArrayList<CSSRuleSet> ruleSetList=new ArrayList<CSSRuleSet>();
+	//ArrayList<CSSRuleSet> ruleSetList=new ArrayList<CSSRuleSet>();
+	TreeSet <CSSRuleSet> set = new TreeSet<CSSRuleSet>(CSSRuleSet.CssComparator);
 	
 	/*
 	 * 建構子
@@ -16,7 +17,8 @@ public class Style {
 	public Style(Element element){
 		this.element=element;
 		CSSRuleSet ruleSet=new CSSRuleSet(5);
-		ruleSetList.add(ruleSet);
+		//ruleSetList.add(ruleSet);
+		set.add(ruleSet);
 	}
 	
 	/*
@@ -27,7 +29,8 @@ public class Style {
 	 * arg3 CSSRuleSet的priority
 	 */
     public void setProperty(String propertyName, String value){
-        ruleSetList.get(0).setProperty(propertyName,value);
+        //ruleSetList.get(0).setProperty(propertyName,value);
+        set.first().setProperty(propertyName,value);
     }
     
     /*
@@ -39,7 +42,7 @@ public class Style {
     public String getProperty(String propertyName){
     	
     	String value=null;
-    	for(CSSRuleSet ruleSet : ruleSetList){
+    	for(CSSRuleSet ruleSet : set){
     		value=ruleSet.getProperty(propertyName);
     		if(value!=null)
     			return value;
@@ -54,17 +57,17 @@ public class Style {
      * arg1 ruleset
      * arg2 ruleset的priority
      */
-    public void addCSSRuleSet(CSSRuleSet cssRuleSet,int priority){
+    public void addCSSRuleSet(CSSRuleSet cssRuleSet){
     	//arrayList由大到小排序
     	//利用priority大小決定要插入到哪裡
-    	for(int i=0;i<ruleSetList.size();i++){
+    	/*for(int i=0;i<ruleSetList.size();i++){
     		if(ruleSetList.get(i).priority<=cssRuleSet.priority){
     			ruleSetList.add(i,cssRuleSet);
     			return;
     		}
-    	}
+    	}*/
     	//當空的或是priority最小的時候加入
-    	ruleSetList.add(cssRuleSet);
+    	set.add(cssRuleSet);
     }
     
     /*
