@@ -7,12 +7,7 @@ import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
 
-public class Element extends JComponent implements Node{
-    
-	public Element(String tagName){
-		
-	}
-	
+public abstract class Element extends JComponent implements Node{
 	public String tagName(){
         return null;
     }

@@ -5,38 +5,28 @@ import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
 
-public abstract class Text implements Node {
+class AttrInter implements Attr, NodeInter{
+    public String name(){
+        return null;
+    }
+    
+    public boolean specified(){
+        return false;
+    }
+    
+    public String value(){
+        return null;
+    }
+ 
+	public AttrInter(String name){
+	}
 
-	public Text splitText(long offset) throws DOMException{
-        return null;
-    }
-    
-    public String data(){
-        return null;
-    }
-    
-    public void setData(String data){
+    public void setValue(String value){
         
     }
-
-    public long length(){
-        return 0;
-    }
     
-    public String substringData(long offset, long count) throws DOMException{
+    public Element ownerElement(){
         return null;
-    }
-    
-    public void appendData(String arg) throws DOMException{
-    }
-    
-    public void insertData(long offset, String arg) throws DOMException{
-    }
-    
-    public void deleteData(long offset, long count) throws DOMException{
-    }
-
-    public void replaceData(long offset, long count, String arg) throws DOMException{
     }
 
     @Override
@@ -160,4 +150,16 @@ public abstract class Text implements Node {
         // TODO Auto-generated method stub
         return false;
     }
+
+	@Override
+	public void setParentNode(Node newParent) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setOwnerDocument(Document newOwnerDocument) {
+		// TODO Auto-generated method stub
+		
+	}
 }
