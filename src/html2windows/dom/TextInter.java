@@ -5,9 +5,13 @@ import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
 
-public abstract class Text implements Node {
-
-	public Text splitText(long offset) throws DOMException{
+class TextInter extends Text implements NodeInter {
+	
+	public TextInter(String data){
+		
+	}
+	
+    public Text splitText(long offset) throws DOMException{
         return null;
     }
     
@@ -63,6 +67,12 @@ public abstract class Text implements Node {
         return null;
     }
 
+	@Override
+	public void setParentNode(Node newParent) {
+		// TODO Auto-generated method stub
+		
+	}
+
     @Override
     public NodeList childNodes() {
         // TODO Auto-generated method stub
@@ -104,6 +114,12 @@ public abstract class Text implements Node {
         // TODO Auto-generated method stub
         return null;
     }
+
+	@Override
+	public void setOwnerDocument(Document newOwnerDocument) {
+		// TODO Auto-generated method stub
+		
+	}
 
     @Override
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
