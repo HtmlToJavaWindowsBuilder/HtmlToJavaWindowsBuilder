@@ -1,13 +1,14 @@
 package html2windows.css;
 
+import java.util.Comparator;
 import java.util.TreeSet;
 
 import html2windows.dom.Element;
 
 public class Style {
 	Element element;
-	//ArrayList<CSSRuleSet> ruleSetList=new ArrayList<CSSRuleSet>();
-	TreeSet <CSSRuleSet> set = new TreeSet<CSSRuleSet>(CSSRuleSet.CssComparator);
+	Comparator<CSSRuleSet> comparator = new CssRuleSetComparator<CSSRuleSet>();
+	TreeSet <CSSRuleSet> set = new TreeSet<CSSRuleSet>(comparator);
 	
 	/*
 	 * 建構子
@@ -17,7 +18,6 @@ public class Style {
 	public Style(Element element){
 		this.element=element;
 		CSSRuleSet ruleSet=new CSSRuleSet(5);
-		//ruleSetList.add(ruleSet);
 		set.add(ruleSet);
 	}
 	
@@ -58,14 +58,6 @@ public class Style {
      * arg2 ruleset的priority
      */
     public void addCSSRuleSet(CSSRuleSet cssRuleSet){
-    	//arrayList由大到小排序
-    	//利用priority大小決定要插入到哪裡
-    	/*for(int i=0;i<ruleSetList.size();i++){
-    		if(ruleSetList.get(i).priority<=cssRuleSet.priority){
-    			ruleSetList.add(i,cssRuleSet);
-    			return;
-    		}
-    	}*/
     	//當空的或是priority最小的時候加入
     	set.add(cssRuleSet);
     }
@@ -77,4 +69,11 @@ public class Style {
     public Element getElement(){
         return element;
     }
+    
+    public class CssRuleSetComparator<T> implements Comparator<T>{  
+		@Override
+		public int compare(T o1, T o2) {
+			return ((Comparable<T>) o1).compareTo(o2);
+		}  
+	}
 }
