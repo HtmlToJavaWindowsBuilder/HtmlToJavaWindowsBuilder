@@ -39,7 +39,7 @@ public class UIParser {
 					org.w3c.dom.Text text = (org.w3c.dom.Text) node;
 					Text outputText = document.createTextNode(text.getData());
 					
-					outputElement.appendChild(text);
+					outputElement.appendChild(outputText);
 				}
 					break;
 				case org.w3c.dom.Node.ELEMENT_NODE:{
@@ -68,23 +68,36 @@ public class UIParser {
 			ex.printStackTrace();
 		}
 
+		return null;
 	}
 
 	public Document parse(File input) {
-		InputStream inputStream = new FileInputStream(input); 
-		Document outputDocument = parse(inputStream);
+		try{
+			InputStream inputStream = new FileInputStream(input); 
+			Document outputDocument = parse(inputStream);
 
-		return outputDocument;
+			return outputDocument;
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	public Document parse(InputStream input){
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-		org.w3c.dom.Document doc = dBuilder.parse(input);
-		Document outputDocument = new Document();
-		Element outputElement = parseElement(doc.getDocumentElement(),outputDocument);
-		outputDocument.appendChild(outputElement);
-		
-		return outputDocument;
+		try {
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			org.w3c.dom.Document doc = dBuilder.parse(input);
+			Document outputDocument = new Document();
+			Element outputElement = parseElement(doc.getDocumentElement(),outputDocument);
+			outputDocument.appendChild(outputElement);
+
+			return outputDocument;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return null;	
 	}
 }
