@@ -4,9 +4,11 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
+import java.util.List;
+import java.util.ArrayList;
 
 public class DocumentFragment implements Node{
-	private List<Node> childNodes = new List<Node>();
+	private List<Node> childNodes = new ArrayList<Node>();
 
     @Override
     public String nodeName() {
@@ -30,7 +32,11 @@ public class DocumentFragment implements Node{
 
     @Override
     public NodeList childNodes() {
-        return new NodeList(childNodes);
+    	NodeList list = new NodeList();
+    	for(Node node : childNodes){
+    		list.add(node);
+    	}
+        return list;
     }
 
     @Override
@@ -107,7 +113,7 @@ public class DocumentFragment implements Node{
     	if(!childNodes.contains(oldChild)){
     		throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
     	}
-    	childNodes(oldChild);
+    	childNodes.remove(oldChild);
     	//TODO : Unset oldChild's parentNode
         return oldChild;
     }
@@ -149,7 +155,7 @@ public class DocumentFragment implements Node{
     }
     
     private void add(int index, Node newChild){
-    	switch(newChild.nodeType){
+    	switch(newChild.nodeType()){
     	case ELEMENT_NODE :
     	case TEXT_NODE :
     	{
@@ -163,8 +169,8 @@ public class DocumentFragment implements Node{
     	
     	case DOCUMENT_FRAGMENT_NODE :
     	{
-    		if(child == this){
-    			throw DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Insert a ancester");
+    		if(newChild == this){
+    			throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Insert a ancester");
     		}
     		DocumentFragment df = (DocumentFragment)newChild;
     		for(Node child : newChild.childNodes()){
@@ -174,7 +180,7 @@ public class DocumentFragment implements Node{
     	break;
     	
     	default :
-    		throw DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Unacceptable node type");
+    		throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Unacceptable node type");
     	}
     }
 
