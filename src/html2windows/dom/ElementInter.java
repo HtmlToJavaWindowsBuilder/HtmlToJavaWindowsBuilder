@@ -5,38 +5,42 @@ import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
 
-public abstract class Text implements Node {
-
-	public Text splitText(long offset) throws DOMException{
+class ElementInner extends Element implements NodeInter{
+    
+	public ElementInner(String tagName){
+		
+	}
+	
+	public String tagName(){
         return null;
     }
     
-    public String data(){
+    public String getAttribute(String name){
+        return name;
+    }
+    
+    public void setAttribute(String name, String value) throws DOMException{}
+    
+    public void removeAttribute(String name) throws DOMException{}
+    
+    public Attr getAttributeNode(String name){
         return null;
     }
     
-    public void setData(String data){
-        
-    }
-
-    public long length(){
-        return 0;
+    public Attr setAttributeNode(Attr newAttr) throws DOMException{
+        return newAttr;
     }
     
-    public String substringData(long offset, long count) throws DOMException{
+    public Attr removeAttributeNode(Attr oldAttr) throws DOMException{
+        return oldAttr;
+    }
+    
+    public NodeList getElementsByTagName(String name){
         return null;
     }
     
-    public void appendData(String arg) throws DOMException{
-    }
-    
-    public void insertData(long offset, String arg) throws DOMException{
-    }
-    
-    public void deleteData(long offset, long count) throws DOMException{
-    }
-
-    public void replaceData(long offset, long count, String arg) throws DOMException{
+    public boolean hasAttribute(String name){
+        return false;
     }
 
     @Override
@@ -61,6 +65,11 @@ public abstract class Text implements Node {
     public Node parentNode() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public void setParentNode(Node newParent) {
+        // TODO
     }
 
     @Override
@@ -103,6 +112,11 @@ public abstract class Text implements Node {
     public Document ownerDocument() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public void setOwnerDocument(Document newOwnerDocument) {
+        // TODO
     }
 
     @Override
