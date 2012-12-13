@@ -17,7 +17,9 @@
 	<target name="compile" depends="init"
 		description="compile the source " >
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac includeantruntime="false" srcdir="${src}" destdir="${build}"/>
+		<javac includeantruntime="false" srcdir="${src}" destdir="${build}">
+			<compilerarg value="-Xlint:all"/>
+		</javac>
 	</target>
 
 	<target name="dist" depends="compile"
