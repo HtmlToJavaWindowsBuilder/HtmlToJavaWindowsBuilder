@@ -10,9 +10,9 @@ import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
 
-public class Element extends JComponent implements Node{
-    
-	
+
+public abstract class Element extends JComponent implements Node{
+
 	private ArrayList<Attr> attributeList=new ArrayList<>();
 	private NodeList childNodeList=new NodeList();
 	private String tagNameValue;
