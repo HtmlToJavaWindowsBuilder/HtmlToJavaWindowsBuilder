@@ -8,157 +8,82 @@ import org.w3c.dom.events.EventListener;
 
 
 public abstract class Element extends JComponent implements Node{
-	public String tagName(){
-        return null;
-    }
     
-    public String getAttribute(String name){
-        return name;
-    }
+    public abstract String getAttribute(String name);
     
-    public void setAttribute(String name, String value) throws DOMException{}
+    public abstract void setAttribute(String name, String value) throws DOMException;
     
-    public void removeAttribute(String name) throws DOMException{}
+    public abstract void removeAttribute(String name) throws DOMException;
     
-    public Attr getAttributeNode(String name){
-        return null;
-    }
+    public abstract Attr getAttributeNode(String name);
     
-    public Attr setAttributeNode(Attr newAttr) throws DOMException{
-        return newAttr;
-    }
+    public abstract Attr setAttributeNode(Attr newAttr) throws DOMException;
     
-    public Attr removeAttributeNode(Attr oldAttr) throws DOMException{
-        return oldAttr;
-    }
+    public abstract Attr removeAttributeNode(Attr oldAttr) throws DOMException;
     
-    public NodeList getElementsByTagName(String name){
-        return null;
-    }
+    public abstract NodeList getElementsByTagName(String name);
     
-    public boolean hasAttribute(String name){
-        return false;
-    }
+    public abstract boolean hasAttribute(String name);
 
     @Override
-    public String nodeName() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract String nodeName() ;
 
     @Override
-    public String nodeValue() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract String nodeValue() ;
 
     @Override
-    public short nodeType() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+    public abstract short nodeType() ;
 
     @Override
-    public Node parentNode() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract Node parentNode() ;
 
     @Override
-    public NodeList childNodes() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract NodeList childNodes() ;
 
     @Override
-    public Node firstChild() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract Node firstChild() ;
 
     @Override
-    public Node lastChild() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract Node lastChild() ;
 
     @Override
-    public Node previousSibling() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract Node previousSibling() ;
 
     @Override
-    public Node nextSibling() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract Node nextSibling() ;
 
     @Override
-    public NamedNodeMap attributes() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract NamedNodeMap attributes() ;
 
     @Override
-    public Document ownerDocument() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract Document ownerDocument() ;
 
     @Override
-    public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract Node insertBefore(Node newChild, Node refChild) throws DOMException ;
 
     @Override
-    public Node replaceChild(Node newChilde, Node oldChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract Node replaceChild(Node newChilde, Node oldChild) throws DOMException ;
 
     @Override
-    public Node removeChild(Node oldChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract Node removeChild(Node oldChild) throws DOMException ;
 
     @Override
-    public Node appendChild(Node newChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    public abstract Node appendChild(Node newChild) throws DOMException ;
 
     @Override
-    public boolean hasChildNodes() {
-        // TODO Auto-generated method stub
-        return false;
-    }
+    public abstract boolean hasChildNodes() ;
 
     @Override
-    public boolean hasAttributes() {
-        // TODO Auto-generated method stub
-        return false;
-    }
+    public abstract boolean hasAttributes() ;
 
     @Override
-    public void addEventListener(String type, EventListener listener,
-            boolean useCapture) {
-        // TODO Auto-generated method stub
-        
-    }
+    public abstract void addEventListener(String type, EventListener listener,
+            boolean useCapture) ;
 
     @Override
-    public void removeEventListener(String type, EventListener listener,
-            boolean useCapture) {
-        // TODO Auto-generated method stub
-        
-    }
+    public abstract void removeEventListener(String type, EventListener listener,
+            boolean useCapture) ;
 
     @Override
-    public boolean dispatchEvent(Event evt) throws EventException {
-        // TODO Auto-generated method stub
-        return false;
-    }
+    public abstract boolean dispatchEvent(Event evt) throws EventException ;
 }
