@@ -6,6 +6,7 @@ import java.util.TreeSet;
 import html2windows.dom.Element;
 
 public class Style {
+	private static final int MAX_PRIORITY=5;
 	Element element;
 	Comparator<CSSRuleSet> comparator = new CssRuleSetComparator();
 	TreeSet <CSSRuleSet> set = new TreeSet<CSSRuleSet>(comparator);
@@ -17,7 +18,7 @@ public class Style {
 	 */
 	public Style(Element element){
 		this.element=element;
-		CSSRuleSet ruleSet=new CSSRuleSet(5);
+		CSSRuleSet ruleSet=new CSSRuleSet(MAX_PRIORITY);
 		set.add(ruleSet);
 	}
 	
@@ -29,13 +30,12 @@ public class Style {
 	 * arg3 CSSRuleSet priority
 	 */
     public void setProperty(String propertyName, String value){
-        //ruleSetList.get(0).setProperty(propertyName,value);
         set.first().setProperty(propertyName,value);
     }
     
     /*
      * get property
-     * get the property value according to the order of arrayList(property)
+     * get the property value according to the order of treeSet(property)
      * arg1 property name
      * return property value
      */
@@ -52,7 +52,7 @@ public class Style {
   
     /*
      * add Css ruleset
-     * add new ruleset into css ruleset's arraylist
+     * add new ruleset into css ruleset's treeSet
      * arg1 ruleset
      * arg2 ruleset priority
      */
