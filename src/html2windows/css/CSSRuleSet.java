@@ -8,7 +8,7 @@ public class CSSRuleSet{
 	public CSSRuleSet(int priority){
 		this.priority=priority;
 	}
-	public int getProperty(){
+	public int getPriority(){
 		return priority;
 	}
     public String getProperty(String propertyName){
@@ -17,8 +17,4 @@ public class CSSRuleSet{
     public void setProperty(String propertyName, String value){
     	cssRule.put(propertyName,value);
     }
-    public int compareTo(CSSRuleSet o) {
-		return (this.priority<((CSSRuleSet) o).getProperty())?1:-1;
-	}
-    
 }
