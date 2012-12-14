@@ -138,7 +138,7 @@ public class Document extends JFrame implements Node{
 			setDocumentElement(newChild);
 		}
 		else{
-			/* Not specified */
+			throw new NullPointerException("newChild is null");
 		}
         return newChild;
     }
