@@ -61,7 +61,7 @@ public class Document extends JFrame implements Node{
     	if(documentElement() != null)
 			return documentElement().getElementsByTagName(tagname);
 		else
-        	return null;
+        	return new NodeList();
     }
     
     public Node importNode(Node importedNode, boolean deep) throws DOMException{
