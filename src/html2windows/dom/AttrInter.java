@@ -22,7 +22,7 @@ class AttrInter implements Attr, NodeInter{
 		return value;
 	}
 
-	public Attr(String name){
+	public AttrInter(String name){
 		this.name = name;
 	}
 
