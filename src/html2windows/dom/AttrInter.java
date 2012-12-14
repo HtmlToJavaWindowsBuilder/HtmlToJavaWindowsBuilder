@@ -155,4 +155,27 @@ class AttrInter implements Attr, NodeInter{
 		// TODO Auto-generated method stub
 		return false;
 	}
+    
+    private void add(int index, Node newChild){
+    	if(newChild.ownerDocument() != this.ownerDocument()){
+			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, "Need import node first");
+		}
+
+    	switch(newChild.nodeType()){
+    	case TEXT_NODE :
+    	{
+    		if(newChild.parentNode() == this && childNodes.indexOf(newChild) > index)
+    			index--;
+    		newChild.parentNode().removeChild(newChild);
+    		childNodes.add(index, newChild);
+    		
+    		NodeInter newChildInternal = (NodeInter)newChild;
+    		newChildInternal.setParentNode(this);
+    	}
+    	break;
+    	
+    	default :
+    		throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Unacceptable node type");
+    	}
+    }
 }
