@@ -78,7 +78,11 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public NodeList childNodes() {
-		return new NodeList();
+    	NodeList list = new NodeList();
+    	for(Node node : childNodes){
+    		list.add(node);
+    	}
+        return list;
 	}
 
 	@Override
