@@ -108,7 +108,17 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-		return null;
+    	if(refChild != null){
+			if(!childNodes.contains(refChild)){
+				throw new DOMException(DOMException.NOT_FOUND_ERR, "refChild is not found");
+			}
+			int index = childNodes.indexOf(refChild);
+			add(index, newChild);
+    	}
+    	else{
+    		appendChild(newChild);
+    	}
+        return null;
 	}
 
 	@Override
