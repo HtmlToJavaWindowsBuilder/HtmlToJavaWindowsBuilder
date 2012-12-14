@@ -123,7 +123,18 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
-		return null;
+    	if(!childNodes.contains(oldChild)){
+    		throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
+    	}
+    	
+    	int index = childNodes.indexOf(oldChild);
+    	
+    	childNodes.remove(oldChild);
+    	((NodeInter)oldChild).setParentNode(null);
+    	
+    	add(index, newChild);
+        
+        return oldChild;
 	}
 
 	@Override
