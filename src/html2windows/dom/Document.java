@@ -177,6 +177,10 @@ public class Document extends JFrame implements Node{
 		if(oldChild != documentElement()){
 			throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
 		}
+		if(newChild == null){
+			throw new NullPointerException("newChild is null");
+		}
+		
 		setDocumentElement(newChild);
 		return newChild;
     }
