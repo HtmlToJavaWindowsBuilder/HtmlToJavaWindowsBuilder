@@ -353,6 +353,7 @@ public class Document extends JFrame implements Node{
 	}
 	
 	private NodeInter importNode(Text importedNode, boolean deep){
-		return null;
+		TextInter text = (TextInter)createTextNode(importedNode.data());
+		return text;
 	}
 }
