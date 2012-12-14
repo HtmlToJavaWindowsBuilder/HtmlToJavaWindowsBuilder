@@ -268,11 +268,9 @@ public class Document extends JFrame implements Node{
 	}
 
 	private void setDocumentElement(Element element){
-		/*
 		if(element.ownerDocument() != this){
-			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR);
+			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, "Need import the node first");
 		}
-		*/
 		Element oldChild = documentElement();
 		if(oldChild != null)
 			remove(oldChild);
