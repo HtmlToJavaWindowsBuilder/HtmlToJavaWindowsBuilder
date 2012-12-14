@@ -153,11 +153,16 @@ public class Document extends JFrame implements Node{
 				throw new DOMException(DOMException.NOT_FOUND_ERR, "refChild is not found");
 			}
 			else{
-				if(newChild != documentElement()){
-					throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Document has only one child node");
+				if(newChild != null){
+					if(newChild != documentElement()){
+						throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Document has only one child node");
+					}
+					else{
+						setDocumentElement(newChild);
+					}
 				}
 				else{
-					setDocumentElement(newChild);
+					throw new NullPointerException("newChild is null");
 				}
 			}
 		}
