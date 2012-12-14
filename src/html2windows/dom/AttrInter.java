@@ -6,154 +6,53 @@ import org.w3c.dom.events.EventListener;
 
 
 class AttrInter implements Attr, NodeInter{
-    public String name(){
-        return null;
-    }
-    
-    public boolean specified(){
-        return false;
-    }
-    
-    public String value(){
-        return null;
-    }
- 
-	public AttrInter(String name){
+	private String name;
+	private boolean specified = false;
+	private String value;
+	
+	public String name(){
+		return name;
+	}
+	
+	public boolean specified(){
+		return specified;
 	}
 
-    public void setValue(String value){
-        
-    }
-    
-    public Element ownerElement(){
-        return null;
-    }
-    
-    public void setOwnerElement(Element newOwnerElement){
-    	
-    }
-    
-    @Override
-    public String nodeName() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public String value(){
+		return value;
+	}
 
-    @Override
-    public String nodeValue() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public Attr(String name){
+		this.name = name;
+	}
 
-    @Override
-    public short nodeType() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+	public void setValue(String value){
+		this.value = value;
+	}
 
-    @Override
-    public Node parentNode() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public Element ownerElement(){
+		return null;
+	}
 
-    @Override
-    public NodeList childNodes() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public String nodeName() {
+		return name();
+	}
 
-    @Override
-    public Node firstChild() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public String nodeValue() {
+		return value();
+	}
 
-    @Override
-    public Node lastChild() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public short nodeType() {
+		return ATTRIBUTE_NODE;
+	}
 
-    @Override
-    public Node previousSibling() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Node nextSibling() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public NamedNodeMap attributes() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Document ownerDocument() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Node replaceChild(Node newChilde, Node oldChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Node removeChild(Node oldChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Node appendChild(Node newChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean hasChildNodes() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean hasAttributes() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public void addEventListener(String type, EventListener listener,
-            boolean useCapture) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void removeEventListener(String type, EventListener listener,
-            boolean useCapture) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public boolean dispatchEvent(Event evt) throws EventException {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	@Override
+	public Node parentNode() {
+		return null;
+	}
 
 	@Override
 	public void setParentNode(Node newParent) {
@@ -162,8 +61,94 @@ class AttrInter implements Attr, NodeInter{
 	}
 
 	@Override
+	public NodeList childNodes() {
+		return new NodeList();
+	}
+
+	@Override
+	public Node firstChild() {
+		return null;
+	}
+
+	@Override
+	public Node lastChild() {
+		return null;
+	}
+
+	@Override
+	public Node previousSibling() {
+		return null;
+	}
+
+	@Override
+	public Node nextSibling() {
+		return null;
+	}
+
+	@Override
+	public NamedNodeMap attributes() {
+		return null;
+	}
+
+	@Override
+	public Document ownerDocument() {
+		// TODO
+		return null;
+	}
+
+	@Override
 	public void setOwnerDocument(Document newOwnerDocument) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Node insertBefore(Node newChild, Node refChild) throws DOMException {
+		return null;
+	}
+
+	@Override
+	public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
+		return null;
+	}
+
+	@Override
+	public Node removeChild(Node oldChild) throws DOMException {
+		return null;
+	}
+
+	@Override
+	public Node appendChild(Node newChild) throws DOMException {
+		return null;
+	}
+
+	@Override
+	public boolean hasChildNodes() {
+		return false;
+	}
+
+	@Override
+	public boolean hasAttributes() {
+		return false;
+	}
+
+	@Override
+	public void addEventListener(String type, EventListener listener,
+			boolean useCapture) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void removeEventListener(String type, EventListener listener,
+			boolean useCapture) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean dispatchEvent(Event evt) throws EventException {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
