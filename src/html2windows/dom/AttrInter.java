@@ -145,8 +145,7 @@ class AttrInter implements Attr, NodeInter{
     	
     	int index = childNodes.indexOf(oldChild);
     	
-    	childNodes.remove(oldChild);
-    	((NodeInter)oldChild).setParentNode(null);
+    	remove(oldChild);
     	
     	add(index, newChild);
         
@@ -158,8 +157,7 @@ class AttrInter implements Attr, NodeInter{
     	if(!childNodes.contains(oldChild)){
     		throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
     	}
-    	childNodes.remove(oldChild);
-    	((NodeInter)oldChild).setParentNode(null);
+    	remove(oldChild);
         return oldChild;
 	}
 
@@ -220,5 +218,10 @@ class AttrInter implements Attr, NodeInter{
     	default :
     		throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Unacceptable node type");
     	}
+    }
+    
+    private void remove(Node oldChild){
+    	childNodes.remove(oldChild);
+    	((NodeInter)oldChild).setParentNode(null);
     }
 }
