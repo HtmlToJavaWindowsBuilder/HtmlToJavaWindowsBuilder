@@ -81,7 +81,10 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public Node lastChild() {
-		return null;
+    	if(!childNodes.isEmpty())
+	        return childNodes.get(childNodes.size() - 1);
+        else
+        	return null;
 	}
 
 	@Override
