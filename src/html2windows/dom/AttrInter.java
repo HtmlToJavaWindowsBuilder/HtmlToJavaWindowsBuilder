@@ -123,7 +123,8 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public Node appendChild(Node newChild) throws DOMException {
-		return null;
+    	add(childNodes.size() - 1, newChild);
+        return newChild;
 	}
 
 	@Override
