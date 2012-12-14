@@ -68,8 +68,32 @@ public class Document extends JFrame implements Node{
     }
     
     public Node importNode(Node importedNode, boolean deep) throws DOMException{
-    	// TODO
-        return importedNode;
+    	NodeInter newNode = null;
+    
+    	switch(importedNode.nodeType()){
+    	case ATTRIBUTE_NODE :
+    		newNode = importNode((Attr)importedNode, deep);
+    		break;
+    		
+    	case DOCUMENT_FRAGMENT_NODE :
+    		newNode = importNode((DocumentFragment)importedNode, deep);
+    		break;
+    		
+    	case ELEMENT_NODE :
+    		newNode = importNode((Element)importedNode, deep);
+    		break;
+    		
+    	case TEXT_NODE :
+    		newNode = importNode((Text)importedNode, deep);
+    		break;
+    		
+		default :
+			throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "The type of node cannot be imported");
+    	}
+    	
+    	newNode.setOwnerDocument(this);
+    	
+    	return newNode;
     }
     
     public Element getElementById(String elementId){
@@ -285,5 +309,21 @@ public class Document extends JFrame implements Node{
 			throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Document has only one child node");
 		}
 		setDocumentElement(children.item(0));
+	}
+	
+	private NodeInter importNode(Attr importedNode, boolean deep){
+		return null;
+	}
+	
+	private NodeInter importNode(DocumentFragment importedNode, boolean deep){
+		return null;
+	}
+	
+	private NodeInter importNode(Element importedNode, boolean deep){
+		return null;
+	}
+	
+	private NodeInter importNode(Text importedNode, boolean deep){
+		return null;
 	}
 }
