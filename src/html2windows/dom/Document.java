@@ -28,19 +28,27 @@ public class Document extends JFrame implements Node{
     }
     
     public Element createElement(String tagName) throws DOMException{
-        return new Element(tagName);
+    	ElementInter element = new ElementInter(tagName);
+    	element.setOwnerDocument(this);
+        return element;
     }
     
     public DocumentFragment createDocumentFragment(){
-        return new DocumentFragment();
+        DocumentFragmentInter documentFragement = new DocumentFragmentInter();
+        documentFragement.setOwnerDocument(this);
+        return documentFragement;
     }
     
     public Text createTextNode(String data){
-        return new Text(data);
+        TextInter text = new TextInter(data);
+        text.setOwnerDocument(this);
+        return text;
     }
     
     public Attr createAttribute(String name) throws DOMException{
-        return new Attr(name);
+        AttrInter attr = new AttrInter(name);
+        attr.setOwnerDocument(this);
+        return attr;
     }
     
     /**
