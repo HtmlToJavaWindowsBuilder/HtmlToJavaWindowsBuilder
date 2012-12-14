@@ -118,7 +118,12 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public Node removeChild(Node oldChild) throws DOMException {
-		return null;
+    	if(!childNodes.contains(oldChild)){
+    		throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
+    	}
+    	childNodes.remove(oldChild);
+    	((NodeInter)oldChild).setParentNode(null);
+        return oldChild;
 	}
 
 	@Override
