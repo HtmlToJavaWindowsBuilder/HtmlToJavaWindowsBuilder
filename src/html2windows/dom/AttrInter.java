@@ -198,6 +198,8 @@ class AttrInter implements Attr, NodeInter{
 	}
     
     private void add(int index, Node newChild){
+    	this.specified = true;
+    
     	if(newChild.ownerDocument() != this.ownerDocument()){
 			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, "Need import node first");
 		}
@@ -221,6 +223,8 @@ class AttrInter implements Attr, NodeInter{
     }
     
     private void remove(Node oldChild){
+    	this.specified = true;
+    	
     	childNodes.remove(oldChild);
     	((NodeInter)oldChild).setParentNode(null);
     }
