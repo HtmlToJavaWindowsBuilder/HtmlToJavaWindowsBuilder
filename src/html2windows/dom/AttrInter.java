@@ -25,6 +25,10 @@ class AttrInter implements Attr, NodeInter{
 	}
 
 	public String value(){
+		String value = "";
+		for(Node child : childNodes){
+			value = child.nodeValue();
+		}
 		return value;
 	}
 
