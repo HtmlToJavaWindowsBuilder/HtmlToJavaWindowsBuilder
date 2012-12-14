@@ -17,6 +17,9 @@ import org.w3c.dom.events.EventListener;
  * 
  * One Document contains only one Node, whose type is Element.
  */
+ 
+@SuppressWarnings("serial")
+
 public class Document extends JFrame implements Node{
     public Element documentElement(){
         try{
