@@ -312,7 +312,12 @@ public class Document extends JFrame implements Node{
 	}
 	
 	private NodeInter importNode(Attr importedNode, boolean deep){
-		return null;
+		AttrInter attr = (AttrInter)createAttribute(importedNode.nodeName());
+		for(Node child : attr.childNodes()){
+			Node newChild = importNode(child, deep);
+			attr.appendChild(newChild);
+		}
+		return attr;
 	}
 	
 	private NodeInter importNode(DocumentFragment importedNode, boolean deep){
