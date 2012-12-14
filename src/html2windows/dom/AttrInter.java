@@ -4,6 +4,8 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
+import java.util.List;
+import java.util.ArrayList;
 
 class AttrInter implements Attr, NodeInter{
 	private String name;
@@ -11,6 +13,8 @@ class AttrInter implements Attr, NodeInter{
 	private String value;
 	
 	private Document ownerDocument;
+	
+	private List<Node> childNodes = new ArrayList<Node>();
 	
 	public String name(){
 		return name;
