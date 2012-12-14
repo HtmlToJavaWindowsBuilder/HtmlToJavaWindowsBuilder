@@ -10,6 +10,8 @@ class AttrInter implements Attr, NodeInter{
 	private boolean specified = false;
 	private String value;
 	
+	private Document ownerDocument;
+	
 	public String name(){
 		return name;
 	}
@@ -92,14 +94,12 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public Document ownerDocument() {
-		// TODO
-		return null;
+		return ownerDocument;
 	}
 
 	@Override
 	public void setOwnerDocument(Document newOwnerDocument) {
-		// TODO Auto-generated method stub
-		
+		ownerDocument = newOwnerDocument;
 	}
 
 	@Override
