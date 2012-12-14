@@ -169,7 +169,7 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public boolean hasChildNodes() {
-		return false;
+		return !childNodes.isEmpty();
 	}
 
 	@Override
