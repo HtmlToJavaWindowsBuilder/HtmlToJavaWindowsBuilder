@@ -34,6 +34,14 @@ class AttrInter implements Attr, NodeInter{
 
 	public void setValue(String value){
 		this.value = value;
+		this.specified = true;
+		
+		// Empty replace all children with value
+		for(Node child : childNodes){
+			removeChild(child);
+		}
+		Text text = ownerDocument.createTextNode(value);
+		appendChild(text);
 	}
 
 	public Element ownerElement(){
