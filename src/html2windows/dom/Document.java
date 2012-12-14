@@ -321,7 +321,14 @@ public class Document extends JFrame implements Node{
 	}
 	
 	private NodeInter importNode(DocumentFragment importedNode, boolean deep){
-		return null;
+		DocumentFragmentInter df = (DocumentFragmentInter)createDocumentFragment();
+		if(deep){
+			for(Node child : importedNode.childNodes()){
+				Node newChild = importNode(child, deep);
+				df.appendChild(newChild);
+			}
+		}
+		return df;
 	}
 	
 	private NodeInter importNode(Element importedNode, boolean deep){
