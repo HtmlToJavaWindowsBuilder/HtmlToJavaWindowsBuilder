@@ -10,7 +10,6 @@ import java.util.ArrayList;
 class AttrInter implements Attr, NodeInter{
 	private String name;
 	private boolean specified = false;
-	private String value;
 	
 	private Document ownerDocument;
 	
@@ -37,7 +36,6 @@ class AttrInter implements Attr, NodeInter{
 	}
 
 	public void setValue(String value){
-		this.value = value;
 		this.specified = true;
 		
 		// Empty replace all children with value
