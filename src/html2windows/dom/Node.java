@@ -1,6 +1,4 @@
 package html2windows.dom;
-import java.util.List;
-
 import org.w3c.dom.DOMException;
 
 public interface Node extends EventTarget{
