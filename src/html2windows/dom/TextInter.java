@@ -271,6 +271,7 @@ class TextInter extends Text implements NodeInter {
     		return false;
     }
 
+
     @Override
     public boolean hasAttributes() {
         // TODO Auto-generated method stub
