@@ -332,7 +332,24 @@ public class Document extends JFrame implements Node{
 	}
 	
 	private NodeInter importNode(Element importedNode, boolean deep){
-		return null;
+		ElementInter element = (ElementInter)createElement(importedNode.nodeName());
+		
+		// Import attributes
+		NamedNodeMap attributes = element.attributes();
+		for(int i = 0; i < attributes.length(); i++){
+			Attr newAttr = (Attr)importNode(attributes.item(i), deep);
+			element.setAttributeNode(newAttr);
+		}
+		
+		// Import children
+		if(deep){
+			for(Node child : element.childNodes()){
+				Node newChild = importNode(child, deep);
+				element.appendChild(newChild);
+			}
+		}
+		
+		return element;
 	}
 	
 	private NodeInter importNode(Text importedNode, boolean deep){
