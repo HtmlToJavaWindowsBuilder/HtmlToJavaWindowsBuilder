@@ -72,8 +72,6 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public void setParentNode(Node newParent) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
