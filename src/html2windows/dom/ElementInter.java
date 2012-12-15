@@ -117,7 +117,9 @@ class ElementInter extends Element implements NodeInter {
 	
 	
 	public Attr removeAttributeNode(Attr oldAttr) throws DOMException {
-		
+		if(!attributeList.contains(oldAttr))
+			throw new DOMException(DOMException.NOT_FOUND_ERR, "oldAttr is not an attribute of the element.");
+		attributeList.remove(oldAttr);
 		return oldAttr;
 	}
 	
@@ -250,7 +252,7 @@ class ElementInter extends Element implements NodeInter {
 	@Override
 	public Document ownerDocument() {
 		// TODO Auto-generated method stub
-		return ownerDocument;
+		return this.ownerDocument;
 	}
 	
 	
@@ -293,7 +295,15 @@ class ElementInter extends Element implements NodeInter {
 	@Override
 	public Node removeChild(Node oldChild) throws DOMException {
 		// TODO Auto-generated method stub
-		return null;
+		if(!childNodeList.contains(oldChild)){
+			throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
+		}
+		else{
+			childNodeList.remove(oldChild);
+			((NodeInter)oldChild).setParentNode(null);
+			return oldChild;
+		}
+		
 	}
 
 	@Override
@@ -317,10 +327,10 @@ class ElementInter extends Element implements NodeInter {
 	@Override
 	public boolean hasAttributes() {
 		// TODO Auto-generated method stub
-		if (attributeList.size() > 0)
-			return true;
-		else
+		if (attributeList.isEmpty())
 			return false;
+		else
+			return true;
 	}
 
 	@Override
