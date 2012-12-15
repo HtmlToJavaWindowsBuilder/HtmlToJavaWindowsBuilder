@@ -4,120 +4,143 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
+import java.util.List;
+import java.util.ArrayList;
 
 class DocumentFragmentInter implements DocumentFragment, NodeInter{
+	private Document ownerDocument;
+
+	private List<Node> childNodes = new ArrayList<Node>();
 
     @Override
     public String nodeName() {
-        // TODO Auto-generated method stub
-        return null;
+        return "#document-fragment";
     }
 
     @Override
     public String nodeValue() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public short nodeType() {
-        // TODO Auto-generated method stub
-        return 0;
+        return DOCUMENT_FRAGMENT_NODE;
     }
 
     @Override
     public Node parentNode() {
-        // TODO Auto-generated method stub
         return null;
     }
-
-	@Override
-	public void setParentNode(Node newParent) {
-		// TODO Auto-generated method stub
-		
-	}
+    
+    @Override
+    public void setParentNode(Node newParentNode) {
+    }
 
     @Override
     public NodeList childNodes() {
-        // TODO Auto-generated method stub
-        return null;
+    	NodeList list = new NodeList();
+    	for(Node node : childNodes){
+    		list.add(node);
+    	}
+        return list;
     }
 
     @Override
     public Node firstChild() {
-        // TODO Auto-generated method stub
-        return null;
+    	if(!childNodes.isEmpty())
+	        return childNodes.get(0);
+        else
+        	return null;
     }
 
     @Override
     public Node lastChild() {
-        // TODO Auto-generated method stub
-        return null;
+    	if(!childNodes.isEmpty()){
+        	return childNodes.get(childNodes.size() - 1);
+        }
+        else
+        	return null;
     }
 
     @Override
     public Node previousSibling() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Node nextSibling() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public NamedNodeMap attributes() {
-        // TODO Auto-generated method stub
         return null;
     }
 
     @Override
     public Document ownerDocument() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.ownerDocument;
     }
-
-	@Override
-	public void setOwnerDocument(Document newOwnerDocument) {
-		// TODO Auto-generated method stub
-		
-	}
+    
+    @Override
+    public void setOwnerDocument(Document newOwnerDocument){
+    	this.ownerDocument = newOwnerDocument;
+    }
 
     @Override
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        // TODO Auto-generated method stub
+    	if(refChild != null){
+			if(!childNodes.contains(refChild)){
+				throw new DOMException(DOMException.NOT_FOUND_ERR, "refChild is not found");
+			}
+			int index = childNodes.indexOf(refChild);
+			add(index, newChild);
+    	}
+    	else{
+    		appendChild(newChild);
+    	}
         return null;
     }
 
     @Override
-    public Node replaceChild(Node newChilde, Node oldChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
+    public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
+    	if(!childNodes.contains(oldChild)){
+    		throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
+    	}
+    	
+    	int index = childNodes.indexOf(oldChild);
+    	
+    	childNodes.remove(oldChild);
+    	((NodeInter)oldChild).setParentNode(null);
+    	
+    	add(index, newChild);
+        
+        return oldChild;
     }
 
     @Override
     public Node removeChild(Node oldChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
+    	if(!childNodes.contains(oldChild)){
+    		throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
+    	}
+    	childNodes.remove(oldChild);
+    	((NodeInter)oldChild).setParentNode(null);
+        return oldChild;
     }
 
     @Override
     public Node appendChild(Node newChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
+    	add(childNodes.size() - 1, newChild);
+        return newChild;
     }
 
     @Override
     public boolean hasChildNodes() {
-        // TODO Auto-generated method stub
-        return false;
+        return !childNodes.isEmpty();
     }
 
     @Override
     public boolean hasAttributes() {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -140,5 +163,40 @@ class DocumentFragmentInter implements DocumentFragment, NodeInter{
         // TODO Auto-generated method stub
         return false;
     }
-
+    
+    private void add(int index, Node newChild){
+    	if(newChild.ownerDocument() != this.ownerDocument()){
+			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, "Need import node first");
+		}
+		
+    	switch(newChild.nodeType()){
+    	case ELEMENT_NODE :
+    	case TEXT_NODE :
+    	{
+    		if(newChild.parentNode() == this && childNodes.indexOf(newChild) > index)
+    			index--;
+    		newChild.parentNode().removeChild(newChild);
+    		childNodes.add(index, newChild);
+    		
+    		NodeInter newChildInternal = (NodeInter)newChild;
+    		newChildInternal.setParentNode(this);
+    	}
+    	break;
+    	
+    	case DOCUMENT_FRAGMENT_NODE :
+    	{
+    		if(newChild == this){
+    			throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Insert a ancester");
+    		}
+    		DocumentFragment df = (DocumentFragment)newChild;
+    		for(Node child : newChild.childNodes()){
+    			add(index++, child);
+    		}
+		}
+    	break;
+    	
+    	default :
+    		throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Unacceptable node type");
+    	}
+    }
 }
