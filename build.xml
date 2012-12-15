@@ -39,10 +39,10 @@
 	<target name="compile-test" depends="compile"
 		description="compile the source " >
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac includeantruntime="false" srcdir="${test}" destdir="${build}" classpath="${src}">
+		<javac includeantruntime="false" srcdir="${test}" destdir="${build}" classpath="${src}:${lib}:${build}">
 			<compilerarg value="-Xlint:all"/>
             <classpath>
-                <pathelement location="${junit}"/>
+                <pathelement path="${junit}"/>
             </classpath>
 		</javac>
 	</target>
@@ -50,10 +50,10 @@
     <target name="test" depends="compile-test">
 		<mkdir dir="${result}"/>
         <junit printsummary="yes">
-            <classpath>
- <!--               <pathelement path="${build}"/>
-                <pathelement location="${lib}"/>
-     -->       </classpath>
+            <classpath >
+                <pathelement path="${build}"/>
+                <pathelement location="${junit}"/>
+            </classpath>
             <batchtest todir="${result}">
                 <fileset dir="${build}" includes="**/*Test*"/>
                 <formatter type="xml"/>
