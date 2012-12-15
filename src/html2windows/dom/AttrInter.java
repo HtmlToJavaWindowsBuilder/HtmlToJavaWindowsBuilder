@@ -12,6 +12,7 @@ class AttrInter implements Attr, NodeInter{
 	private boolean specified = false;
 	
 	private Document ownerDocument;
+	private Element  ownerElement;
 	
 	private List<Node> childNodes = new ArrayList<Node>();
 	
@@ -47,7 +48,11 @@ class AttrInter implements Attr, NodeInter{
 	}
 
 	public Element ownerElement(){
-		return null;
+		return this.ownerElement;
+	}
+	
+	public void setOwnerElement(Element newOwnerElement){
+		this.ownerElement = newOwnerElement;
 	}
 
 	@Override
