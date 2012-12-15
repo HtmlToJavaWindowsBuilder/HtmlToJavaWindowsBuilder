@@ -123,14 +123,28 @@ class ElementInter extends Element implements NodeInter {
 		return oldAttr;
 	}
 	
-	/* 目的:
+	/* 目的:回傳childList中所有有此TagName的Node
 	 * 
+	 * 參數:name => 要取得的tagName名稱
 	 * 
 	 * */
 	
 	public NodeList getElementsByTagName(String name) {
 
 		NodeList elementList = new NodeList();
+		for(int i=0;i<childNodeList.length();i++){
+			Node child=childNodeList.get(i);
+			if(child instanceof Element){
+				NodeList childGetElementsByTagName=((ElementInter) child).getElementsByTagName(name);
+				if(!childGetElementsByTagName.isEmpty())
+					elementList.addAll(childGetElementsByTagName);
+				
+				String childTagName=((ElementInter) child).tagName();
+				if(childTagName.equals(name)||name.equals("*"))
+					elementList.add(child);
+			}
+				
+		}
 		return elementList;
 	}
 	
