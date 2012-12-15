@@ -56,7 +56,7 @@ class DocumentFragmentInter implements DocumentFragment, NodeInter{
     @Override
     public Node lastChild() {
     	if(!childNodes.isEmpty()){
-        	return null;
+        	return childNodes.get(childNodes.size() - 1);
         }
         else
         	return null;
