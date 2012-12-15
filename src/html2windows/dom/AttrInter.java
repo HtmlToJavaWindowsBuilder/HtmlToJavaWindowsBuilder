@@ -81,27 +81,27 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public NodeList childNodes() {
-    	NodeList list = new NodeList();
-    	for(Node node : childNodes){
-    		list.add(node);
-    	}
-        return list;
+		NodeList list = new NodeList();
+		for(Node node : childNodes){
+			list.add(node);
+		}
+		return list;
 	}
 
 	@Override
 	public Node firstChild() {
-    	if(!childNodes.isEmpty())
-	        return childNodes.get(0);
-        else
-        	return null;
+		if(!childNodes.isEmpty())
+			return childNodes.get(0);
+		else
+			return null;
 	}
 
 	@Override
 	public Node lastChild() {
-    	if(!childNodes.isEmpty())
-	        return childNodes.get(childNodes.size() - 1);
-        else
-        	return null;
+		if(!childNodes.isEmpty())
+			return childNodes.get(childNodes.size() - 1);
+		else
+			return null;
 	}
 
 	@Override
@@ -131,47 +131,47 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-    	if(refChild != null){
+		if(refChild != null){
 			if(!childNodes.contains(refChild)){
 				throw new DOMException(DOMException.NOT_FOUND_ERR, "refChild is not found");
 			}
 			int index = childNodes.indexOf(refChild);
 			add(index, newChild);
-    	}
-    	else{
-    		appendChild(newChild);
-    	}
-        return null;
+		}
+		else{
+			appendChild(newChild);
+		}
+		return null;
 	}
 
 	@Override
 	public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
-    	if(!childNodes.contains(oldChild)){
-    		throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
-    	}
-    	
-    	int index = childNodes.indexOf(oldChild);
-    	
-    	remove(oldChild);
-    	
-    	add(index, newChild);
-        
-        return oldChild;
+		if(!childNodes.contains(oldChild)){
+			throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
+		}
+		
+		int index = childNodes.indexOf(oldChild);
+		
+		remove(oldChild);
+		
+		add(index, newChild);
+		
+		return oldChild;
 	}
 
 	@Override
 	public Node removeChild(Node oldChild) throws DOMException {
-    	if(!childNodes.contains(oldChild)){
-    		throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
-    	}
-    	remove(oldChild);
-        return oldChild;
+		if(!childNodes.contains(oldChild)){
+			throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
+		}
+		remove(oldChild);
+		return oldChild;
 	}
 
 	@Override
 	public Node appendChild(Node newChild) throws DOMException {
-    	add(childNodes.size() - 1, newChild);
-        return newChild;
+		add(childNodes.size() - 1, newChild);
+		return newChild;
 	}
 
 	@Override
@@ -203,36 +203,36 @@ class AttrInter implements Attr, NodeInter{
 		// TODO Auto-generated method stub
 		return false;
 	}
-    
-    private void add(int index, Node newChild){
-    	this.specified = true;
-    
-    	if(newChild.ownerDocument() != this.ownerDocument()){
+	
+	private void add(int index, Node newChild){
+		this.specified = true;
+	
+		if(newChild.ownerDocument() != this.ownerDocument()){
 			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, "Need import node first");
 		}
 
-    	switch(newChild.nodeType()){
-    	case TEXT_NODE :
-    	{
-    		if(newChild.parentNode() == this && childNodes.indexOf(newChild) > index)
-    			index--;
-    		newChild.parentNode().removeChild(newChild);
-    		childNodes.add(index, newChild);
-    		
-    		NodeInter newChildInternal = (NodeInter)newChild;
-    		newChildInternal.setParentNode(this);
-    	}
-    	break;
-    	
-    	default :
-    		throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Unacceptable node type");
-    	}
-    }
-    
-    private void remove(Node oldChild){
-    	this.specified = true;
-    	
-    	childNodes.remove(oldChild);
-    	((NodeInter)oldChild).setParentNode(null);
-    }
+		switch(newChild.nodeType()){
+		case TEXT_NODE :
+		{
+			if(newChild.parentNode() == this && childNodes.indexOf(newChild) > index)
+				index--;
+			newChild.parentNode().removeChild(newChild);
+			childNodes.add(index, newChild);
+			
+			NodeInter newChildInternal = (NodeInter)newChild;
+			newChildInternal.setParentNode(this);
+		}
+		break;
+		
+		default :
+			throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Unacceptable node type");
+		}
+	}
+	
+	private void remove(Node oldChild){
+		this.specified = true;
+		
+		childNodes.remove(oldChild);
+		((NodeInter)oldChild).setParentNode(null);
+	}
 }
