@@ -28,7 +28,11 @@ class AttrInter implements Attr, NodeInter{
     public Element ownerElement(){
         return null;
     }
-
+    
+    public void setOwnerElement(Element newOwnerElement){
+    	
+    }
+    
     @Override
     public String nodeName() {
         // TODO Auto-generated method stub
