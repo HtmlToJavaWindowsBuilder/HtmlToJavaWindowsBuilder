@@ -291,6 +291,10 @@ public class CSSParser {
 
         return false;
     }
+    
+    private boolean isNonascii(char ch){
+        return false;
+    }
 
     private boolean isEscape(char ch) {
         if (ch == 92) {
@@ -362,31 +366,38 @@ public class CSSParser {
         if (isNotEnd()) {
             ch = getChar();
             // [_a-z] || nonascii
-            if (ch == 95 || (ch >= 97 && ch <= 122) || isNonascii(ch)) {
+            if (ch == '_' || (ch >= 97 && ch <= 122)) {
                 buffer += ch;
             }
             // escape
-            else if (ch == 92) {
+            else if (ch == '\\') {
                 pos++;
                 parseEscape();
+            }
+            else {
+                parseNonascii();
             }
         }
 
         return buffer;
     }
     
+    // [^\0-\237]
     private void parseNonascii(){
-        if(isNotEnd()){
-            
-        }
-    }
-    
-    private boolean isNonascii(char ch) {
-        if(ch < 0 || ch > 159){
-            pos++;
-        }
+        char ch;
         
-        return false;
+        if(isNotEnd()){
+            ch = getChar();
+            if(ch < 0 || ch > 159){
+                pos++;
+            }
+            else{
+                System.out.println("error in parseNonascii()");
+            }
+        }
+        else {
+            System.out.println("end in parseNonascii()");
+        }
     }
     
     private int parseUnicode() throws Exception {
@@ -409,6 +420,9 @@ public class CSSParser {
 
                 return Integer.parseInt(buffer, 16);
             }
+        }
+        else {
+            System.out.println("end in parseUnicode()");
         }
         throw new Exception();
     }
@@ -453,11 +467,25 @@ public class CSSParser {
         return buffer;
     }
     
+    // [_a-z0-9-]|{nonascii}|{escape}
     private void parseNmchar(){
         char ch;
         
         if(isNotEnd()){
             ch = getChar();
+            if(ch == '_' || ch >= 97 && ch <= 122 || ch >= 48 && ch <= 57 || ch == '-'){
+                pos++;
+            }
+            else if(ch == '\\'){
+                pos++;
+                parseEscape();
+            }
+            else{
+                parseNonascii();
+            }
+        }
+        else {
+            System.out.println("end in parseNmchar()");
         }
     }
     
