@@ -465,6 +465,7 @@ public class CSSParser {
         
     }
     
+    // {string1}|{string2}
     private void parseString(){
         char ch;
         
