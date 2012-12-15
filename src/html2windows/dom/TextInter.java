@@ -250,13 +250,13 @@ class TextInter extends Text implements NodeInter {
 	@Override
 	public Document ownerDocument() {
 		// TODO Auto-generated method stub
-		return ownerDocument;
+		return this.ownerDocument;
 	}
 
 	@Override
 	public void setOwnerDocument(Document newOwnerDocument) {
 		// TODO Auto-generated method stub
-		ownerDocument=newOwnerDocument;
+		this.ownerDocument=newOwnerDocument;
 
 	}
 
@@ -310,8 +310,8 @@ class TextInter extends Text implements NodeInter {
 	@Override
 	public boolean hasChildNodes() {
 		// TODO Auto-generated method stub
-		int size = childNodeList.size();
-		if (size > 0)
+		
+		if (!childNodeList.isEmpty())
 			return true;
 		else
 			return false;
