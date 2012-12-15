@@ -461,8 +461,70 @@ public class CSSParser {
         }
     }
     
+    // [0-9]+|[0-9]*\.[0-9]+
     private void parseNum(){
+        char ch;
         
+        if(isNotEnd()){
+            ch = getChar();
+            if(ch == '.'){
+                do {
+                    int times = 0;
+                    ch = getChar();
+                    if(ch >= 48 && ch <= 57){
+                        times++;
+                        pos++;
+                    }
+                    else {
+                        if(times == 0){
+                            System.out.println("error in parseNum");
+                            break;
+                        }
+                    }
+                }
+                while(isNotEnd());
+            }
+            else {
+                int times = 0;
+                do {
+                    ch = getChar();
+                    if(ch >= 48 && ch <= 57){
+                        times++;
+                        pos++;
+                    }
+                    else{
+                        if(times == 0){
+                            System.out.println("error in parseNum");
+                            break;
+                        }
+                        else {
+                            pos++;
+                            break;
+                        }
+                    }
+                }
+                while(isNotEnd());
+                
+                ch = getChar();
+                if(ch == '.'){
+                    do {
+                        times = 0;
+                        ch = getChar();
+                        if(ch >= 48 && ch <= 57){
+                            times++;
+                            pos++;
+                        }
+                        else {
+                            if(times == 0){
+                                System.out.println("error in parseNum");
+                                break;
+                            }
+                        }
+                    }
+                    while(isNotEnd());
+                }
+            }
+        }
     }
     
     // {string1}|{string2}
@@ -515,8 +577,8 @@ public class CSSParser {
         char ch;
         
         if(isNotEnd()){
-            ch = getChar();
             while(isNotEnd()){
+                ch = getChar();
                 if(!(ch == '\n' || ch == '\r' || ch == '\f' || ch == '\"')){
                     pos++;
                     ch = getChar();
