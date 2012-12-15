@@ -481,13 +481,30 @@ public class CSSParser {
         }
     }
     
+    // \"([^\n\r\f\\"]|\\{nl}|{escape})*\"
     private void parseString1(){
         char ch;
         
         if(isNotEnd()){
             ch = getChar();
-            if((!(ch == '\n' || ch == '\r' || ch == '\f' || ch == '\"'))){
-                
+            while(isNotEnd()){
+                if(!(ch == '\n' || ch == '\r' || ch == '\f' || ch == '\"')){
+                    pos++;
+                    ch = getChar();
+                    
+                }
+                else if(ch == '\\'){
+                    pos++;
+                    parseNl();
+                }
+                // end is \"
+                else if(ch == '\"'){
+                    pos++;
+                    break;
+                }
+                else{
+                    parseEscape();
+                }
             }
         }
     }
@@ -496,7 +513,7 @@ public class CSSParser {
         
     }
     
-    //\n|\r\n|\r|\f
+    // \n|\r\n|\r|\f
     private void parseNl(){
         char ch;
         
@@ -520,7 +537,7 @@ public class CSSParser {
         }
     }
     
-    //[ \t\r\n\f]*
+    // [ \t\r\n\f]*
     private void parseW(){
         char ch;
         
