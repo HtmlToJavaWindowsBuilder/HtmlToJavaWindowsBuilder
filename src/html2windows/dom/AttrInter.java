@@ -24,6 +24,10 @@ class AttrInter implements Attr, NodeInter{
 		return specified;
 	}
 
+	/**
+	 * Return the value of attribute.
+	 * @return concatenation of children nodes of the attribute.
+	 */
 	public String value(){
 		String value = "";
 		for(Node child : childNodes){
