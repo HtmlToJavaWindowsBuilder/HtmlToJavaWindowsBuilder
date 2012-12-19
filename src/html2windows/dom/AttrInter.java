@@ -74,6 +74,10 @@ class AttrInter implements Attr, NodeInter{
 		return ATTRIBUTE_NODE;
 	}
 
+	/**
+	 * Attribute nodes have no parent.
+	 * @return null
+	 */
 	@Override
 	public Node parentNode() {
 		return null;
@@ -108,11 +112,19 @@ class AttrInter implements Attr, NodeInter{
 			return null;
 	}
 
+	/**
+	 * Attribute nodes have no previous sibling.
+	 * @return null
+	 */
 	@Override
 	public Node previousSibling() {
 		return null;
 	}
 
+	/**
+	 * Attribute nodes have no next sibling.
+	 * @return null
+	 */
 	@Override
 	public Node nextSibling() {
 		return null;
