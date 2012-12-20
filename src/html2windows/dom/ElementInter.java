@@ -5,13 +5,13 @@ import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
 
-class ElementInner extends Element implements NodeInter{
+class ElementInter extends Element implements NodeInter{
     
-	public ElementInner(String tagName){
-		
-	}
-	
-	public String tagName(){
+    public ElementInter(String tagName){
+        
+    }
+    
+    public String tagName(){
         return null;
     }
     
