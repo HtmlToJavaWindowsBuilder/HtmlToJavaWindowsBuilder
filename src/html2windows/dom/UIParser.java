@@ -15,6 +15,12 @@ public class UIParser {
 	public Document createDocument() {
 		return null;
 	}
+
+    /*
+     *  content:
+     *  parsing the css struct will construct the Document
+     *  
+     */
 	private Element parseElement(org.w3c.dom.Element element, Document document){
 		
 		Element outputElement = document.createElement(element.getTagName());
@@ -56,7 +62,28 @@ public class UIParser {
 
 		return outputElement;
 	}
-
+    /*
+     *  input: string is css style string
+     *  ex: 
+        <?xml version="1.0"?>  
+        <company>
+            <employee>
+                <firstname>Tom</firstname>
+                <lastname>Cruise</lastname>
+            </employee>
+            <employee>
+                <firstname>Paul</firstname>
+                <lastname>Enderson</lastname>
+            </employee>
+            <employee>
+                <firstname>George</firstname>
+                <lastname>Bush</lastname>
+            </employee>
+        </company>
+     * 
+     *  output : Document 
+     *
+     */
 	public Document parse(String input) {
 		try {
 			InputStream inputStream = new ByteArrayInputStream( input.getBytes(""));
@@ -71,6 +98,12 @@ public class UIParser {
 		return null;
 	}
 
+    /*
+     *  input: file contains css style string
+     *  ex: 
+     *  output : Document 
+     *
+     */
 	public Document parse(File input) {
 		try{
 			InputStream inputStream = new FileInputStream(input); 
@@ -85,6 +118,14 @@ public class UIParser {
 		return null;
 	}
 
+    /*
+     *  content:
+     *  others input will transform into InputStream type
+     *  , then it will parse
+     *  ex: 
+     *  output : Document 
+     *
+     */
 	public Document parse(InputStream input){
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
