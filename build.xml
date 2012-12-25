@@ -12,6 +12,11 @@
 	<property name="result"  location="test-output"/>
 	<property name="result.html"  location="test-html"/>
 
+	<path id="lib-classpath">
+		<fileset dir="${lib}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
 
 	<target name="init">
 		<!-- Create the time stamp -->
@@ -43,6 +48,7 @@
 		<javac debug="on" includeantruntime="false" srcdir="${test}" destdir="${build}" classpath="${src}:${lib}:${build}">
 			<compilerarg value="-Xlint:all"/>
             <classpath>
+            	<path refid="lib-classpath"/>
                 <pathelement path="${junit}"/>
             </classpath>
 		</javac>
@@ -54,6 +60,7 @@
         <mkdir dir="${result}"/>
         <junit printsummary="withOutAndErr" >
             <classpath >
+            	<path refid="lib-classpath"/>
                 <pathelement path="${build}"/>
                 <pathelement location="${junit}"/>
             </classpath>

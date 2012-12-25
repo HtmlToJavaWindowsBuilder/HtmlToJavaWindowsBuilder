@@ -1,18 +1,42 @@
-import html2windows.dom.Document;
-import html2windows.dom.Element;
+package html2windows.dom;
+
+import html2windows.dom.*;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.mockito.Mockito.*;
+
+import java.util.*;
+
 public class ElementTest{
-	Document document = new Document();
+	Document document;
 	Element element;
 
 	@Before
 	public void before(){
-		element = document.createElement("div");
+		document = mock(Document.class);
+		element = new ElementInter("div");
+	}
+	
+	@Test
+	public void appendChildNodes(){
+		ArrayList<Node> children = new ArrayList<Node>();
+		
+		NodeInter childNodeElement = mock(NodeInter.class);
+		children.add(childNodeElement);
+		children.add(document.createTextNode("text"));
+		
+		for(Node child : children){
+			element.appendChild(child);
+		}
+		
+		NodeList childNodes = element.childNodes();
+		for(int i = 0; i < children.size(); i++){
+			assertEquals(childNodes.get(i), children.get(i));
+		}
 	}
 
 	@Test
@@ -22,7 +46,6 @@ public class ElementTest{
 		attr.put("class", "red-box");
 
 		assertNull("Not existing name should return null", element.getAttribute("id"));
-		assertNull("Not existing name should return null", element.getAttributeNode("id"));
 
 		assertNull("Pass null should return null", element.getAttribute(null));
 
