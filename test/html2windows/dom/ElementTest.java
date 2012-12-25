@@ -35,7 +35,7 @@ public class ElementTest{
 		
 		NodeList childNodes = element.childNodes();
 		for(int i = 0; i < children.size(); i++){
-			assertEquals(childNodes.get(i), children.get(i));
+			assertEquals(children.get(i), childNodes.get(i));
 		}
 	}
 
@@ -52,7 +52,7 @@ public class ElementTest{
 		for(String name : attr.keySet()){
 			String value = attr.get(name);
 			element.setAttribute(name, value);
-			assertEquals("'" + name + "' should get value '" + value + "'", element.getAttribute(name), value);
+			assertEquals("'" + name + "' should get value '" + value + "'", value, element.getAttribute(name));
 		}
 
 		for(String name : attr.keySet()){
