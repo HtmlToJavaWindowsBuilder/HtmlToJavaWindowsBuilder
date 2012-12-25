@@ -10,6 +10,7 @@
 	<property name="lib"  location="lib"/>
 	<property name="junit"  location="${lib}/junit-4.11.jar"/>
 	<property name="result"  location="test-output"/>
+	<property name="result.html"  location="test-html"/>
 
 
 	<target name="init">
@@ -39,7 +40,7 @@
 	<target name="compile-test" depends="compile"
 		description="compile the source " >
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac includeantruntime="false" srcdir="${test}" destdir="${build}" classpath="${src}:${lib}:${build}">
+		<javac debug="on" includeantruntime="false" srcdir="${test}" destdir="${build}" classpath="${src}:${lib}:${build}">
 			<compilerarg value="-Xlint:all"/>
             <classpath>
                 <pathelement path="${junit}"/>
@@ -59,11 +60,21 @@
                 <formatter type="xml"/>
             </batchtest>
         </junit>
+        
+		<mkdir dir="${result.html}"/>
+        <junitreport todir="${result.html}">
+        	<fileset dir="${result}">
+        		<include name="TEST-*.xml"/>
+        	</fileset>
+        	<report format="frames" todir="${result.html}"/>
+        </junitreport>
     </target>
 	<target name="clean"
 		description="clean up" >
 		<!-- Delete the ${build} and ${dist} directory trees -->
 		<delete dir="${build}"/>
 		<delete dir="${dist}"/>
+		<delete dir="${result}"/>
+		<delete dir="${result.html}"/>
 	</target>
 </project>
