@@ -291,8 +291,8 @@ public class CSSParser {
 
         return false;
     }
-    
-    private boolean isNonascii(char ch){
+
+    private boolean isNonascii(char ch) {
         return false;
     }
 
@@ -349,13 +349,13 @@ public class CSSParser {
     private boolean isHex(char ch) {
         return ((ch >= 48 && ch <= 57) || (ch >= 97 && ch <= 102));
     }
-    
-    private void parseName(){
-        if(isNotEnd()){
+
+    private void parseName() {
+        if (isNotEnd()) {
             do {
                 parseNmchar();
             }
-            while(isNotEnd());
+            while (isNotEnd());
         }
     }
 
@@ -381,17 +381,17 @@ public class CSSParser {
 
         return buffer;
     }
-    
+
     // [^\0-\237]
-    private void parseNonascii(){
+    private void parseNonascii() {
         char ch;
-        
-        if(isNotEnd()){
+
+        if (isNotEnd()) {
             ch = getChar();
-            if(ch < 0 || ch > 159){
+            if (ch < 0 || ch > 159) {
                 pos++;
             }
-            else{
+            else {
                 System.out.println("error in parseNonascii()");
             }
         }
@@ -399,7 +399,7 @@ public class CSSParser {
             System.out.println("end in parseNonascii()");
         }
     }
-    
+
     private int parseUnicode() throws Exception {
         char ch;
         String buffer = "";
@@ -426,13 +426,16 @@ public class CSSParser {
         }
         throw new Exception();
     }
-    
+
+    /*
+     * {unicode}|\\[^\n\r\f0-9a-f] but \\ is used to identify whether it goes to
+     * parseEscape, so is not considered in this function()
+     */
     private String parseEscape() {
         char ch = 0;
         String buffer = "";
 
-        if (ch == 92) {
-            pos++;
+        if (isNotEnd()) {
             ch = getChar();
             // unicode in escape
             if (isHex(ch)) {
@@ -459,28 +462,35 @@ public class CSSParser {
                 }
             }
             // else in escape
-            if (!(ch == '\n' || ch == '\r' || ch == '\f' || isHex(ch))) {
-
+            else if (!(ch == '\n' || ch == '\r' || ch == '\f' || isHex(ch))) {
+                
             }
+            else {
+                System.out.println("error in parseEscape()");
+            }
+        }
+        else {
+            System.out.println("end in parseEscape()");
         }
 
         return buffer;
     }
-    
+
     // [_a-z0-9-]|{nonascii}|{escape}
-    private void parseNmchar(){
+    private void parseNmchar() {
         char ch;
-        
-        if(isNotEnd()){
+
+        if (isNotEnd()) {
             ch = getChar();
-            if(ch == '_' || ch >= 97 && ch <= 122 || ch >= 48 && ch <= 57 || ch == '-'){
+            if (ch == '_' || ch >= 97 && ch <= 122 || ch >= 48 && ch <= 57
+                    || ch == '-') {
                 pos++;
             }
-            else if(ch == '\\'){
+            else if (ch == '\\') {
                 pos++;
                 parseEscape();
             }
-            else{
+            else {
                 parseNonascii();
             }
         }
@@ -488,40 +498,40 @@ public class CSSParser {
             System.out.println("end in parseNmchar()");
         }
     }
-    
+
     // [0-9]+|[0-9]*\.[0-9]+
-    private void parseNum(){
+    private void parseNum() {
         char ch;
-        
-        if(isNotEnd()){
+
+        if (isNotEnd()) {
             ch = getChar();
-            if(ch == '.'){
+            if (ch == '.') {
                 do {
                     int times = 0;
                     ch = getChar();
-                    if(ch >= 48 && ch <= 57){
+                    if (ch >= 48 && ch <= 57) {
                         times++;
                         pos++;
                     }
                     else {
-                        if(times == 0){
+                        if (times == 0) {
                             System.out.println("error in parseNum");
                             break;
                         }
                     }
                 }
-                while(isNotEnd());
+                while (isNotEnd());
             }
             else {
                 int times = 0;
                 do {
                     ch = getChar();
-                    if(ch >= 48 && ch <= 57){
+                    if (ch >= 48 && ch <= 57) {
                         times++;
                         pos++;
                     }
-                    else{
-                        if(times == 0){
+                    else {
+                        if (times == 0) {
                             System.out.println("error in parseNum");
                             break;
                         }
@@ -531,134 +541,135 @@ public class CSSParser {
                         }
                     }
                 }
-                while(isNotEnd());
-                
+                while (isNotEnd());
+
                 ch = getChar();
-                if(ch == '.'){
+                if (ch == '.') {
                     do {
                         times = 0;
                         ch = getChar();
-                        if(ch >= 48 && ch <= 57){
+                        if (ch >= 48 && ch <= 57) {
                             times++;
                             pos++;
                         }
                         else {
-                            if(times == 0){
+                            if (times == 0) {
                                 System.out.println("error in parseNum");
                                 break;
                             }
                         }
                     }
-                    while(isNotEnd());
+                    while (isNotEnd());
                 }
             }
         }
     }
-    
+
     // {string1}|{string2}
-    private void parseString(){
+    private void parseString() {
         char ch;
-        
-        if(isNotEnd()){
+
+        if (isNotEnd()) {
             ch = getChar();
-            if(ch == '"'){
+            if (ch == '"') {
                 pos++;
                 parseString1();
             }
-            else if(ch == '\''){
+            else if (ch == '\'') {
                 pos++;
                 parseString2();
             }
         }
     }
-    
+
     // \"([^\n\r\f\\"]|\\{nl}|{escape})*\"
-    private void parseString1(){
+    private void parseString1() {
         char ch;
-        
-        if(isNotEnd()){
+
+        if (isNotEnd()) {
             ch = getChar();
-            while(isNotEnd()){
-                if(!(ch == '\n' || ch == '\r' || ch == '\f' || ch == '\"')){
+            while (isNotEnd()) {
+                if (!(ch == '\n' || ch == '\r' || ch == '\f' || ch == '\"')) {
                     pos++;
                     ch = getChar();
-                    
+
                 }
-                else if(ch == '\\'){
+                else if (ch == '\\') {
                     pos++;
                     parseNl();
                 }
                 // end is \"
-                else if(ch == '\"'){
+                else if (ch == '\"') {
                     pos++;
                     break;
                 }
-                else{
+                else {
                     parseEscape();
                 }
             }
         }
     }
-    
+
     // \'([^\n\r\f\\']|\\{nl}|{escape})*\'
-    private void parseString2(){
+    private void parseString2() {
         char ch;
-        
-        if(isNotEnd()){
-            while(isNotEnd()){
+
+        if (isNotEnd()) {
+            while (isNotEnd()) {
                 ch = getChar();
-                if(!(ch == '\n' || ch == '\r' || ch == '\f' || ch == '\"')){
+                if (!(ch == '\n' || ch == '\r' || ch == '\f' || ch == '\"')) {
                     pos++;
                     ch = getChar();
-                    
+
                 }
-                else if(ch == '\\'){
+                else if (ch == '\\') {
                     pos++;
                     parseNl();
                 }
                 // end is \"
-                else if(ch == '\''){
+                else if (ch == '\'') {
                     pos++;
                     break;
                 }
-                else{
+                else {
                     parseEscape();
                 }
             }
         }
     }
-    
+
     // \n|\r\n|\r|\f
-    private void parseNl(){
+    private void parseNl() {
         char ch;
-        
-        if(isNotEnd()){
+
+        if (isNotEnd()) {
             ch = getChar();
-            if(ch == '\n' || ch == '\f'){
+            if (ch == '\n' || ch == '\f') {
                 System.out.println("in parseNl isEnd(end of \n || \f)");
             }
-            else if(ch == '\r'){
+            else if (ch == '\r') {
                 pos++;
-                if(isNotEnd()){
-                   ch = getChar();
-                   if(ch == '\n'){
-                       System.out.println("in parseNl isEnd(end of \r\n)");
-                   }
+                if (isNotEnd()) {
+                    ch = getChar();
+                    if (ch == '\n') {
+                        System.out.println("in parseNl isEnd(end of \r\n)");
+                    }
                 }
-                else{
-                   System.out.println("in parseNl isEnd(end of \r)");
+                else {
+                    System.out.println("in parseNl isEnd(end of \r)");
                 }
             }
         }
     }
-    
+
     // [ \t\r\n\f]*
-    private void parseW(){
+    private void parseW() {
         char ch;
-        
-        while(isNotEnd()){
+
+        while (isNotEnd()) {
             ch = getChar();
-            if(ch == 32 || ch == '\t' || ch == '\r' || ch == '\n' || ch == '\f'){
+            if (ch == 32 || ch == '\t' || ch == '\r' || ch == '\n'
+                    || ch == '\f') {
                 pos++;
             }
         }
