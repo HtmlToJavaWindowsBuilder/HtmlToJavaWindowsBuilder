@@ -113,6 +113,7 @@ class ElementInter extends Element implements NodeInter {
 		attributeList.add(newAttr);
 		return returnAttr;
 
+<<<<<<< HEAD
 	}
 	
 	
@@ -369,5 +370,3 @@ class ElementInter extends Element implements NodeInter {
 
 
 
-
-}
