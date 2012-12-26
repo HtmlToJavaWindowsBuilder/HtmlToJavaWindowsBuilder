@@ -9,7 +9,7 @@ import org.w3c.dom.events.EventListener;
 
 class ElementInter extends Element implements NodeInter {
 
-	private ArrayList<Attr> attributeList = new ArrayList<>();
+	private ArrayList<AttrInter> attributeList = new ArrayList<AttrInter>();
 	private NodeList childNodeList = new NodeList();
 	private String tagNameValue = null;
 	private Node parentNode=null;
@@ -53,7 +53,7 @@ class ElementInter extends Element implements NodeInter {
 	 * */
 	
 	public void setAttribute(String name, String value) throws DOMException {
-		Attr newAttr=new AttrInter(name);
+		AttrInter newAttr=new AttrInter(name);
 		newAttr.setValue(value);
 		attributeList.add(newAttr);
 	}
@@ -110,7 +110,7 @@ class ElementInter extends Element implements NodeInter {
 				break;
 			}
 		}
-		attributeList.add(newAttr);
+		attributeList.add((AttrInter)newAttr);
 		return returnAttr;
 
 	}
