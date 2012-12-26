@@ -6,7 +6,7 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
-
+@SuppressWarnings(value = { "serial" })
 class ElementInter extends Element implements NodeInter {
 
 	private ArrayList<AttrInter> attributeList = new ArrayList<AttrInter>();
