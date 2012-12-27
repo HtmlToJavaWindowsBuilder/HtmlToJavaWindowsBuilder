@@ -1,6 +1,5 @@
 package html2windows.dom;
 
-
 public interface Attr extends Node{
     public String name();
     

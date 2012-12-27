@@ -6,6 +6,12 @@
 	<property name="src" location="src"/>
 	<property name="build" location="build"/>
 	<property name="dist"  location="dist"/>
+	<property name="test"  location="test"/>
+	<property name="lib"  location="lib"/>
+	<property name="junit"  location="${lib}/junit-4.11.jar"/>
+	<property name="result"  location="test-output"/>
+	<property name="result.html"  location="test-html"/>
+
 
 	<target name="init">
 		<!-- Create the time stamp -->
@@ -17,12 +23,12 @@
 	<target name="compile" depends="init"
 		description="compile the source " >
 		<!-- Compile the java code from ${src} into ${build} -->
-		<javac includeantruntime="false" srcdir="${src}" destdir="${build}">
+        <javac includeantruntime="false" srcdir="${src}" destdir="${build}">
 			<compilerarg value="-Xlint:all"/>
 		</javac>
 	</target>
-
-	<target name="dist" depends="compile"
+	
+    <target name="dist" depends="compile" 
 		description="generate the distribution" >
 		<!-- Create the distribution directory -->
 		<mkdir dir="${dist}/lib"/>
@@ -31,10 +37,44 @@
 		<jar jarfile="${dist}/lib/html2window-${DSTAMP}.jar" basedir="${build}"/>
 	</target>
 
+	<target name="compile-test" depends="compile"
+		description="compile the source " >
+		<!-- Compile the java code from ${src} into ${build} -->
+		<javac debug="on" includeantruntime="false" srcdir="${test}" destdir="${build}" classpath="${src}:${lib}:${build}">
+			<compilerarg value="-Xlint:all"/>
+            <classpath>
+                <pathelement path="${junit}"/>
+            </classpath>
+		</javac>
+	</target>
+
+    <target name="test" depends="compile-test">
+		<mkdir dir="${result}"/>
+        <junit printsummary="yes">
+            <classpath >
+                <pathelement path="${build}"/>
+                <pathelement location="${junit}"/>
+            </classpath>
+            <batchtest todir="${result}">
+                <fileset dir="${build}" includes="**/*Test*"/>
+                <formatter type="xml"/>
+            </batchtest>
+        </junit>
+        
+		<mkdir dir="${result.html}"/>
+        <junitreport todir="${result.html}">
+        	<fileset dir="${result}">
+        		<include name="TEST-*.xml"/>
+        	</fileset>
+        	<report format="frames" todir="${result.html}"/>
+        </junitreport>
+    </target>
 	<target name="clean"
 		description="clean up" >
 		<!-- Delete the ${build} and ${dist} directory trees -->
 		<delete dir="${build}"/>
 		<delete dir="${dist}"/>
+		<delete dir="${result}"/>
+		<delete dir="${result.html}"/>
 	</target>
 </project>

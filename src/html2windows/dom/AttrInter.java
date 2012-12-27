@@ -4,162 +4,251 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
+import java.util.List;
+import java.util.ArrayList;
 
 class AttrInter implements Attr, NodeInter{
-    public String name(){
-        return null;
-    }
-    
-    public boolean specified(){
-        return false;
-    }
-    
-    public String value(){
-        return null;
-    }
- 
-	public AttrInter(String name){
+	private String name;
+	private boolean specified = false;
+	
+	private Document ownerDocument;
+	private Element  ownerElement;
+	
+	private List<Node> childNodes = new ArrayList<Node>();
+	
+	public String name(){
+		return name;
+	}
+	
+	public boolean specified(){
+		return specified;
 	}
 
-    public void setValue(String value){
-        
-    }
-    
-    public Element ownerElement(){
-        return null;
-    }
+	/**
+	 * Return the value of attribute.
+	 * @return concatenation of children nodes of the attribute.
+	 */
+	public String value(){
+		String value = "";
+		for(Node child : childNodes){
+			value += child.nodeValue();
+		}
+		return value;
+	}
 
-    @Override
-    public String nodeName() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public AttrInter(String name){
+		this.name = name;
+	}
 
-    @Override
-    public String nodeValue() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	public void setValue(String value){
+		this.specified = true;
+		
+		// Empty replace all children with value
+		for(Node child : childNodes){
+			removeChild(child);
+		}
+		Text text = ownerDocument.createTextNode(value);
+		appendChild(text);
+	}
 
-    @Override
-    public short nodeType() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+	public Element ownerElement(){
+		return this.ownerElement;
+	}
+	
+	public void setOwnerElement(Element newOwnerElement){
+		this.ownerElement = newOwnerElement;
+	}
 
-    @Override
-    public Node parentNode() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public String nodeName() {
+		return name();
+	}
 
-    @Override
-    public NodeList childNodes() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public String nodeValue() {
+		return value();
+	}
 
-    @Override
-    public Node firstChild() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public short nodeType() {
+		return ATTRIBUTE_NODE;
+	}
 
-    @Override
-    public Node lastChild() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Node previousSibling() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Node nextSibling() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public NamedNodeMap attributes() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Document ownerDocument() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Node replaceChild(Node newChilde, Node oldChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Node removeChild(Node oldChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public Node appendChild(Node newChild) throws DOMException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public boolean hasChildNodes() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public boolean hasAttributes() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public void addEventListener(String type, EventListener listener,
-            boolean useCapture) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void removeEventListener(String type, EventListener listener,
-            boolean useCapture) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public boolean dispatchEvent(Event evt) throws EventException {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	/**
+	 * Attribute nodes have no parent.
+	 * @return null
+	 */
+	@Override
+	public Node parentNode() {
+		return null;
+	}
 
 	@Override
 	public void setParentNode(Node newParent) {
-		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public NodeList childNodes() {
+		NodeList list = new NodeList();
+		for(Node node : childNodes){
+			list.add(node);
+		}
+		return list;
+	}
+
+	@Override
+	public Node firstChild() {
+		if(!childNodes.isEmpty())
+			return childNodes.get(0);
+		else
+			return null;
+	}
+
+	@Override
+	public Node lastChild() {
+		if(!childNodes.isEmpty())
+			return childNodes.get(childNodes.size() - 1);
+		else
+			return null;
+	}
+
+	/**
+	 * Attribute nodes have no previous sibling.
+	 * @return null
+	 */
+	@Override
+	public Node previousSibling() {
+		return null;
+	}
+
+	/**
+	 * Attribute nodes have no next sibling.
+	 * @return null
+	 */
+	@Override
+	public Node nextSibling() {
+		return null;
+	}
+
+	@Override
+	public NamedNodeMap attributes() {
+		return null;
+	}
+
+	@Override
+	public Document ownerDocument() {
+		return ownerDocument;
 	}
 
 	@Override
 	public void setOwnerDocument(Document newOwnerDocument) {
-		// TODO Auto-generated method stub
+		ownerDocument = newOwnerDocument;
+	}
+
+	@Override
+	public Node insertBefore(Node newChild, Node refChild) throws DOMException {
+		if(refChild != null){
+			if(!childNodes.contains(refChild)){
+				throw new DOMException(DOMException.NOT_FOUND_ERR, "refChild is not found");
+			}
+			int index = childNodes.indexOf(refChild);
+			add(index, newChild);
+		}
+		else{
+			appendChild(newChild);
+		}
+		return null;
+	}
+
+	@Override
+	public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
+		if(!childNodes.contains(oldChild)){
+			throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
+		}
 		
+		int index = childNodes.indexOf(oldChild);
+		
+		remove(oldChild);
+		
+		add(index, newChild);
+		
+		return oldChild;
+	}
+
+	@Override
+	public Node removeChild(Node oldChild) throws DOMException {
+		if(!childNodes.contains(oldChild)){
+			throw new DOMException(DOMException.NOT_FOUND_ERR, "oldChild is not found");
+		}
+		remove(oldChild);
+		return oldChild;
+	}
+
+	@Override
+	public Node appendChild(Node newChild) throws DOMException {
+		add(childNodes.size() - 1, newChild);
+		return newChild;
+	}
+
+	@Override
+	public boolean hasChildNodes() {
+		return !childNodes.isEmpty();
+	}
+
+	@Override
+	public boolean hasAttributes() {
+		return false;
+	}
+
+	@Override
+	public void addEventListener(String type, EventListener listener,
+			boolean useCapture) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void removeEventListener(String type, EventListener listener,
+			boolean useCapture) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean dispatchEvent(Event evt) throws EventException {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	private void add(int index, Node newChild){
+		this.specified = true;
+	
+		if(newChild.ownerDocument() != this.ownerDocument()){
+			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, "Need import node first");
+		}
+
+		switch(newChild.nodeType()){
+		case TEXT_NODE :
+		{
+			if(newChild.parentNode() == this && childNodes.indexOf(newChild) > index)
+				index--;
+			newChild.parentNode().removeChild(newChild);
+			childNodes.add(index, newChild);
+			
+			NodeInter newChildInternal = (NodeInter)newChild;
+			newChildInternal.setParentNode(this);
+		}
+		break;
+		
+		default :
+			throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR, "Unacceptable node type");
+		}
+	}
+	
+	private void remove(Node oldChild){
+		this.specified = true;
+		
+		childNodes.remove(oldChild);
+		((NodeInter)oldChild).setParentNode(null);
 	}
 }
