@@ -47,23 +47,33 @@
 		</javac>
 	</target>
 
-    <target name="test" depends="compile-test">
-		<mkdir dir="${result}"/>
-        <junit printsummary="yes">
+
+    <target name="test"  depends="compile-test" >
+        <!--"compile-test"-->
+        <mkdir dir="${result}"/>
+        <junit printsummary="yes" >
             <classpath >
                 <pathelement path="${build}"/>
                 <pathelement location="${junit}"/>
             </classpath>
             <batchtest todir="${result}">
-                <fileset dir="${build}" includes="**/*Test*"/>
+                <fileset dir="${build}" includes="**/*UI*Test*"/>
                 <formatter type="xml"/>
             </batchtest>
         </junit>
+        <mkdir dir="${result.html}"/>
+        <junitreport todir="${result.html}">
+            <fileset dir="${result}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${result.html}"/>
+        </junitreport>
     </target>
-	<target name="clean"
-		description="clean up" >
-		<!-- Delete the ${build} and ${dist} directory trees -->
-		<delete dir="${build}"/>
-		<delete dir="${dist}"/>
-	</target>
+    <target name="clean" description="clean up" >
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+        <delete dir="${result}"/>
+        <delete dir="${result.html}"/>
+    </target>
 </project>
