@@ -186,7 +186,7 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public Node appendChild(Node newChild) throws DOMException {
-		add(childNodes.size() - 1, newChild);
+		add(childNodes.size(), newChild);
 		return newChild;
 	}
 
