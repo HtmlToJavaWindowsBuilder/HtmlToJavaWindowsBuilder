@@ -9,7 +9,7 @@ import org.w3c.dom.events.EventListener;
 
 class ElementInter extends Element implements NodeInter {
 
-	private ArrayList<Attr> attributeList = new ArrayList<>();
+	private ArrayList<Attr> attributeList = new ArrayList<Attr>();
 	private NodeList childNodeList = new NodeList();
 	private String tagNameValue = null;
 	private Node parentNode=null;
@@ -73,7 +73,7 @@ class ElementInter extends Element implements NodeInter {
 			}
 		}
 
-	}
+	};
 	
 	/* 目的:Retrieves an attribute node by name
 	 * 
@@ -113,7 +113,6 @@ class ElementInter extends Element implements NodeInter {
 		attributeList.add(newAttr);
 		return returnAttr;
 
-<<<<<<< HEAD
 	}
 	
 	
@@ -368,5 +367,5 @@ class ElementInter extends Element implements NodeInter {
 		return false;
 	}
 
-
+}
 
