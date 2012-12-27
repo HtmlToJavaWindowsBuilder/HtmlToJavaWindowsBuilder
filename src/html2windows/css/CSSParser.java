@@ -5,16 +5,24 @@ import java.util.regex.Pattern;
 import html2windows.dom.Document;
 
 public class CSSParser {
+    // the input String of CSS, to parse whether syntax is correct or not, then add element to each node
     String cssString;
+    // the position of character of cssString
     int pos;
 
+    /** 
+     * Input cssString and document(the root of tree)
+     * Call this to start CSSParser, and it will parse cssString, and add element to each node 
+     */
     public void parse(String cssString, Document document) {
         this.cssString = cssString;
         this.pos = 0;
         parseStyleSheet();
     }
 
-    // done
+    /**
+     *  [ CDO | CDC | S | statement ]*;
+     */
     private void parseSpace() {
         char ch = 0;
 
@@ -32,17 +40,24 @@ public class CSSParser {
         }
     }
 
+    /**
+     * @return true if cssString is end, false otherwise;
+     */
     private boolean isNotEnd() {
         return (pos < cssString.length());
     }
 
-    // done
+    /**
+     * @return the position character of cssString
+     */
     private char getChar() {
         // css syntax is case-insensitive
         return Character.toLowerCase(cssString.charAt(pos));
     }
 
-    // done
+    /**
+     * [ CDO | CDC | S | statement ]*;
+     */
     private void parseStyleSheet() {
         while (isNotEnd()) {
             parseSpace();
@@ -50,7 +65,9 @@ public class CSSParser {
         }
     }
 
-    // done
+    /**
+     * ruleset | at-rule;
+     */
     private void parseStatement() {
         if (isNotEnd()) {
             if (getChar() == '@') {
@@ -62,7 +79,9 @@ public class CSSParser {
         }
     }
 
-    // done
+    /**
+     * ATKEYWORD S* any* [ block | ';' S* ];
+     */
     private void parseAtRule() {
         if (isNotEnd()) {
             parseIdent();
@@ -81,6 +100,9 @@ public class CSSParser {
         }
     }
 
+    /**
+     * '{' S* [ any | block | ATKEYWORD S* | ';' S* ]* '}' S*;
+     */
     private void parseBlock() {
         if (isNotEnd()) {
             parseSpace();
@@ -109,27 +131,21 @@ public class CSSParser {
     }
 
     /**
-     * 
+     * selector? '{' S* declaration? [ ';' S* declaration? ]* '}' S*;
      */
     private void parseRuleSet() {
         if (isNotEnd()) {
             if (Pattern.compile("(.*) {").matcher(cssString.substring(pos))
                     .find()) {
-                // parseSelector?;
-                // FIXIT
                 parseSelector();
                 if (isNotEnd() && getChar() == '{') {
                     pos++;
                     parseSpace();
                     if (isNotEnd()) {
-                        // declaration?;
-                        // FIXIT
                         parseDeclaration();
                         while (isNotEnd() && getChar() == ';') {
                             pos++;
                             parseSpace();
-                            // declaration?;
-                            // FIXIT
                             parseDeclaration();
                         }
                         if (isNotEnd() && getChar() == '}') {
@@ -142,14 +158,18 @@ public class CSSParser {
         }
     }
 
-    // done
+    /**
+     * any+;
+     */
     private void parseSelector() {
         while (isNotEnd()) {
             parseAny();
         }
     }
 
-    // done
+    /**
+     * property S* ':' S* value;
+     */
     private void parseDeclaration() {
         if (isNotEnd()) {
             parseProperty();
@@ -164,13 +184,18 @@ public class CSSParser {
         }
     }
 
+    /**
+     * IDENT;
+     */
     private void parseProperty() {
         if (isNotEnd()) {
             parseIdent();
         }
     }
 
-    // done
+    /**
+     * [ any | block | ATKEYWORD S* ]+;
+     */
     private void parseValue() {
         if (isNotEnd()) {
             do {
@@ -191,6 +216,12 @@ public class CSSParser {
         }
     }
 
+    /**
+     * [ IDENT | NUMBER | PERCENTAGE | DIMENSION | STRING | DELIM | URI | HASH |
+       UNICODE-RANGE | INCLUDES | DASHMATCH | ':' | FUNCTION S* [any|unused]*
+       ')' | '(' S* [any|unused]* ')' | '[' S* [any|unused]* ']' ] S*;
+     */
+    //FIX IT
     private void parseAny() {
         if (isNotEnd()) {
             parseIdent();
@@ -198,7 +229,9 @@ public class CSSParser {
         }
     }
 
-    // done
+    /**
+     * block | ATKEYWORD S* | ';' S* | CDO S* | CDC S*;
+     */
     private void parseUnused() {
         if (getChar() == '{') {
             pos++;
@@ -224,7 +257,9 @@ public class CSSParser {
         }
     }
 
-    // done
+    /**
+     * <!--
+     */
     private void parseCDO() {
         if (isNotEnd()) {
             if (isNotEnd() && getChar() == '!') {
@@ -239,7 +274,9 @@ public class CSSParser {
         }
     }
 
-    // done
+    /**
+     * -->
+     */
     private void parseCDC() {
         if (isNotEnd()) {
             if (isNotEnd() && getChar() == '-') {
@@ -248,6 +285,10 @@ public class CSSParser {
         }
     }
 
+    /**
+     * {ident}
+     * @return the parsing string
+     */
     private String parseIdent() {
         char ch = 0;
         String buffer = "";
@@ -278,7 +319,12 @@ public class CSSParser {
 
         return buffer;
     }
-
+    
+    /**
+     * [_a-z]|{nonascii}|{escape}
+     * @param ch, 
+     * @return
+     */
     private boolean isNmstart(char ch) {
         // [_a-z] || nonascii
         if (ch == 95 || (ch >= 97 && ch <= 122) || isNonascii(ch)) {
@@ -292,10 +338,21 @@ public class CSSParser {
         return false;
     }
 
+    /**
+     * @param ch: input testing charater
+     * @return true if the syntax is Nonascii, false otherwise;
+     */
     private boolean isNonascii(char ch) {
+        if (ch < 0 || ch > 159) {
+            return true;
+        }
         return false;
     }
 
+    /**
+     * @param ch: input testing charater
+     * @return true if the syntax is Escape, false otherwise;
+     */
     private boolean isEscape(char ch) {
         if (ch == 92) {
             pos++;
@@ -346,10 +403,17 @@ public class CSSParser {
         return isTrue;
     }
 
+    /**
+     * @param ch: input the testing character;
+     * @return true if character is Hex, false otherwise;
+     */
     private boolean isHex(char ch) {
         return ((ch >= 48 && ch <= 57) || (ch >= 97 && ch <= 102));
     }
-
+    
+    /**
+     * {nmchar}+
+     */
     private void parseName() {
         if (isNotEnd()) {
             do {
@@ -359,6 +423,10 @@ public class CSSParser {
         }
     }
 
+    /**
+     * [_a-z]|{nonascii}|{escape}
+     * @return the testing string
+     */
     private String parseNmstart() {
         char ch;
         String buffer = "";
@@ -382,7 +450,9 @@ public class CSSParser {
         return buffer;
     }
 
-    // [^\0-\237]
+    /**
+     * [^\0-\237]
+     */
     private void parseNonascii() {
         char ch;
 
@@ -399,7 +469,12 @@ public class CSSParser {
             System.out.println("end in parseNonascii()");
         }
     }
-
+    
+    /**
+     * \\[0-9a-f]{1,6}(\r\n|[ \n\r\t\f])?
+     * @return the integer which is parsed from input hex
+     * @throws Exception
+     */
     private int parseUnicode() throws Exception {
         char ch;
         String buffer = "";
@@ -427,7 +502,7 @@ public class CSSParser {
         throw new Exception();
     }
 
-    /*
+    /**
      * {unicode}|\\[^\n\r\f0-9a-f] but \\ is used to identify whether it goes to
      * parseEscape, so is not considered in this function()
      */
@@ -463,7 +538,7 @@ public class CSSParser {
             }
             // else in escape
             else if (!(ch == '\n' || ch == '\r' || ch == '\f' || isHex(ch))) {
-                
+
             }
             else {
                 System.out.println("error in parseEscape()");
@@ -476,7 +551,9 @@ public class CSSParser {
         return buffer;
     }
 
-    // [_a-z0-9-]|{nonascii}|{escape}
+    /**
+     * [_a-z0-9-]|{nonascii}|{escape}
+     */
     private void parseNmchar() {
         char ch;
 
@@ -499,7 +576,9 @@ public class CSSParser {
         }
     }
 
-    // [0-9]+|[0-9]*\.[0-9]+
+    /**
+     *  [0-9]+|[0-9]*\.[0-9]+
+     */
     private void parseNum() {
         char ch;
 
@@ -565,7 +644,9 @@ public class CSSParser {
         }
     }
 
-    // {string1}|{string2}
+    /**
+     * {string1}|{string2}
+     */
     private void parseString() {
         char ch;
 
@@ -582,7 +663,9 @@ public class CSSParser {
         }
     }
 
-    // \"([^\n\r\f\\"]|\\{nl}|{escape})*\"
+    /**
+     * \"([^\n\r\f\\"]|\\{nl}|{escape})*\"
+     */
     private void parseString1() {
         char ch;
 
@@ -610,7 +693,9 @@ public class CSSParser {
         }
     }
 
-    // \'([^\n\r\f\\']|\\{nl}|{escape})*\'
+    /**
+     * \'([^\n\r\f\\']|\\{nl}|{escape})*\'
+     */
     private void parseString2() {
         char ch;
 
@@ -638,7 +723,9 @@ public class CSSParser {
         }
     }
 
-    // \n|\r\n|\r|\f
+    /**
+     * \n|\r\n|\r|\f
+     */
     private void parseNl() {
         char ch;
 
@@ -662,7 +749,9 @@ public class CSSParser {
         }
     }
 
-    // [ \t\r\n\f]*
+    /**
+     * [ \t\r\n\f]*
+     */
     private void parseW() {
         char ch;
 
