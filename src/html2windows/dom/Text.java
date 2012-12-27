@@ -1,4 +1,6 @@
 package html2windows.dom;
+import javax.swing.JComponent;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
@@ -6,7 +8,6 @@ import org.w3c.dom.events.EventListener;
 
 
 public abstract class Text implements Node {
-    
     public abstract String data();
     
     public abstract void setData(String data);
