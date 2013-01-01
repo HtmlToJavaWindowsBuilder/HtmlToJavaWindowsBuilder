@@ -86,7 +86,7 @@ public class UIParser {
      */
 	public Document parse(String input) {
 		try {
-			InputStream inputStream = new ByteArrayInputStream( input.getBytes(""));
+			InputStream inputStream = new ByteArrayInputStream( input.getBytes());
 			Document outputDocument = parse(inputStream);
 			
 			return outputDocument;
