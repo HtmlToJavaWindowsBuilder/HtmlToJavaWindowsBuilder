@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import java.io.UnsupportedEncodingException;
 
 public class UIParser {
 	public Document createDocument() {
@@ -85,17 +86,11 @@ public class UIParser {
      *
      */
 	public Document parse(String input) {
-		try {
-			InputStream inputStream = new ByteArrayInputStream( input.getBytes());
-			Document outputDocument = parse(inputStream);
-			
-			return outputDocument;
+        InputStream inputStream = new ByteArrayInputStream( input.getBytes());
+        Document outputDocument = parse(inputStream);
+        
+        return outputDocument;
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		return null;
 	}
 
     /*
