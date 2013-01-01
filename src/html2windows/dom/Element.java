@@ -11,6 +11,8 @@ import org.w3c.dom.events.EventListener;
 
 public abstract class Element extends JComponent implements Node{
 	
+	public abstract String tagName();
+	
     public abstract String getAttribute(String name);
     
     public abstract void setAttribute(String name, String value) throws DOMException;

@@ -186,7 +186,7 @@ class AttrInter implements Attr, NodeInter{
 
 	@Override
 	public Node appendChild(Node newChild) throws DOMException {
-		add(childNodes.size() - 1, newChild);
+		add(childNodes.size(), newChild);
 		return newChild;
 	}
 
@@ -230,7 +230,12 @@ class AttrInter implements Attr, NodeInter{
 		switch(newChild.nodeType()){
 		case TEXT_NODE :
 		{
-			if(newChild.parentNode() == this && childNodes.indexOf(newChild) > index)
+			/*
+			 * If newChild is a child of this node, It need to be removed first 
+			 * and children after newChild will shift 1 position 
+			 * so insertion index need to subtract 1.
+			 */
+			if(newChild.parentNode() == this && childNodes.indexOf(newChild) < index)
 				index--;
 			newChild.parentNode().removeChild(newChild);
 			childNodes.add(index, newChild);
