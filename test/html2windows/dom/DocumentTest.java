@@ -8,6 +8,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import html2windows.dom.Document;
 import html2windows.dom.Element;
+import html2windows.dom.ElementInter;
+import html2windows.dom.TextInter;
 
 public class DocumentTest {
 
@@ -48,5 +50,30 @@ public class DocumentTest {
         doc.appendChild(body);
         assertEquals("documentElement should be body", body, doc.documentElement());
     }
+    
+    @Test 
+    public void testGetElementsByTagName() throws Exception{
+        
+    	//test when there is no element in document
+    	Document doc = new Document();
+        NodeList nodeList = new NodeList();
+        assertEquals("get element by tag name should return nodeList when there is no element", nodeList, doc.getElementsByTagName("div"));
+        
+        //create body
+        Element body = doc.createElement("body");
+        assertNotNull(body);
+        
+        //append div to body
+        ElementInter div=new ElementInter("div");
+        Node node=body.appendChild(div);
+        
+        //append body to document
+        doc.appendChild(body);
+        
+        //test whether nodeList with div equals get element with tag name
+        nodeList.add(div);
+        assertEquals("get element by tag name should return nodelist with element", nodeList, doc.getElementsByTagName("div"));
+    }
+    
 }
 
