@@ -23,6 +23,14 @@ public class DocumentTest {
 
     }
     
+    @Test 
+    public void testCreateElement() throws Exception{
+    	Document doc = new Document();
+        Element body = doc.createElement("body");
+        assertNotNull(body);
+        assertEquals("body's owner should be document",doc,body.ownerDocument());
+    }
+    
     @Test
     public void testAppendChild() throws Exception{
         Document doc = new Document();
@@ -74,6 +82,5 @@ public class DocumentTest {
         nodeList.add(div);
         assertEquals("get element by tag name should return nodelist with element", nodeList, doc.getElementsByTagName("div"));
     }
-    
 }
 
