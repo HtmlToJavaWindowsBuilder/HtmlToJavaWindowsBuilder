@@ -44,7 +44,7 @@ public class DocumentTest {
     }
     
     @Test (expected=NullPointerException.class)
-    public void testAppendNullChild() throws Exception{
+    public void testAppendNullChild(){
     	Document doc = new Document();
     	doc.appendChild(null);
     }
@@ -121,7 +121,7 @@ public class DocumentTest {
     }
     
     @Test (expected=DOMException.class)
-    public void testInsertChildToDocument() throws Exception{
+    public void testInsertChildToDocument() {
         
     	Document doc = new Document();
         Element body = doc.createElement("body");
@@ -132,13 +132,51 @@ public class DocumentTest {
     }
     
     @Test (expected=NullPointerException.class)
-    public void testInsertNullBefore() throws Exception{
+    public void testInsertNullBefore() {
         
     	Document doc = new Document();
         Element body = doc.createElement("body");
         doc.appendChild(body);
         
         doc.insertBefore(null, body);
+    }
+    
+    @Test
+    public void testReplaceChild(){
+    	Document doc = new Document();
+        Element body = doc.createElement("body");
+        doc.appendChild(body);
+        
+        Element div = doc.createElement("div");
+        doc.replaceChild(div, body);
+    }
+    
+    @Test (expected=NullPointerException.class)
+    public void testReplaceChildByNull(){
+    	Document doc = new Document();
+        Element body = doc.createElement("body");
+        doc.appendChild(body);
+        doc.replaceChild(null, body);
+    }
+    
+    @Test (expected=DOMException.class)
+    public void testReplaceNullChild(){
+    	Document doc = new Document();
+        Element body = doc.createElement("body");
+        doc.appendChild(body);
+        
+        Element div = doc.createElement("div");
+        doc.replaceChild(div, null);
+    }
+    
+    @Test (expected=DOMException.class)
+    public void testReplaceChildNotExist(){
+    	Document doc = new Document();
+        Element body = doc.createElement("body");
+        doc.appendChild(body);
+        
+        Element div = doc.createElement("div");
+        doc.replaceChild(div, div);
     }
 }
 
