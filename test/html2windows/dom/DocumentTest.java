@@ -7,6 +7,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import html2windows.dom.Document;
+import html2windows.dom.DocumentFragmentInter;
 import html2windows.dom.Element;
 import html2windows.dom.ElementInter;
 import html2windows.dom.TextInter;
@@ -81,6 +82,24 @@ public class DocumentTest {
         //test whether nodeList with div equals get element with tag name
         nodeList.add(div);
         assertEquals("get element by tag name should return nodelist with element", nodeList, doc.getElementsByTagName("div"));
+    }
+    
+    @Test 
+    public void testChildNodes() throws Exception{
+        
+    	//test when there is no element in document
+    	Document doc = new Document();
+        NodeList nodeList = new NodeList();
+        assertEquals("childNodes should return nodeList when there is no child", nodeList, doc.childNodes());
+        
+        //create body
+        Element body = doc.createElement("body");
+        doc.appendChild(body);
+        
+        
+        //test whether nodeList with div equals get element with tag name
+        nodeList.add(body);
+        assertEquals("childNodes should return nodeList when there is a child", nodeList, doc.childNodes());
     }
 }
 
