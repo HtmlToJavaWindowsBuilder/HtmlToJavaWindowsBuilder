@@ -11,6 +11,7 @@ import html2windows.dom.DocumentFragmentInter;
 import html2windows.dom.Element;
 import html2windows.dom.ElementInter;
 import html2windows.dom.TextInter;
+import org.w3c.dom.DOMException;
 
 public class DocumentTest {
 
@@ -41,6 +42,13 @@ public class DocumentTest {
         doc.appendChild(body);
         assertNotNull(doc.getContentPane().getComponent(0));
     }
+    
+    @Test (expected=NullPointerException.class)
+    public void testAppendNullChild() throws Exception{
+    	Document doc = new Document();
+    	doc.appendChild(null);
+    }
+    
     @Test 
     public void testCreateTextNode() throws Exception{
         Document doc = new Document();
@@ -100,6 +108,37 @@ public class DocumentTest {
         //test whether nodeList with div equals get element with tag name
         nodeList.add(body);
         assertEquals("childNodes should return nodeList when there is a child", nodeList, doc.childNodes());
+    }
+    
+    @Test 
+    public void testInsertBefore() throws Exception{
+        
+    	//test when there is no element in document
+    	Document doc = new Document();
+        Element body = doc.createElement("body");
+        doc.insertBefore(body,null);
+        assertEquals("node should be document element when insert before null", body, doc.documentElement());
+    }
+    
+    @Test (expected=DOMException.class)
+    public void testInsertChildToDocument() throws Exception{
+        
+    	Document doc = new Document();
+        Element body = doc.createElement("body");
+        doc.appendChild(body);
+        
+        Element div=doc.createElement("div");
+        doc.insertBefore(div, body);
+    }
+    
+    @Test (expected=NullPointerException.class)
+    public void testInsertNullBefore() throws Exception{
+        
+    	Document doc = new Document();
+        Element body = doc.createElement("body");
+        doc.appendChild(body);
+        
+        doc.insertBefore(null, body);
     }
 }
 
