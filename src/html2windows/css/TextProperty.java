@@ -206,6 +206,8 @@ public class TextProperty extends JPanel implements CSSPainter{
 	public void setTextIndent(){
 		String textIndent=property.get("text-align");
 		
+		
+		
 	}
 
 
