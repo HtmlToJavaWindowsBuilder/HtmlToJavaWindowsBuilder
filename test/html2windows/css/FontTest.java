@@ -58,6 +58,7 @@ public class FontTest {
         frame.setSize(360,200);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        font.setText("aaa");
         frame.add(font);
         //font.setText("asdf");
     }
