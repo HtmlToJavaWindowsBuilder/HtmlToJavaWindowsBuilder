@@ -14,26 +14,18 @@ class ElementInter extends Element implements NodeInter {
     private String tagNameValue = null;
     private Node parentNode=null;
     private Document ownerDocument;
-
-    /*
-     * 目的:constructor
-     * 
-     * 參數:tagName => 此element tag 的名稱
-     */
+    
     public ElementInter(String tagName) {
         tagNameValue = tagName;
     }
 
-    // 目的:回傳此element的tag名稱
+
+
     public String tagName() {
         return tagNameValue;
     }
 
-    /*
-     * 目的:取得此element的某一項attribute
-     * 
-     * 參數: name => 欲取得的attribute名稱
-     */
+
 
     public String getAttribute(String name) {
         for (int i = 0; i < attributeList.size(); i++) {
@@ -44,13 +36,6 @@ class ElementInter extends Element implements NodeInter {
         return null;
     }
 
-    /* 目的:設定此element的attribute
-     * 
-     * 參數:
-     * name => attribute的名稱
-     * value => attribute的值
-     * 
-     * */
 
     public void setAttribute(String name, String value) throws DOMException {
         AttrInter newAttr=new AttrInter(name);
@@ -58,12 +43,6 @@ class ElementInter extends Element implements NodeInter {
         attributeList.add(newAttr);
     }
 
-    /* 目的:移除某項attribute
-     * 
-     * 參數:
-     * name => 要移除的attribute名稱
-     * 
-     */
 
 
     public void removeAttribute(String name) throws DOMException {
@@ -75,11 +54,7 @@ class ElementInter extends Element implements NodeInter {
 
     }
 
-    /* 目的:Retrieves an attribute node by name
-     * 
-     * 參數:name =>The name of the attribute to retrieve  
-     * 
-     */
+
 
     public Attr getAttributeNode(String name) {
         for (int i = 0; i < attributeList.size(); i++) {
@@ -90,13 +65,7 @@ class ElementInter extends Element implements NodeInter {
         return null;
     }
 
-    /*
-     * 目的:Adds a new attribute
-     * 
-     * 參數:
-     * name => The name of the attribute to create or alter.
-     * value => Value to set in string form.
-     */
+
 
     public Attr setAttributeNode(Attr newAttr) throws DOMException {
 
@@ -123,11 +92,7 @@ class ElementInter extends Element implements NodeInter {
         return oldAttr;
     }
 
-    /* 目的:回傳childList中所有有此TagName的Node
-     * 
-     * 參數:name => 要取得的tagName名稱
-     * 
-     * */
+
 
     public NodeList getElementsByTagName(String name) {
 
@@ -148,11 +113,7 @@ class ElementInter extends Element implements NodeInter {
         return elementList;
     }
 
-    /* 目的:回傳是否有特定的attribute
-     * 
-     * 參數: name => 要查詢的attribute
-     * 
-     * */
+
     public boolean hasAttribute(String name) {
 
         for (int i = 0; i < attributeList.size(); i++) {
@@ -297,7 +258,7 @@ class ElementInter extends Element implements NodeInter {
         return null;
 
     }
-
+    
     @Override
     public Node replaceChild(Node newChilde, Node oldChild) throws DOMException {
         // TODO Auto-generated method stub
