@@ -18,7 +18,7 @@ public class CSSParser {
         try {
             BufferedReader in = new BufferedReader(
                     new FileReader(
-                            "C:/Users/mutant/git/HtmlToJavaWindowsBuilder2/src/html2windows/css/testFile.txt"));
+                            "C:/Users/mutant/git/HtmlToJavaWindowsBuilder_final/src/html2windows/css/testFile.txt"));
             String line;
             while ((line = in.readLine()) != null) {
                 cssString += line;
