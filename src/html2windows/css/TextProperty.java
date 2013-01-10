@@ -4,6 +4,7 @@ import html2windows.dom.Element;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.font.TextAttribute;
@@ -63,13 +64,24 @@ public class TextProperty extends JPanel implements CSSPainter{
 		super.paintComponent(g);
 		
 		g2d=g;
+		/*
 		setColor();
 		setLineHeight();
 		setTextIndent();
 		setTextAlign();
 		
+		*/
+		String string="2333333";
+		g.drawString(string, 20, 20);
+		
+		
 	}
-	
+	public int  getLength(){
+		String string="2333333";
+		FontMetrics f= g2d.getFontMetrics();
+		int length =f.stringWidth(string);
+		return length;
+	}
 	
 	
 	public void setColor(){
@@ -133,7 +145,7 @@ public class TextProperty extends JPanel implements CSSPainter{
 			
 			g2d.setColor(new Color(0,128,128));
 		}
-		else if(color.equals("black")){
+		else if(color.equals("black")||color.equals("default")){
 			g2d.setColor(new Color(0,0,0));
 		}
 		else if(color.equals("silver")){
@@ -166,21 +178,26 @@ public class TextProperty extends JPanel implements CSSPainter{
 		
 	}
 	
-	public void setTextAlign(){
+	public int setTextAlign(String s){
 		String textAlign=property.get("text-align");
+		int width=getWidth();
+		int stringLength = getFontLength(s);
+		
 		if(textAlign.equals("center")){
-			
+			return (width/2-stringLength/2);
 			
 		}
 		if(textAlign.equals("left")){
 			
-			
+			return 0;
 		}
 		if(textAlign.equals("right")){
-			
+			return (width-stringLength);
 			
 		}
-
+		
+		
+		return 0;
 	}
 		
 	public AttributedString setTextDecoration(Font f,String s){
@@ -203,13 +220,24 @@ public class TextProperty extends JPanel implements CSSPainter{
 		
 	}
 	
-	public void setTextIndent(){
+	public int setTextIndent(){
 		String textIndent=property.get("text-align");
 		
+		return Integer.parseInt(textIndent);
 		
 		
 	}
-
+	
+	
+	public int getFontLength(String s){
+		FontMetrics fm = g2d.getFontMetrics();
+		int length = fm.stringWidth(s);
+		
+		
+		return length;
+		
+		
+	}
 
 
 	

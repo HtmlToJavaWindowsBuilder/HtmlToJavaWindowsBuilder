@@ -29,7 +29,7 @@ public class TextPropertyTest {
 
 	@Before
 	public void setUp() throws Exception {
-		textproperty=new TextProperty();
+		
 		
 		
 		
@@ -41,7 +41,9 @@ public class TextPropertyTest {
 
 	@Test
 	public void test() {
+	
 		initUl();
+		
 		
 		
 	}
@@ -49,6 +51,8 @@ public class TextPropertyTest {
 	
 	public void initUl(){
 		jFrame=new JFrame();
+		textproperty=new TextProperty();
+		
 		
 		jFrame.setSize(400	,400);
 		jFrame.setTitle("hello");
@@ -62,7 +66,7 @@ public class TextPropertyTest {
 		jFrame.repaint();
 		
 		
-		
-		
+		System.out.println(textproperty.getLength());
+		System.out.println("123");
 	}
 }
