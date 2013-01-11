@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Font;
 import java.awt.font.FontRenderContext;
+import java.awt.font.TextAttribute;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
@@ -37,6 +38,7 @@ class WindowEventHandler extends WindowAdapter {
         this.count = 1;
     }
 }
+
 @SuppressWarnings(value= { "serial" })
 public class FontProperty extends JPanel implements CSSPainter {
 
@@ -45,6 +47,7 @@ public class FontProperty extends JPanel implements CSSPainter {
     Graphics tmp;
     private String text;
     private Font font;
+    private Font fontVariant;
     HashMap<String, String> property = new HashMap<String, String>();
 
     public FontProperty(String input) { 
@@ -70,16 +73,18 @@ public class FontProperty extends JPanel implements CSSPainter {
         this.fontd = tmp.create(textIndent, 0, fontwidth, 400);
         this.fontd.setFont(this.font);
         this.fontd.setColor(Color.red);
-        this.fontd.drawString(this.text, 35, 25);
+        //this.fontd.drawString(this.text, 35, 25);
+        
         AttributedString attributedString = new AttributedString(this.text);
-        attributedString.addAttribute(TextAttribute.Font,this.font,0,1);
-        this.fontd.drawString(AttributedString.getIterator(), 35, 25);
-        /*
-        this.fontd = tmp.create(100,0,300,100);
-        this.fontd.setFont(this.font);
-        this.fontd.setColor(Color.orange);
-        this.fontd.drawString(this.text, 35, 25);
-        */
+        if( _setFontVariant() != 0 ) {
+            attributedString.addAttribute(TextAttribute.FONT,this.fontVariant,0,1);
+            attributedString.addAttribute(TextAttribute.FONT,this.font, 1, this.text.length());
+        }
+        else {
+            attributedString.addAttribute(TextAttribute.FONT,this.font);
+        }
+        this.fontd.drawString(attributedString.getIterator(), 0, 25);
+
     }
     
     public void paint(Style style, Element element, Graphics g) {
@@ -89,14 +94,13 @@ public class FontProperty extends JPanel implements CSSPainter {
         setFontStyle(style,"font-weight");
         setFontStyle(style,"font-variant");
     }
-    
 
     private int _setFontVariant() {
         if( this.property.get("font-variant") != null) {
             String variant = this.property.get("font-variant").toLowerCase();
             if(variant == "small-caps") {
                 this.text = this.text.toUpperCase();
-                return -10;
+                return -8;
             }
         }
         return 0;
@@ -115,29 +119,38 @@ public class FontProperty extends JPanel implements CSSPainter {
     private void setFont() {
         int size = _setFontSize();
         int weight = _setFontWeight();
+        int variant = _setFontVariant();
         String family = this.property.get("family");
-
-        this.font = new Font(family, weight, size);
-    }
-
-    private int _setFontWeight() {
-        String strWeight = "";
-        String strStyle = "";
-        if(this.property.get("font-weight") != null ) {
-            strWeight = this.property.get("font-weight").toLowerCase();
+        if(variant != 0) {
+            this.fontVariant = new Font(family, weight, size);
         }
+        this.font = new Font(family, weight, size+variant);
+    }
+    private int _setFontStyle(int weight) {
+        String strStyle = "";
         if(this.property.get("font-style") != null ) {
             strStyle = this.property.get("font-style").toLowerCase();
         }
+        if(weight == Font.BOLD && strStyle == "italic") {
+            weight = Font.BOLD + Font.ITALIC;       
+        }
+        else if(weight != Font.BOLD && strStyle == "italic") {
+            weight = Font.ITALIC;       
+        }
+
+        return weight;
+    }
+    private int _setFontWeight() {
+        String strWeight = "";
+        if(this.property.get("font-weight") != null ) {
+            strWeight = this.property.get("font-weight").toLowerCase();
+        }
 
         int weight = Font.PLAIN;
-        if(isNumberic(strWeight)) {
-            int tmpWeight = Integer.parseInt(strWeight); 
-        }
         if(strWeight == "bold" ) {
             weight = Font.BOLD;       
         }
-        else if(strWeight == "italic" ) {
+        else if(strWeight == "italic") {
             weight = Font.ITALIC;       
         }
         else if(strWeight == "plain") {
@@ -146,10 +159,7 @@ public class FontProperty extends JPanel implements CSSPainter {
         else if(strWeight == "bold+italic") {
             weight = Font.BOLD + Font.ITALIC;       
         }
-        if(weight == Font.BOLD && strStyle == "italic") {
-            weight = Font.BOLD + Font.ITALIC;       
-        }
-
+        weight = _setFontStyle(weight);
         return weight;
     }
 
