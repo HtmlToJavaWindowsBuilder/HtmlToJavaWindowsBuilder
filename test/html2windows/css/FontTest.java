@@ -47,6 +47,7 @@ public class FontTest {
         String fontFamily = fontType.getProperty("family");
         assertEquals("family should be Arial", "Arial", fontFamily );
 
+
         fontType.setProperty("font-weight","bold");
         fontType.setProperty("font-style","italic");
         fontType.setProperty("font-variant","small-caps");
