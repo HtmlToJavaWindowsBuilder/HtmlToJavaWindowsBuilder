@@ -2,10 +2,11 @@ package html2windows.css.level1;
 
 import java.util.ArrayList;
 
+import html2windows.dom.Node;
 import html2windows.dom.Element;
 import html2windows.dom.Document;
 
-public class CSS1SelectorMatcher implements SelectorMatcher{
+public class CSS1SelectorMatcher implements html2windows.css.SelectorMatcher{
 	CSS1SelectorCompiler compiler = new CSS1SelectorCompiler();
 	
 	public ArrayList<Element> getElementBySelector(String selectorGroupText, Document document){
@@ -14,9 +15,9 @@ public class CSS1SelectorMatcher implements SelectorMatcher{
 		// Split group by comma symbol and spaces
 		String[] selectorTexts = selectorGroupText.split("\\s*,\\s*");
 		for(String selectorText : selectorTexts){
-			Selector[] selector = compiler.compile(selectorText);
-			Element[] elements = selector.select();
-			result.addAll(Array.toList(elements));
+			Selector selector = compiler.compile(selectorText);
+			ArrayList<Element> elements = select(selector, document);
+			result.addAll(elements);
 		}
 		
 		return result;
@@ -25,7 +26,7 @@ public class CSS1SelectorMatcher implements SelectorMatcher{
 	private ArrayList<Element> select(Selector selector, Document document){
 		ArrayList<Element> result = new ArrayList<Element>();
 		
-		selectTraverse(selector, document.documentElement, result);
+		selectTraverse(selector, document.documentElement(), result);
 		
 		return result;
 	}
