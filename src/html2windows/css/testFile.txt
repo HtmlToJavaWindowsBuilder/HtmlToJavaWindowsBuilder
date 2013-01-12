@@ -1,9 +1,9 @@
-buttonA { background: black;
+#buttonA { background: black;
           width: 100px;
           height: 100px;
         }
 
-buttonB { margin-top: 10px;
+#buttonB { margin-top: 10px;
           text-color: blue;
           text-size: 10px;
         }

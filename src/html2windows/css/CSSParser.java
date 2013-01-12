@@ -221,6 +221,8 @@ class CSSParserClass {
         String selector = "";
 
         while (isNotEnd()) {
+            selector = "";
+            ruleSet = new CSSRuleSet(priority);
             if (Pattern.compile("(. *?)\\{").matcher(cssString.substring(pos))
                     .find()) {
                 selector += parseSelector();
