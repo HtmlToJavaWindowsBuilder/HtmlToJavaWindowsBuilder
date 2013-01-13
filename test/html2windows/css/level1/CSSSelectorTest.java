@@ -20,4 +20,14 @@ public class CSSSelectorTest{
 		Selector selector = new TypeSelector("div");
 		assertTrue("'div' should match div element", selector.match(element));
 	}
+	
+	@Test
+	public void testIDSelector(){
+		Document document = new Document();
+		Element element = document.createElement("div");
+		element.setAttribute("id", "id");
+		
+		Selector selector = new IDSelector("id");
+		assertTrue("'#id' should match element 'id'", selector.match(element));
+	}
 }
