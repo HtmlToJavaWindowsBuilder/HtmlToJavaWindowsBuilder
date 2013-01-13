@@ -64,11 +64,11 @@ public class CSS1SelectorCompilerTest{
 	
 	@Test
 	public void testDoubleDescendantSelector(){
-		Selector selector = compiler.compile("div div .class");
-		assertTrue("'div' should return TypeSelector", selector instanceof ClassSelector);
+		Selector selector = compiler.compile("#id div .class");
+		assertTrue("'.class' should return ClassSelector", selector instanceof ClassSelector);
 		assertTrue("' ' should return DescendantSelector", selector.prev() instanceof DescendantSelector);
 		assertTrue("'div' should return TypeSelector", selector.prev().prev() instanceof TypeSelector);
 		assertTrue("' ' should return DescendantSelector", selector.prev().prev().prev() instanceof DescendantSelector);
-		assertTrue("'.class' should return TypeSelector", selector.prev().prev().prev().prev() instanceof TypeSelector);
+		assertTrue("'#id' should return IDSelector", selector.prev().prev().prev().prev() instanceof IDSelector);
 	}
 }
