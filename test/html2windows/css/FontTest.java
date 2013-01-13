@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.GridLayout;
+import java.awt.FlowLayout;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -23,16 +25,19 @@ public class FontTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
+
     }
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
+
     }
-    
+
     @Test
     public void test() throws Exception{
 
         FontProperty font = new FontProperty("family");
+        FontProperty font1 = new FontProperty("family");
 
         JFrame frame = new JFrame("height");
         String tagName = "h1";
@@ -52,21 +57,26 @@ public class FontTest {
         fontType.setProperty("font-style","italic");
         fontType.setProperty("font-variant","small-caps");
 
+        font.setText("aaa");
+        font1.setText("bbbbbb");
         font.paint(fontType, fontNode, g);
-        assertEquals("frame should have no window listener", 0, frame.getWindowListeners().length);
+        font1.paint(fontType, fontNode, g);
+        JPanel panel = new JPanel();
 
+        panel.add(font);
+        panel.add(font1);
+        panel.setLayout(new GridLayout(3,4));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(360,200);
         frame.setLocationRelativeTo(null);
+        frame.add(panel);
         frame.setVisible(true);
-        font.setText("aaa");
-        frame.add(font);
         //font.setText("asdf");
+
     }
 
     @Test
     public void test2(){
         assert(true);
-        
     }
 }
