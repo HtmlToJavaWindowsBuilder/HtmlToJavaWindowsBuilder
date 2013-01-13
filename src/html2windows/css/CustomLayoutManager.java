@@ -116,29 +116,15 @@ public class CustomLayoutManager implements LayoutManager {
         if (maxWidth <= minWidth) {
             oneColumn = true;
         }
-        /*
-        if (maxWidth != preferredWidth) {
-            xFudge = (maxWidth - preferredWidth)/(nComps - 1);
-        }
 
-        if (maxHeight > preferredHeight) {
-            yFudge = (maxHeight - preferredHeight)/(nComps - 1);
-        }
-        */
         for (int i = 0 ; i < nComps ; i++) {
             Component c = parent.getComponent(i);
             if (c.isVisible()) {
                 Dimension d = c.getPreferredSize();
 
                 // increase x and y, if appropriate
-                if (i > 0) {
-                    if (!oneColumn) {
-                        x += previousWidth/2 + xFudge;
+                y += previousHeight;
 
-                    }
-                    y += previousHeight + vgap + yFudge;
-
-                }
                 // If x is too large,
                 if ((!oneColumn) &&
                         (x + d.width) >
