@@ -6,7 +6,7 @@ import html2windows.dom.Document;
 abstract class SimpleSelector extends SelectorAdapter{
 	public boolean match(Element element){
 		if (realMatch(element)) {
-			if (prev() != null && prev().match(element)){
+			if (prev() == null || (prev() != null && prev().match(element))){
 				return true;
 			}
 		}
