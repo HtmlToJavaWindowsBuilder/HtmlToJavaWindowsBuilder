@@ -23,7 +23,7 @@ import org.w3c.dom.events.EventListener;
 public class Document extends JFrame implements Node{
 	public Element documentElement(){
 		try{
-			return (Element)getComponent(0);
+			return (Element)getContentPane().getComponent(0);
 		}
 		catch(Exception ex){
 			return null;
@@ -291,15 +291,15 @@ public class Document extends JFrame implements Node{
 		}
 	}
 
-	private void setDocumentElement(Element element){
+	private void setDocumentElement(Element element) throws DOMException{
 		if(element.ownerDocument() != this){
 			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, "Need import the node first");
 		}
 		Element oldChild = documentElement();
 		if(oldChild != null)
-			remove(oldChild);
+			getContentPane().remove(oldChild);
 		if(element != null){
-			add(element);
+			getContentPane().add(element);
 		}
 	}
 
