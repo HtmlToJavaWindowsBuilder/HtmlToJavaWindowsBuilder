@@ -10,7 +10,7 @@ import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
 @SuppressWarnings(value = { "serial" })
-class ElementInter extends Element implements NodeInter {
+public class ElementInter extends Element implements NodeInter {
 
     private ArrayList<AttrInter> attributeList = new ArrayList<AttrInter>();
     private NodeList childNodeList = new NodeList();
@@ -135,7 +135,7 @@ class ElementInter extends Element implements NodeInter {
     }
 
     
-	public void setStyle(Style style) {
+	private void setStyle(Style style) {
 		if(style==null){
 			style=new Style(this);
 		}
