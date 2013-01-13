@@ -31,10 +31,7 @@ public abstract class Element extends JComponent implements Node{
     
     public abstract boolean hasAttribute(String name);
     
-    public abstract void setStyle(Style style);
-     
     public abstract Style getStyle();
-    
     
     @Override
     public abstract String nodeName() ;
