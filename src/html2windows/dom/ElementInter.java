@@ -135,7 +135,7 @@ public class ElementInter extends Element implements NodeInter {
     }
 
     
-	public void setStyle(Style style) {
+	private void setStyle(Style style) {
 		if(style==null){
 			style=new Style(this);
 		}
