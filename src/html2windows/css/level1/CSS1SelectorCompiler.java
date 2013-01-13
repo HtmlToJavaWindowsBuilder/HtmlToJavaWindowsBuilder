@@ -1,22 +1,32 @@
 package html2windows.css.level1;
 
+import java.lang.Character;
+
 class CSS1SelectorCompiler{
 	Selector lastSelector;
-	Selector headSelector;
 
 	String selector;
 	int position;
 
 	public Selector compile(String selector){
-		lastSelector = new DescendantSelector();	// Dummy Object
-		headSelector = lastSelector;
+		if (selector == null) {
+			return null;
+		}
+
+		selector.trim();
+
+		if ("".equals(selector)) {
+			return null;
+		}
+
+
+		lastSelector = null;
 
 		this.selector = selector;
 		position = 0;
-		
-		int ch = selector.charAt(position);
-		for(position = 0; position < selector.length(); position++){
-			ch = getChar();
+
+		while (position < selector.length()) {
+			int ch = getChar();
 
 			if (ch == '#') {
 				String id = getIdent();
@@ -28,30 +38,33 @@ class CSS1SelectorCompiler{
 			}
 			else if (ch == ' ') {
 				// Skip space
-				while (getChar() != ' ');
+				while (getChar() == ' ');
 				backChar();
 				push(new DescendantSelector());
 			}
 			else if (isIdentChar(ch)){
-				push(new TypeSelector(ch + getIdent()));
+				String type = toChar(ch) + getIdent();
+				push(new TypeSelector(type));
+			}
+			else {
+				return null;
 			}
 		}
 
-		return lastSelector.prev();
+		return lastSelector;
 	}
 
 	private void push(Selector selector){
-		headSelector.setPrev(selector);
-		headSelector = selector;
+		selector.setPrev(lastSelector);
+		lastSelector = selector;
 	}
 
 	private String getIdent(){
 		String ident = "";
 		for (int ch = getChar(); isIdentChar(ch); ch = getChar()){
-			ident += ch;
+			ident += toChar(ch);
 		}
 		backChar();
-
 		return ident;
 	}
 	
@@ -63,7 +76,7 @@ class CSS1SelectorCompiler{
 	}
 
 	private boolean isIdentChar(int ch){
-		if (ch == '_' || ch == '-' ||  (ch >= 'a' && ch <= 'z') || (ch >= '0' || ch <= '9')) {
+		if (ch == '_' || ch == '-' ||  (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9')) {
 			return true;
 		}
 		else
@@ -72,7 +85,8 @@ class CSS1SelectorCompiler{
 
 	private int getChar(){
 		try{
-			return selector.charAt(position++);
+			int ch = selector.charAt(position++);
+			return ch;
 		}
 		catch(IndexOutOfBoundsException ex){
 			return -1;
@@ -81,6 +95,10 @@ class CSS1SelectorCompiler{
 	
 	private void backChar(){
 		position--;
+	}
+
+	private String toChar(int ch){
+		return Character.toString((char) ch);
 	}
 }
 
