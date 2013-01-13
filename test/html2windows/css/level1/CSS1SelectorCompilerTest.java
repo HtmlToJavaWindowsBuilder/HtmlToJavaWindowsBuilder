@@ -61,4 +61,14 @@ public class CSS1SelectorCompilerTest{
 		assertTrue("' ' should return DescendantSelector", selector.prev() instanceof DescendantSelector);
 		assertTrue("'div' should return TypeSelector", selector.prev().prev() instanceof TypeSelector);
 	}
+	
+	@Test
+	public void testDoubleDescendantSelector(){
+		Selector selector = compiler.compile("div div .class");
+		assertTrue("'div' should return TypeSelector", selector instanceof ClassSelector);
+		assertTrue("' ' should return DescendantSelector", selector.prev() instanceof DescendantSelector);
+		assertTrue("'div' should return TypeSelector", selector.prev().prev() instanceof TypeSelector);
+		assertTrue("' ' should return DescendantSelector", selector.prev().prev().prev() instanceof DescendantSelector);
+		assertTrue("'.class' should return TypeSelector", selector.prev().prev().prev().prev() instanceof TypeSelector);
+	}
 }
