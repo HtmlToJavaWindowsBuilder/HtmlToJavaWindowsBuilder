@@ -1,4 +1,6 @@
 package html2windows.dom;
+import html2windows.css.Style;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -28,7 +30,12 @@ public abstract class Element extends JComponent implements Node{
     public abstract NodeList getElementsByTagName(String name);
     
     public abstract boolean hasAttribute(String name);
-
+    
+    public abstract void setStyle();
+     
+    public abstract Style getStyle();
+    
+    
     @Override
     public abstract String nodeName() ;
 
@@ -79,6 +86,7 @@ public abstract class Element extends JComponent implements Node{
 
     @Override
     public abstract boolean hasAttributes() ;
+
 
     @Override
     public abstract void addEventListener(String type, EventListener listener,
