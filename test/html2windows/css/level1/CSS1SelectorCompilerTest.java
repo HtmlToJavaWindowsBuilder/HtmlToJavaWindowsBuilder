@@ -13,7 +13,7 @@ public class CSS1SelectorCompilerTest{
 	}
 
 	@Test
-	public void testTypeSelector(){
+	public void compileTest(){
 		
 		assertNull(null, compiler.compile(""));
 		

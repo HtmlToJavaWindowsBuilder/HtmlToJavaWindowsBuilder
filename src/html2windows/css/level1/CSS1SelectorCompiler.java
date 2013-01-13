@@ -15,11 +15,6 @@ class CSS1SelectorCompiler{
 
 		selector.trim();
 
-		if ("".equals(selector)) {
-			return null;
-		}
-
-
 		lastSelector = null;
 
 		this.selector = selector;
