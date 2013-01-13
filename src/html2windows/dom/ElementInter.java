@@ -1,8 +1,11 @@
 package html2windows.dom;
 
+import html2windows.css.CSSPainter;
 import html2windows.css.Style;
 
 import java.util.ArrayList;
+
+import java.awt.Graphics;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.events.Event;
@@ -137,7 +140,7 @@ public class ElementInter extends Element implements NodeInter {
     
 	private void setStyle(Style style) {
 		if(style==null){
-			style=new Style(this);
+			elementStyle=new Style(this);
 		}
 		else {
 			elementStyle=style;
@@ -365,7 +368,11 @@ public class ElementInter extends Element implements NodeInter {
 
     }
 
-
+    @Override
+    protected void paintComponent(Graphics g) {
+        CSSPainter painter = ownerDocument().getPainter();
+        painter.paint(this.elementStyle, this, g);
+    }
 
 	
 }
