@@ -1,5 +1,7 @@
 package html2windows.dom;
 
+import html2windows.css.Style;
+
 import java.util.ArrayList;
 
 import org.w3c.dom.DOMException;
@@ -15,9 +17,16 @@ class ElementInter extends Element implements NodeInter {
     private String tagNameValue = null;
     private Node parentNode=null;
     private Document ownerDocument;
+    private Style elementStyle;
     
     public ElementInter(String tagName) {
+    	 tagNameValue = tagName;
+    	 setStyle(null);
+    }
+    
+    public ElementInter(String tagName,Style style) {
         tagNameValue = tagName;
+        setStyle(style);
     }
 
 
@@ -125,6 +134,25 @@ class ElementInter extends Element implements NodeInter {
         return false;
     }
 
+    
+	public void setStyle(Style style) {
+		if(style==null){
+			style=new Style(this);
+		}
+		else {
+			elementStyle=style;
+		}
+		
+	
+	}
+
+
+	public Style getStyle() {
+		
+		return elementStyle;
+	}
+    
+    
     @Override
     public String nodeName() {
         // TODO Auto-generated method stub
@@ -312,7 +340,10 @@ class ElementInter extends Element implements NodeInter {
             return false;
 
     }
-
+    
+    
+    
+    
     @Override
     public void addEventListener(String type, EventListener listener,
             boolean useCapture) {
@@ -333,4 +364,8 @@ class ElementInter extends Element implements NodeInter {
         return false;
 
     }
+
+
+
+	
 }
