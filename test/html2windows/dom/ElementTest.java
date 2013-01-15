@@ -60,6 +60,11 @@ public class ElementTest{
 	}
 
 	@Test
+	public void testNodeName(){
+		assertEquals(null, "div", element.nodeName());
+	}
+
+	@Test
 	public void testparentNode(){
 		Element parent = new ElementInter("div");
 		parent.appendChild(element);
