@@ -7,9 +7,9 @@ class DescendantSelector extends SelectorAdapter{
 	public boolean match(Element element){
 		if (prev() == null)
 			return false;
-	
+
 		Element ancestor = parentElement(element);
-		for (; ancestor != null; ancestor = parentElement(element)) {
+		for (; ancestor != null; ancestor = parentElement(ancestor)) {
 			if (prev().match(ancestor))
 				return true;
 		}
