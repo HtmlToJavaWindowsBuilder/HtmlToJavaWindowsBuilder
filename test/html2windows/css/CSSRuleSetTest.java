@@ -31,7 +31,7 @@ public class CSSRuleSetTest {
         ruleSetTest.setProperty("background-color", "blue");
         ruleSetTest.setProperty("border-color", "red");
         ruleSetTest.setProperty("font-size", "30px");
-        assertEquals("priority should be <3>", "3", ruleSetTest.getPriority());
+        assertEquals("priority should be <3>", 3, ruleSetTest.getPriority());
         assertEquals("background-color should be <blue>", "blue", ruleSetTest.getProperty("background-color"));
         assertEquals("border-color should be <blue>", "blue", ruleSetTest.getProperty("background-color"));
         assertEquals("font-size should be <30px>", "30px", ruleSetTest.getProperty("font-size"));
