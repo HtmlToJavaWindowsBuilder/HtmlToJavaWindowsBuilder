@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 
+import html2windows.css.level1.CSS1SelectorMatcher;
 import html2windows.dom.Document;
 import html2windows.dom.Element;
+import html2windows.dom.ElementInter;
 
 public class CSSParser {
     /* this is for Junit test 
@@ -57,13 +59,13 @@ public class CSSParser {
      * @return the elements which are inserted ruleSet, if parsing didn't work,
      *         return null
      */
-    public ArrayList<Element> parser(String cssString, Document document) {
+    public void parser(String cssString, Document document) {
         this.cssString = cssString;
         this.pos = 0;
         this.document = document;
         this.ruleSet = new CSSRuleSet(priority);
 
-        return parseStyleSheet();
+        parseStyleSheet();
     }
 
     /**
@@ -108,14 +110,12 @@ public class CSSParser {
      * @return the elements which are inserted ruleSet, if parsing didn't work,
      *         return null
      */
-    private ArrayList<Element> parseStyleSheet() {
+    private void parseStyleSheet() {
         System.out.println("parseStyleSheet");
         while (isNotEnd()) {
             parseSpace();
-            return parseStatement();
+            parseStatement();
         }
-
-        return null;
     }
 
     /**
@@ -124,18 +124,16 @@ public class CSSParser {
      * @return the elements which are inserted ruleSet, if parsing didn't work,
      *         return null
      */
-    private ArrayList<Element> parseStatement() {
+    private void parseStatement() {
         System.out.println("parseStatement");
         if (isNotEnd()) {
             if (getChar() == '@') {
                 pos++;
-                return parseAtRule();
+                parseAtRule();
             }
             else
-                return parseRuleSet();
+                parseRuleSet();
         }
-
-        return null;
     }
 
     /**
@@ -144,7 +142,7 @@ public class CSSParser {
      * @return the elements which are inserted ruleSet, if parsing didn't work,
      *         return null
      */
-    private ArrayList<Element> parseAtRule() {
+    private void parseAtRule() {
         System.out.println("parseAtRule");
         if (isNotEnd()) {
             parseIdent();
@@ -161,8 +159,6 @@ public class CSSParser {
                 }
             }
         }
-
-        return null;
     }
 
     /**
@@ -218,12 +214,15 @@ public class CSSParser {
      * @return the elements which are inserted ruleSet, if parsing didn't work,
      *         return null
      */
-    private ArrayList<Element> parseRuleSet() {
+    /**
+     * @return
+     */
+    private void parseRuleSet() {
         System.out.println("parseRuleSet");
         ArrayList<Element> elements = null;
         String selector = "";
 
-        while (isNotEnd()) {
+        if (isNotEnd()) {
             selector = "";
             ruleSet = new CSSRuleSet(priority);
             if (Pattern.compile("(. *?)\\{").matcher(cssString.substring(pos))
@@ -244,26 +243,15 @@ public class CSSParser {
                             pos++;
                             parseSpace();
                             // put ruleset into element
-                            elements = getElementBySelector(selector);
-                            /*Iterator<Element> iterator = elements.iterator();
-                            while (iterator.hasNext()) {
-                                Element e = (Element) iterator.next();
-                                e.style().addCSSRuleSet(ruleSet);
-                            }*/
-                            
-                            System.out.println(selector);
-                            System.out.println("height: " + ruleSet.getProperty("height"));
-                            System.out.println("width: " + ruleSet.getProperty("width"));
-                            System.out.println("color: " + ruleSet.getProperty("color"));
-                            System.out.println("padding: " + ruleSet.getProperty("padding"));
-                            //return elements;
+                            elements = new CSS1SelectorMatcher().getElementBySelector(selector, document);
+                            for(Element e: elements){
+                                e.getStyle().addCSSRuleSet(ruleSet);
+                            }
                         }
                     }
                 }
             }
         }
-
-        return elements;
     }
 
     /**
@@ -938,12 +926,5 @@ public class CSSParser {
                 pos++;
             }
         }
-    }
-
-    private ArrayList<Element> getElementBySelector(String selector) {
-        CSS2SelectorMatcher matcher = new CSS2SelectorMatcher();
-
-        System.out.println("getElementBySelector");
-        return matcher.getElementBySelector(selector, document);
     }
 }
