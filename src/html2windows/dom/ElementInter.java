@@ -48,7 +48,8 @@ public class ElementInter extends Element implements NodeInter {
 
 
     public void setAttribute(String name, String value) throws DOMException {
-        AttrInter newAttr=new AttrInter(name);
+    	Document document=new Document();
+    	AttrInter newAttr=(AttrInter)document.createAttribute(name);
         newAttr.setValue(value);
         attributeList.add(newAttr);
     }
