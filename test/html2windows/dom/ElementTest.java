@@ -174,6 +174,13 @@ public class ElementTest{
 		assertEquals(null, child1, list2.item(1));
 		assertEquals(null, child2, list2.item(2));
 		assertEquals(null, child3, list2.item(0));
+
+		element.insertBefore(child1, child1);
+
+		NodeList list3 = element.childNodes();
+		assertEquals(null, child1, list3.item(1));
+		assertEquals(null, child2, list3.item(2));
+		assertEquals(null, child3, list3.item(0));
 	}
 
 	@Test
