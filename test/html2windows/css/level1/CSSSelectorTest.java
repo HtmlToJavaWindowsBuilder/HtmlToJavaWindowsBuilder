@@ -45,8 +45,37 @@ public class CSSSelectorTest{
 
 		selector1.setPrev(selector2);
 		assertTrue("'.big.container' should match element whose class is 'container big'", selector1.match(element));
+	}
 
+	@Test
+	public void testDescendantSelector(){
+		Document document = new Document();
+		final Element div = document.createElement("div");
+		final Element p = document.createElement("p");
+		final Element span = document.createElement("span");
 
-		
+		p.appendChild(span);
+		assertNotNull("span should has parent", span.parentNode());
+		assertEquals("parent of span is p", p, span.parentNode());
+		div.appendChild(p);
+
+		Selector divSelector = new SimpleSelector(){
+			public boolean realMatch(Element element){
+				return element == div;
+			}
+		};
+
+		Selector descendantSelector = new DescendantSelector();
+
+		Selector spanSelector = new SimpleSelector(){
+			public boolean realMatch(Element element){
+				return element == span;
+			}
+		};
+
+		spanSelector.setPrev(descendantSelector);
+		descendantSelector.setPrev(divSelector);
+
+		assertTrue("'div span' should match 'span' in '<div><p><span></span></p></div>'", spanSelector.match(span));
 	}
 }
