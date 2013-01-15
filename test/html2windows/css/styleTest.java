@@ -36,6 +36,7 @@ public class styleTest {
         ruleSet.setProperty("position", "absolute");
         ruleSet.setProperty("float", "left");
         
+        styleTemp.addCSSRuleSet(ruleSet);
         styleTemp.setProperty("background-color", "blue");
         styleTemp.setProperty("border-color", "red");
         styleTemp.setProperty("font-size", "30px");
