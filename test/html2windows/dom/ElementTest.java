@@ -17,8 +17,15 @@ public class ElementTest{
 
 	@Before
 	public void before(){
-		document = mock(Document.class);
-		element = new ElementInter("div");
+		document = new Document(){
+			public static final long serialVersionUID = 1L;
+			public Element createElement(String tagName){
+				ElementInter element = new ElementInter(tagName);
+				element.setOwnerDocument(this);
+				return element;
+			}
+		};
+		element = (ElementInter)document.createElement("div");
 	}
 
 	@Test
@@ -34,12 +41,12 @@ public class ElementTest{
 
 	@Test
 	public void testGetElementsByTagName(){
-		Element element1 = new ElementInter("div");
-		Element element2 = new ElementInter("h1");
-		Element element1_1 = new ElementInter("p");
-		Element element1_2 = new ElementInter("div");
-		Element element2_1 = new ElementInter("div");
-		Element element2_1_1 = new ElementInter("div");
+		Element element1 = document.createElement("div");
+		Element element2 = document.createElement("h1");
+		Element element1_1 = document.createElement("p");
+		Element element1_2 = document.createElement("div");
+		Element element2_1 = document.createElement("div");
+		Element element2_1_1 = document.createElement("div");
 
 		element.appendChild(element1);
 		element.appendChild(element2);
@@ -99,7 +106,7 @@ public class ElementTest{
 
 	@Test
 	public void testparentNode(){
-		Element parent = new ElementInter("div");
+		Element parent = document.createElement("div");
 		parent.appendChild(element);
 		assertEquals(null, parent, element.parentNode());
 	}
@@ -143,7 +150,7 @@ public class ElementTest{
 
 		Node prevSibling = mock(Node.class);
 		Node nextSibling = mock(Node.class);
-		Element parent = new ElementInter("div");
+		Element parent = document.createElement("div");
 
 		parent.appendChild(prevSibling);
 		parent.appendChild(element);
@@ -155,9 +162,9 @@ public class ElementTest{
 
 	@Test
 	public void testInsertBefore(){
-		Element child1 = new ElementInter("div");
-		Element child2 = new ElementInter("div");
-		Element child3 = new ElementInter("div");
+		Element child1 = document.createElement("div");
+		Element child2 = document.createElement("div");
+		Element child3 = document.createElement("div");
 
 		element.insertBefore(child3, null);
 		element.insertBefore(child2, child3);
@@ -185,8 +192,8 @@ public class ElementTest{
 
 	@Test
 	public void testReplaceChild(){
-		Element child1 = new ElementInter("div");
-		Element child2 = new ElementInter("div");
+		Element child1 = document.createElement("div");
+		Element child2 = document.createElement("div");
 
 		element.appendChild(child1);
 		element.replaceChild(child2, child1);
