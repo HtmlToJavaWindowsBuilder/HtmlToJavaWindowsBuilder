@@ -23,10 +23,10 @@ public class UIParserTest {
     @Test
     public void UIParser() throws Exception{
         UIParser uiParserTest = new UIParser();
-        String input = "<html><head></head><body>test message</body></html>";
+        //String input = "<html><head></head><body>test message</body></html>";
         
         
-        //File input = new File("/home/cfwei-nb/workspace/HtmlToJavaWindowsBuilder/test/html2windows/dom/testfile/test.html");
+        File input = new File("/home/cfwei-nb/workspace/HtmlToJavaWindowsBuilder/test/html2windows/dom/testfile/test.html");
         
         
         Document doc = uiParserTest.parse(input);
