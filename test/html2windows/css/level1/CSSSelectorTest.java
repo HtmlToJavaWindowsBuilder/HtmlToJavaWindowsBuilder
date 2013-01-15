@@ -77,5 +77,19 @@ public class CSSSelectorTest{
 		descendantSelector.setPrev(divSelector);
 
 		assertTrue("'div span' should match 'span' in '<div><p><span></span></p></div>'", spanSelector.match(span));
+
+		Selector pSelector = new SimpleSelector(){
+			public boolean realMatch(Element element){
+				return element == p;
+			}
+		};
+		
+		Selector descendantSelector2 = new DescendantSelector();
+
+		descendantSelector.setPrev(pSelector);
+		pSelector.setPrev(descendantSelector2);
+		descendantSelector.setPrev(divSelector);
+
+		assertTrue("'div p span' should match 'span' in '<div><p><span></span></p></div>'", spanSelector.match(span));
 	}
 }
