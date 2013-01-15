@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.ByteArrayInputStream;
 
+import java.lang.String;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -86,6 +88,7 @@ public class UIParser {
      *
      */
 	public Document parse(String input) {
+        input = input.replaceAll(">[ \t\n\r]*<([^/])", "><$1");
         InputStream inputStream = new ByteArrayInputStream( input.getBytes());
         Document outputDocument = parse(inputStream);
         
@@ -101,8 +104,10 @@ public class UIParser {
      */
 	public Document parse(File input) {
 		try{
-			InputStream inputStream = new FileInputStream(input); 
-			Document outputDocument = parse(inputStream);
+			FileInputStream inputStream = new FileInputStream(input); 
+            byte[] fileByte = new byte[inputStream.available()];
+            String inputString = new String(fileByte);
+			Document outputDocument = parse(inputString);
 
 			return outputDocument;
 
