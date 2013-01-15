@@ -88,7 +88,7 @@ public class UIParser {
      *
      */
 	public Document parse(String input) {
-        input = input.replaceAll(">[ \t\n\r]*<([^/])", "><$1");
+        input = input.replaceAll(">[ \t\n\r]*<", "><");
         InputStream inputStream = new ByteArrayInputStream( input.getBytes());
         Document outputDocument = parse(inputStream);
         
