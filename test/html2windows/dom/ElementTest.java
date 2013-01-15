@@ -13,12 +13,18 @@ import java.util.*;
 
 public class ElementTest{
 	Document document;
-	Element element;
+	ElementInter element;
 
 	@Before
 	public void before(){
 		document = mock(Document.class);
 		element = new ElementInter("div");
+	}
+
+	@Test
+	public void testOwnerDocument(){
+		element.setOwnerDocument(document);
+		assertEquals(null, document, element.ownerDocument());
 	}
 	
 	@Test
