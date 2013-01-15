@@ -235,4 +235,15 @@ public class ElementTest{
 		NodeList list3 = element.childNodes();
 		assertEquals("list should have no child", 0, list3.length());
 	}
+
+	@Test
+	public void testHasChildNodes(){
+		Element child = document.createElement("div");
+
+		assertFalse(null, element.hasChildNodes());
+
+		element.appendChild(child);
+
+		assertTrue(null, element.hasChildNodes());
+	}
 }
