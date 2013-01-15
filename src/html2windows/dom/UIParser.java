@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 import java.lang.String;
 
@@ -104,9 +106,13 @@ public class UIParser {
      */
 	public Document parse(File input) {
 		try{
-			FileInputStream inputStream = new FileInputStream(input); 
-            byte[] fileByte = new byte[inputStream.available()];
-            String inputString = new String(fileByte);
+			//FileInputStream inputStream = new FileInputStream(input); 
+            BufferedReader reader = new BufferedReader(new FileReader(input));
+            String line;
+            String inputString = "";
+            while( (line = reader.readLine() ) != null ) {
+                inputString += line;    
+            }
 			Document outputDocument = parse(inputString);
 
 			return outputDocument;
