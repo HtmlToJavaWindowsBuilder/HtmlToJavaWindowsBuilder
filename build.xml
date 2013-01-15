@@ -48,9 +48,11 @@
 		</javac>
 	</target>
 
-    <target name="test" depends="compile-test">
-		<mkdir dir="${result}"/>
-        <junit printsummary="yes">
+
+    <target name="test"  depends="compile-test" >
+        <!--"compile-test"-->
+        <mkdir dir="${result}"/>
+        <junit printsummary="yes" >
             <classpath >
                 <pathelement path="${build}"/>
                 <pathelement location="${junit}"/>
@@ -60,7 +62,6 @@
                 <formatter type="xml"/>
             </batchtest>
         </junit>
-        
 		<mkdir dir="${result.html}"/>
         <junitreport todir="${result.html}">
         	<fileset dir="${result}">
