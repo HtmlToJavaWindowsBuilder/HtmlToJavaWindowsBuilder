@@ -58,7 +58,7 @@
                 <pathelement location="${junit}"/>
             </classpath>
             <batchtest todir="${result}">
-                <fileset dir="${build}" includes="**/*Test*"/>
+                <fileset dir="${build}" includes="**/*Test.class"/>
                 <formatter type="xml"/>
             </batchtest>
         </junit>

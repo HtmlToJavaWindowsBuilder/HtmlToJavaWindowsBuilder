@@ -35,7 +35,7 @@ public class CSSRuleSetTest {
         assertEquals("background-color should be <blue>", "blue", ruleSetTest.getProperty("background-color"));
         assertEquals("border-color should be <blue>", "blue", ruleSetTest.getProperty("background-color"));
         assertEquals("font-size should be <30px>", "30px", ruleSetTest.getProperty("font-size"));
-        assertEquals("margin-top should be <null>", "null", ruleSetTest.getProperty("margin-top"));
-        assertEquals("font-color should be <null>", "null", ruleSetTest.getProperty("font-color"));
+        assertEquals("margin-top should be <null>", null, ruleSetTest.getProperty("margin-top"));
+        assertEquals("font-color should be <null>", null, ruleSetTest.getProperty("font-color"));
     }
 }
