@@ -302,7 +302,7 @@ public class ElementInter extends Element implements NodeInter {
     public void setOwnerDocument(Document newOwnerDocument) {
         
         ownerDocument=newOwnerDocument;
-
+        
 
     }
     
