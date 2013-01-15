@@ -17,9 +17,6 @@ import org.w3c.dom.NodeList;
 import java.io.UnsupportedEncodingException;
 
 public class UIParser {
-	public Document createDocument() {
-		return null;
-	}
 
     /*
      *  content:
@@ -106,7 +103,6 @@ public class UIParser {
      */
 	public Document parse(File input) {
 		try{
-			//FileInputStream inputStream = new FileInputStream(input); 
             BufferedReader reader = new BufferedReader(new FileReader(input));
             String line;
             String inputString = "";
