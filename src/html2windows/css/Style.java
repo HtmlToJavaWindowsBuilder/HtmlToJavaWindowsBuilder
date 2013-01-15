@@ -68,7 +68,8 @@ public class Style {
     	set.add(cssRuleSet);
     }
     
-    /**get element that own this style
+    /**get owner element
+     * get element that own this style
      * @return			owner of the Style 
      */
     public Element getElement(){
