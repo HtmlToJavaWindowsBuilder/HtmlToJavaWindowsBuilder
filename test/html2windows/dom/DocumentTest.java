@@ -82,12 +82,16 @@ public class DocumentTest {
         
         //append div to body
         ElementInter div=new ElementInter("div");
-        Node node=body.appendChild(div);
+        ElementInter span=new ElementInter("span");
+        body.appendChild(span);
+        body.appendChild(div);
+        body.appendChild(div);
         
         //append body to document
         doc.appendChild(body);
         
         //test whether nodeList with div equals get element with tag name
+        nodeList.add(div);
         nodeList.add(div);
         assertEquals("get element by tag name should return nodelist with element", nodeList, doc.getElementsByTagName("div"));
     }
