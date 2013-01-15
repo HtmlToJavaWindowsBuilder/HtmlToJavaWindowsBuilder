@@ -122,4 +122,33 @@ public class ElementTest{
 		}
 	}
 
+	@Test
+	public void testFirstChildAndLastChild(){
+		assertNull("Expect no child(null)", element.firstChild());
+
+		Node child1 = mock(Node.class);
+		Node child2 = mock(Node.class);
+		element.appendChild(child1);
+		element.appendChild(child2);
+		
+		assertEquals(null, child1, element.firstChild());
+		assertEquals(null, child2, element.lastChild());
+	}
+
+	@Test
+	public void testSibling(){
+		assertNull(null, element.previousSibling());
+		assertNull(null, element.nextSibling());
+
+		Node prevSibling = mock(Node.class);
+		Node nextSibling = mock(Node.class);
+		Element parent = new ElementInter("div");
+
+		parent.appendChild(prevSibling);
+		parent.appendChild(element);
+		parent.appendChild(nextSibling);
+
+		assertEquals(null, prevSibling, element.previousSibling());
+		assertEquals(null, nextSibling, element.nextSibling());
+	}
 }
