@@ -206,4 +206,33 @@ public class ElementTest{
 		assertEquals("Excepted one child", 1, element.childNodes().length());
 		assertEquals(null, child2, element.firstChild());
 	}
+
+	@Test
+	public void testRemoveChild(){
+		Element child1 = document.createElement("div");
+		Element child2 = document.createElement("div");
+		Element child3 = document.createElement("div");
+
+		element.appendChild(child1);
+		element.appendChild(child2);
+		element.appendChild(child3);
+
+		element.removeChild(child2);
+		
+		NodeList list1 = element.childNodes();
+		assertEquals("list should have only two child", 2, list1.length());
+		assertEquals(null, child1, list1.item(0));
+		assertEquals(null, child3, list1.item(1));
+	
+		element.removeChild(child1);
+		
+		NodeList list2 = element.childNodes();
+		assertEquals("list should have only one child", 1, list2.length());
+		assertEquals(null, child3, list2.item(0));
+		
+		element.removeChild(child3);
+		
+		NodeList list3 = element.childNodes();
+		assertEquals("list should have no child", 0, list3.length());
+	}
 }
