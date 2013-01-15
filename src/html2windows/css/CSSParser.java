@@ -12,6 +12,7 @@ import html2windows.dom.Document;
 import html2windows.dom.Element;
 
 public class CSSParser {
+    /* this is for Junit test 
     public static void main(String arg[]) {
         String cssString = "";
 
@@ -37,9 +38,8 @@ public class CSSParser {
         CSSParserClass CSSParser = new CSSParserClass();
         CSSParser.parser(cssString, new Document());
     }
-}
+    */
 
-class CSSParserClass {
     // the input String of CSS, to parse whether syntax is correct or not, then
     // add style to each element
     String cssString;
@@ -210,6 +210,8 @@ class CSSParserClass {
     }
 
     /**
+     * * the final function to return the ArrayList<Element>(input ruleset)
+     * 
      * selector? '{' S* declaration? [ ';' S* declaration? ]* '}' S*; get
      * seletorName and put ruleset into element.
      * 
@@ -218,6 +220,7 @@ class CSSParserClass {
      */
     private ArrayList<Element> parseRuleSet() {
         System.out.println("parseRuleSet");
+        ArrayList<Element> elements = null;
         String selector = "";
 
         while (isNotEnd()) {
@@ -241,7 +244,7 @@ class CSSParserClass {
                             pos++;
                             parseSpace();
                             // put ruleset into element
-                            ArrayList<Element> elements = getElementBySelector(selector);
+                            elements = getElementBySelector(selector);
                             /*Iterator<Element> iterator = elements.iterator();
                             while (iterator.hasNext()) {
                                 Element e = (Element) iterator.next();
@@ -260,7 +263,7 @@ class CSSParserClass {
             }
         }
 
-        return null;
+        return elements;
     }
 
     /**
