@@ -48,10 +48,16 @@ public class ElementInter extends Element implements NodeInter {
 
 
     public void setAttribute(String name, String value) throws DOMException {
-    	Document document=new Document();
+    	Document document=ownerDocument();
     	AttrInter newAttr=(AttrInter)document.createAttribute(name);
-        newAttr.setValue(value);
-        attributeList.add(newAttr);
+		newAttr.setValue(value);
+		int index=attributeList.indexOf(name);
+    	if(index==-1)	
+    		attributeList.add(newAttr);
+    	else
+    		attributeList.set(index, newAttr);
+
+    		
     }
 
 
@@ -179,27 +185,27 @@ public class ElementInter extends Element implements NodeInter {
     }
 
     @Override
-        public void setParentNode(Node newParent) {
+    public void setParentNode(Node newParent){
             // TODO Auto-generated method stub
             parentNode=newParent;
-        }
+    }
 
 
     @Override
-        public NodeList childNodes() {
+    public NodeList childNodes(){
             // TODO Auto-generated method stub
             return childNodeList;
-        }
+    }
 
     @Override
-        public Node firstChild() {
+    public Node firstChild(){
             // TODO Auto-generated method stub
             if (childNodeList.length() > 0)
                 return childNodeList.get(0);
             else
                 return null;
 
-        }
+   }
 
     @Override
     public Node lastChild() {
