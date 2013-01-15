@@ -125,6 +125,7 @@ public class ElementTest{
 	@Test
 	public void testFirstChildAndLastChild(){
 		assertNull("Expect no child(null)", element.firstChild());
+		assertNull("Expect no child(null)", element.lastChild());
 
 		Node child1 = mock(Node.class);
 		Node child2 = mock(Node.class);
