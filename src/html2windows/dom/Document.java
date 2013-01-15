@@ -8,6 +8,7 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
+import html2windows.css.CSSPainter;
 
 /**
  * Document is top window.
@@ -21,6 +22,9 @@ import org.w3c.dom.events.EventListener;
 @SuppressWarnings("serial")
 
 public class Document extends JFrame implements Node{
+
+    private CSSPainter painter;
+
 	public Element documentElement(){
 		try{
 			return (Element)getContentPane().getComponent(0);
@@ -356,4 +360,12 @@ public class Document extends JFrame implements Node{
 		TextInter text = (TextInter)createTextNode(importedNode.data());
 		return text;
 	}
+
+    public void setPainter(CSSPainter painter) {
+        this.painter = painter;
+    }
+
+    public CSSPainter getPainter() {
+        return this.painter;
+    }
 }
