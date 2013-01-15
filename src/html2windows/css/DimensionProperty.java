@@ -21,7 +21,7 @@ public class DimensionProperty extends JPanel implements CSSPainter {
     Graphics2D g2d;
     HashMap <String, String> property = new HashMap <String, String>();
 
-    public DimensionProperty(String input) { 
+    public DimensionProperty() { 
         initial();
     }
 
@@ -36,13 +36,8 @@ public class DimensionProperty extends JPanel implements CSSPainter {
         setDimensionStyle(style, "background-color");
     }
 
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
+    public void paint(Graphics g) {
         this.g2d = (Graphics2D) g;
-        /*
-        String string="2333333";
-        this.g2d.drawString(string, 20, 20);
-        */
         setDimension();
         this.g2d.fillRect(0, 0, this.width, this.height);
     }

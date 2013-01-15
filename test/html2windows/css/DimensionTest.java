@@ -1,16 +1,23 @@
-package html2windows.dom;
+package html2windows.css;
 import java.io.File;
 
+import html2windows.css.CustomLayoutManager;
+import html2windows.css.CSSPainter;
 import html2windows.css.DimensionProperty;
 import html2windows.css.Style;
 import html2windows.dom.ElementInter;
+import html2windows.dom.Element;
 import html2windows.dom.Document;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JButton;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -25,57 +32,44 @@ public class DimensionTest {
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-
     }
 
     @AfterClass
     public static void tearDownAfterClass() throws Exception {
-
     }
-
     @Test
-    public void test() throws Exception{
+    public void testPainterWithBackgroundColor() throws Exception {
+        JFrame frame = new JFrame("Button Frame");
+        JPanel customPanel = new JPanel( new CustomLayoutManager());
+        Document document = new Document();
 
-        DimensionProperty font = new DimensionProperty("family");
-
-        JFrame frame = new JFrame("height");
         String tagName = "h1";
-        ElementInter fontNode = new ElementInter(tagName);
-        Style fontType = new Style(fontNode);
-        Graphics g = null;
+        ElementInter elementInter = new ElementInter(tagName);
+        elementInter.setOwnerDocument(document);
 
-        fontType.setProperty("font-size","30");
-        String fontSize = fontType.getProperty("font-size");
-        assertEquals("font-size should be 30", "30", fontSize);
+        Element elementNode = elementInter;
+        //elementNode.setPreferredSize(new Dimension(100, 100));
+        //Element elementNode = document.createElement(tagName);
+        Style style = elementNode.getStyle();
+        style.setProperty("font-size","12");
+        style.setProperty("background-color","orange");
+        style.setProperty("font-weight","bold");
+        style.setProperty("font-style","italic");
+        style.setProperty("font-variant","small-caps");
 
-        fontType.setProperty("family","Arial");
-        String fontFamily = fontType.getProperty("family");
-        assertEquals("family should be Arial", "Arial", fontFamily );
+        document.setPainter(new FontProperty("111"));
 
+        JButton btn = new JButton("OK");
+        JButton btn1 = new JButton("OK");
 
-        fontType.setProperty("font-weight","bold");
-        fontType.setProperty("font-style","italic");
-        fontType.setProperty("font-variant","small-caps");
-        fontType.setProperty("width","30");
-        fontType.setProperty("height","100");
-        fontType.setProperty("background-color","orange");
+        customPanel.add(btn);
+        customPanel.add(document);
+        customPanel.add(btn1);
 
-        font.paint(fontType, fontNode, g);
-        JPanel panel = new JPanel();
-
-        panel.add(font);
-        panel.setLayout(new GridLayout(3,4));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(360,200);
         frame.setLocationRelativeTo(null);
-        frame.add(panel);
+        frame.add(customPanel);
         frame.setVisible(true);
-        //font.setText("asdf");
-
-    }
-
-    @Test
-    public void test2(){
-        assert(true);
     }
 }

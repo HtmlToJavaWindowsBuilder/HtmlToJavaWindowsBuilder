@@ -39,7 +39,7 @@ public class CustomTest {
         JFrame frame = new JFrame("Button Frame");
         JPanel customPanel = new JPanel( new CustomLayoutManager());
 
-        DimensionProperty dimension = new DimensionProperty("111");
+        DimensionProperty dimension = new DimensionProperty();
 
         String tagName = "h1";
         ElementInter fontNode = new ElementInter(tagName);
@@ -63,8 +63,4 @@ public class CustomTest {
         frame.setVisible(true);
     }
 
-    @Test
-    public void test2(){
-        assert(true);
-    }
 }
