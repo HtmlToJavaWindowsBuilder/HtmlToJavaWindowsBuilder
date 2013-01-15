@@ -2,6 +2,8 @@ package html2windows.dom;
 
 import html2windows.css.Style;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.util.ArrayList;
 
 import org.w3c.dom.DOMException;
@@ -13,9 +15,7 @@ import org.w3c.dom.events.EventListener;
 public class ElementInter extends Element implements NodeInter {
 
     private ArrayList<AttrInter> attributeList = new ArrayList<AttrInter>();
-    private NodeList childNodeList = new NodeList();
     private String tagNameValue = null;
-    private Node parentNode=null;
     private Document ownerDocument;
     private Style elementStyle;
     
@@ -39,7 +39,7 @@ public class ElementInter extends Element implements NodeInter {
 
     public String getAttribute(String name) {
         for (int i = 0; i < attributeList.size(); i++) {
-            if (attributeList.get(i).name() == name)
+            if (attributeList.get(i).name().equals(name))
                 return attributeList.get(i).value();
 
         }
@@ -64,7 +64,7 @@ public class ElementInter extends Element implements NodeInter {
 
     public void removeAttribute(String name) throws DOMException {
         for (int i = 0; i < attributeList.size(); i++) {
-            if (attributeList.get(i).name() == name) {
+            if (attributeList.get(i).name().equals(name)) {
                 attributeList.remove(i);
             }
         }
@@ -76,7 +76,7 @@ public class ElementInter extends Element implements NodeInter {
     public Attr getAttributeNode(String name) {
         for (int i = 0; i < attributeList.size(); i++) {
             Attr AttributeNode = attributeList.get(i);
-            if (AttributeNode.name() == name)
+            if (AttributeNode.name().equals(name))
                 return AttributeNode;
         }
         return null;
@@ -90,7 +90,7 @@ public class ElementInter extends Element implements NodeInter {
         String newAttrName = newAttr.name();
         for (int i = 0; i < attributeList.size(); i++) {
             Attr attributeNode = attributeList.get(i);
-            if (attributeNode.name() == newAttrName) {
+            if (attributeNode.name().equals(newAttrName)) {
                 returnAttr = attributeNode;
                 attributeList.remove(i);
                 break;
@@ -114,6 +114,8 @@ public class ElementInter extends Element implements NodeInter {
     public NodeList getElementsByTagName(String name) {
 
         NodeList elementList = new NodeList();
+        NodeList childNodeList=childNodes();
+        
         for(int i=0;i<childNodeList.length();i++){
             Node child=childNodeList.get(i);
             if(child instanceof Element){
@@ -134,7 +136,7 @@ public class ElementInter extends Element implements NodeInter {
     public boolean hasAttribute(String name) {
 
         for (int i = 0; i < attributeList.size(); i++) {
-            if (attributeList.get(i).name() == name)
+            if (attributeList.get(i).name().equals(name))
                 return true;
         }
 
@@ -162,93 +164,121 @@ public class ElementInter extends Element implements NodeInter {
     
     @Override
     public String nodeName() {
-        // TODO Auto-generated method stub
+        
         return tagName();
     }
 
     @Override
     public String nodeValue() {
-        // TODO Auto-generated method stub
+        
         return null;
     }
 
     @Override
     public short nodeType() {
-        // TODO Auto-generated method stub
+        
         return ELEMENT_NODE;
     }
 
     @Override
     public Node parentNode() {
-        // TODO Auto-generated method stub
-        return parentNode;
+        
+    	Component parent = getParent();
+    	if(parent instanceof Node)
+    		return (Node)parent;
+    	else
+    		return null;
     }
 
     @Override
     public void setParentNode(Node newParent){
-            // TODO Auto-generated method stub
-            parentNode=newParent;
+    	Node oldParentNode = parentNode();
+    	oldParentNode.removeChild(this);
+ 
+    	newParent.appendChild(this);
+    		
     }
 
 
     @Override
     public NodeList childNodes(){
-            // TODO Auto-generated method stub
-            return childNodeList;
+    	Component[] components=getComponents();
+    	NodeList childNodeList=new NodeList(); 
+        for(Component eachComponent:components){
+        	if(eachComponent instanceof Node)
+        		childNodeList.add((Node)eachComponent);
+        }
+           
+        return childNodeList;
+           
     }
 
     @Override
     public Node firstChild(){
-            // TODO Auto-generated method stub
-            if (childNodeList.length() > 0)
-                return childNodeList.get(0);
-            else
-                return null;
+    	Component component=getComponent(0);
+    	if(component instanceof Node)
+    		return (Node)getComponent(0);
+    	else
+    		return null;
 
    }
 
     @Override
     public Node lastChild() {
-        int NodeListLength = (int) childNodeList.length();
-        if (NodeListLength > 0)
-            return childNodeList.get(NodeListLength - 1);
-        else
-            return null;
+    	int count=getComponentCount();
+    	Component component = getComponent(count-1);
+    	if(component instanceof Node)
+    		return (Node)component;
+    	else
+    		return null;
+    	
     }
-
+    
+    public int findIndexInParent(){
+    	
+    	Node parent = parentNode();
+    	NodeList parentChildNodeList = parent.childNodes();
+    	for(int i=0;i<parentChildNodeList.size();i++){
+    		Node node = parentChildNodeList.item(i);
+    		if(node.equals(this))
+    			return i;
+    	}
+    	
+    	return -1;
+    }
+    
+    
     @Override
     public Node previousSibling() {
-        // TODO Auto-generated method stub
-        if(parentNode == null)
-            return null;
+    	int thisIndex=findIndexInParent();
+    	
+    	if(thisIndex!=-1){
+    		Component previousSiblingComponent = getComponent(thisIndex-1);
+    		if(previousSiblingComponent instanceof Node)
+    			return (Node)previousSiblingComponent;
+    	}
 
-        NodeList siblingList = parentNode.childNodes();
-        int index = siblingList.indexOf(this);
-        if (index == -1) {
-            return siblingList.item(index - 1);
-        } else {
-            return null;
-        }
+    	return null;
+    	
     }
 
     @Override
     public Node nextSibling() {
-        // TODO Auto-generated method stub
+    	int thisIndex=findIndexInParent();
+    	
+    	if(thisIndex!=-1){
+    		Component previousSiblingComponent = getComponent(thisIndex+1);
+    		if(previousSiblingComponent instanceof Node)
+    			return (Node)previousSiblingComponent;
+    	}
 
-        if(parentNode == null)
-            return null;
+    	return null;
 
-        NodeList siblingList = parentNode.childNodes();
-        int index = siblingList.indexOf(this);
-        if (index == siblingList.size() - 1) {
-            return null;
-        } else {
-            return siblingList.item(index + 1);
-        }
+
     }
     @Override
     public NamedNodeMap attributes() {
-        // TODO Auto-generated method stub
+        
         if(attributeList.size()==0)
             return null;
 
@@ -262,7 +292,7 @@ public class ElementInter extends Element implements NodeInter {
 
     @Override
     public Document ownerDocument() {
-        // TODO Auto-generated method stub
+        
         return ownerDocument;
 
     }
@@ -270,77 +300,95 @@ public class ElementInter extends Element implements NodeInter {
 
     @Override
     public void setOwnerDocument(Document newOwnerDocument) {
-        // TODO Auto-generated method stub
+        
         ownerDocument=newOwnerDocument;
 
 
     }
-
+    
+    public int findChildIndex(Node refChild){
+    	
+    	Component refChildComponent=(Component)refChild;
+    	
+    	Component[] childComponentList=getComponents();
+    	for(int i=0;i<childComponentList.length;i++){
+    		Component eachComponent =childComponentList[0];
+    		if(eachComponent.equals(childComponentList))
+    			return i;
+    		
+    	}
+    	
+    	return -1;
+    }
+    
+    
     @Override
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-        // TODO Auto-generated method stub
-        if (newChild == null)
-            return null;
-        else if (refChild == null) {
-            childNodeList.add(newChild);
-            return newChild;
-
-        } else {
-            int index = childNodeList.indexOf(refChild);
-            childNodeList.add(index - 1, newChild);
-
-
+        int index=findChildIndex(refChild);
+        if(index!=-1){
+        	if(newChild instanceof Component){
+        		add((Component)newChild, index);
+        
+        		return refChild;
+        	}
+        	
+        	
         }
+
         return null;
 
     }
     
     @Override
-    public Node replaceChild(Node newChilde, Node oldChild) throws DOMException {
-        // TODO Auto-generated method stub
-        int index = childNodeList.indexOf(oldChild);
-        if (index == -1) {
-            return null;
+    public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
+        
+    	 int index=findChildIndex(oldChild);
+         if(index!=-1){
+         	if(newChild instanceof Component){
+         		remove(index);
+         		add((Component)newChild, index);
+         		return oldChild;
+         	}
+         	
+         	
+         }
 
-        } else {
-            childNodeList.remove(index);
-            childNodeList.add(index, newChilde);
-            return oldChild;
-
-        }
+         return null;
 
     }
 
     @Override
     public Node removeChild(Node oldChild) throws DOMException {
-        // TODO Auto-generated method stub
+        
         return null;
 
     }
 
     @Override
     public Node appendChild(Node newChild) throws DOMException {
-        // TODO Auto-generated method stub
-
-        childNodeList.add(newChild);
-        return newChild;
+    	if(newChild instanceof Component){
+    		add((Component)newChild);
+        	return newChild;
+    	}
+    	return null;
 
     }
 
     @Override
     public boolean hasChildNodes() {
-        // TODO Auto-generated method stub
-        if (childNodeList.size() == 0)
+        
+    	int childCount=getComponentCount();
+    	
+        if (childCount== 0)
             return false;
         else
             return true;
-
 
     }
 
     @Override
     public boolean hasAttributes() {
-        // TODO Auto-generated method stub
+        
         if (attributeList.size() > 0)
             return true;
         else
@@ -354,7 +402,7 @@ public class ElementInter extends Element implements NodeInter {
     @Override
     public void addEventListener(String type, EventListener listener,
             boolean useCapture) {
-        // TODO Auto-generated method stub
+        
 
 
     }
@@ -362,12 +410,12 @@ public class ElementInter extends Element implements NodeInter {
     @Override
     public void removeEventListener(String type, EventListener listener,
             boolean useCapture) {
-        // TODO Auto-generated method stub
+        
     }
 
     @Override
     public boolean dispatchEvent(Event evt) throws EventException {
-        // TODO Auto-generated method stub
+        
         return false;
 
     }
