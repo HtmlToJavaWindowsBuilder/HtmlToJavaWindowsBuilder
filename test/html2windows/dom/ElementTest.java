@@ -26,6 +26,38 @@ public class ElementTest{
 		element.setOwnerDocument(document);
 		assertEquals(null, document, element.ownerDocument());
 	}
+
+	@Test
+	public void testTagName(){
+		assertEquals(null, "div", element.tagName());
+	}
+
+	@Test
+	public void testGetElementsByTagName(){
+		Element element1 = new ElementInter("div");
+		Element element2 = new ElementInter("h1");
+		Element element1_1 = new ElementInter("p");
+		Element element1_2 = new ElementInter("div");
+		Element element2_1 = new ElementInter("div");
+		Element element2_1_1 = new ElementInter("div");
+
+		element.appendChild(element1);
+		element.appendChild(element2);
+		element1.appendChild(element1_1);
+		element1.appendChild(element1_2);
+		element2.appendChild(element2_1);
+		element2_1.appendChild(element2_1_1);
+
+		NodeList list = element.getElementsByTagName("div");
+		
+		assertEquals("list should have 4 elements", 4, list.length());
+		assertTrue("element 1 should in list", list.contains(element1));
+		assertFalse("element 1 1 should in list", list.contains(element1_1));
+		assertTrue("element 1 2 should in list", list.contains(element1_2));
+		assertFalse("element 2 should in list", list.contains(element2));
+		assertTrue("element 2 1 should in list", list.contains(element2_1));
+		assertTrue("element 2 1 1 should in list", list.contains(element2_1_1));
+	}
 	
 	@Test
 	public void appendChildNodes(){
