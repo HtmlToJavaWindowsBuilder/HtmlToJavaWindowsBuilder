@@ -58,6 +58,13 @@ public class ElementTest{
 		assertTrue("element 2 1 should in list", list.contains(element2_1));
 		assertTrue("element 2 1 1 should in list", list.contains(element2_1_1));
 	}
+
+	@Test
+	public void testparentNode(){
+		Element parent = new ElementInter("div");
+		parent.appendChild(element);
+		assertEquals(null, parent, element.parentNode());
+	}
 	
 	@Test
 	public void appendChildNodes(){
