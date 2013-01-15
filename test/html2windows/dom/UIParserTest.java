@@ -22,14 +22,17 @@ public class UIParserTest {
     }
     @Test
     public void test() throws Exception{
-        assert(true);
         UIParser UItest = new UIParser();
         String input = "<company><employ>kobe</employ></company>";
+        
         /*
         File input = new File("/home/bee040811/workspace/HtmlToJavaWindowsBuilder/src/html2windows/dom/Stocks.xml");
         */
+        
         Document doc = UItest.parse(input);
         assertNotNull(doc);
+        
+        
         Element company = doc.documentElement();
         assertNotNull(company);
         assertEquals("tagName of root element should be <company>", "company", company.tagName());
