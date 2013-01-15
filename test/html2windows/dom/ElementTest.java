@@ -152,4 +152,27 @@ public class ElementTest{
 		assertEquals(null, prevSibling, element.previousSibling());
 		assertEquals(null, nextSibling, element.nextSibling());
 	}
+
+	@Test
+	public void testInsertBefore(){
+		Element child1 = new ElementInter("div");
+		Element child2 = new ElementInter("div");
+		Element child3 = new ElementInter("div");
+
+		element.insertBefore(child3, null);
+		element.insertBefore(child2, child3);
+		element.insertBefore(child1, child2);
+		
+		NodeList list1 = element.childNodes();
+		assertEquals(null, child1, list1.item(0));
+		assertEquals(null, child2, list1.item(1));
+		assertEquals(null, child3, list1.item(2));
+
+		element.insertBefore(child3, child1);
+
+		NodeList list2 = element.childNodes();
+		assertEquals(null, child1, list2.item(1));
+		assertEquals(null, child2, list2.item(2));
+		assertEquals(null, child3, list2.item(0));
+	}
 }
