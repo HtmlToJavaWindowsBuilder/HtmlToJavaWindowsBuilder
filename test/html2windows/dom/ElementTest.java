@@ -65,6 +65,16 @@ public class ElementTest{
 	}
 
 	@Test
+	public void testNodeValue(){
+		assertNull(null, element.nodeValue());
+	}
+
+	@Test
+	public void testNodeType(){
+		assertEquals("Expect ELEMENT_NODE", Node.ELEMENT_NODE, element.nodeType());
+	}
+
+	@Test
 	public void testparentNode(){
 		Element parent = new ElementInter("div");
 		parent.appendChild(element);
