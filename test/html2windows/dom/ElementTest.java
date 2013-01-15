@@ -175,4 +175,21 @@ public class ElementTest{
 		assertEquals(null, child2, list2.item(2));
 		assertEquals(null, child3, list2.item(0));
 	}
+
+	@Test
+	public void testReplaceChild(){
+		Element child1 = new ElementInter("div");
+		Element child2 = new ElementInter("div");
+
+		element.appendChild(child1);
+		element.replaceChild(child2, child1);
+
+		assertEquals("Excepted one child", 1, element.childNodes().length());
+		assertEquals(null, child2, element.firstChild());
+
+		element.replaceChild(child2, child2);
+
+		assertEquals("Excepted one child", 1, element.childNodes().length());
+		assertEquals(null, child2, element.firstChild());
+	}
 }
