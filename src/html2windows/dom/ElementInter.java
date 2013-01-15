@@ -137,7 +137,7 @@ public class ElementInter extends Element implements NodeInter {
     
 	private void setStyle(Style style) {
 		if(style==null){
-			style=new Style(this);
+			elementStyle=new Style(this);
 		}
 		else {
 			elementStyle=style;
