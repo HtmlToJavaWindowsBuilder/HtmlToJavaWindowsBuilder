@@ -54,7 +54,7 @@ public class PainterTest {
     }
     @Test
     public void testPainterWithBackgroundColor() throws Exception {
-        JFrame frame = new JFrame("Button Frame");
+        JFrame frame = new JFrame("FontTest");
         JPanel customPanel = new JPanel( new CustomLayoutManager());
         Document document = new Document(){
             @Override
@@ -81,7 +81,7 @@ public class PainterTest {
             
         Style style = elementNode.getStyle();
         style.setProperty("width","100");
-        style.setProperty("height","100");
+        style.setProperty("height","10");
         style.setProperty("background-color","orange");
         
         //document.setPainter();
