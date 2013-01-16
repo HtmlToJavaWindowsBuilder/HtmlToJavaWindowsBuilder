@@ -26,10 +26,10 @@ public class DocumentTest {
     /**
      * test document's createElement and ownerDocument function
      * 
-     * 
+     * expect document
      */
     @Test 
-    public void testCreateElement() throws Exception{
+    public void testCreateElement(){
     	Document doc = new Document();
         Element body = doc.createElement("body");
         assertNotNull(body);
@@ -37,7 +37,7 @@ public class DocumentTest {
     }
     
     @Test
-    public void testAppendChild() throws Exception{
+    public void testAppendChild(){
         Document doc = new Document();
         Element body = doc.createElement("body");
         assertNotNull(body);
@@ -53,7 +53,7 @@ public class DocumentTest {
     }
     
     @Test 
-    public void testCreateTextNode() throws Exception{
+    public void testCreateTextNode(){
         Document doc = new Document();
         Text content= doc.createTextNode("asdf");
         assertNotNull(content);
@@ -62,7 +62,7 @@ public class DocumentTest {
     }
 
     @Test
-    public void testDocumentElement() throws Exception{
+    public void testDocumentElement(){
         Document doc = new Document();
         Element body = doc.createElement("body");
         assertNotNull(body);
@@ -72,7 +72,7 @@ public class DocumentTest {
     }
     
     @Test 
-    public void testGetElementsByTagName() throws Exception{
+    public void testGetElementsByTagName(){
         
     	//test when there is no element in document
     	Document doc = new Document();
@@ -98,9 +98,11 @@ public class DocumentTest {
         nodeList.add(div);
         assertEquals("get element by tag name should return nodelist with element", nodeList, doc.getElementsByTagName("div"));
     }
-    
+    /**
+     * test
+     */
     @Test 
-    public void testChildNodes() throws Exception{
+    public void testChildNodes(){
         
     	//test when there is no element in document
     	Document doc = new Document();
@@ -117,13 +119,29 @@ public class DocumentTest {
         assertEquals("childNodes should return nodeList when there is a child", nodeList, doc.childNodes());
     }
     
+    /**
+     * test insert before null 
+     * 
+     * expect document element should be replaced
+     */
     @Test 
-    public void testInsertBefore() throws Exception{
+    public void testInsertBefore(){
         
-    	//test when there is no element in document
+    	/**setup
+         * create a document doc
+         * create a element body 
+         */
     	Document doc = new Document();
         Element body = doc.createElement("body");
+        
+        /**action
+         * insert body to document before null
+         */
         doc.insertBefore(body,null);
+        
+        /**test
+         * document's element shold be body due to replacement
+         */
         assertEquals("node should be document element when insert before null", body, doc.documentElement());
     }
     

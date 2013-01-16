@@ -47,7 +47,7 @@ public class Style {
 	
     /**
      * set CssRuleSet's property to first of CSSRuleSet
-     * @param propertyName 		inserted property name
+     * @param propertyName 			inserted property name
      * @param value		 		inserted property value
      */
     public void setProperty(String propertyName, String value){
@@ -56,7 +56,7 @@ public class Style {
     
     /**
      * get property value according to the order of treeSet(property)
-     * @param propertyName		property name
+     * @param propertyName			property name
      * @return					property's value, return null if property value is null
      */
     public String getProperty(String propertyName){

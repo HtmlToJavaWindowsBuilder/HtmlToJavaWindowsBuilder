@@ -6,7 +6,7 @@ import java.util.HashMap;
  * CSSRuleSet contains several CSS property in it, such as height, width and their value.
  * You can get or set priority to CSSRuleSet.
  * 
- * @author 		JasonKuo
+ * @author 		Jason Kuo
  */
 
 public class CSSRuleSet{
@@ -40,7 +40,7 @@ public class CSSRuleSet{
 	
     /**
      * get CSS rule by given property name
-     * @param propertyName		property to get
+     * @param propertyName			property to get
      * @return					property's value
      */
     public String getProperty(String propertyName){
@@ -49,7 +49,7 @@ public class CSSRuleSet{
     
     /**
      * set new CSS rule to CSSRuleSet
-     * @param propertyName		property's name
+     * @param propertyName			property's name
      * @param value				property's value
      */
     public void setProperty(String propertyName, String value){
