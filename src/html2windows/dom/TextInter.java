@@ -14,8 +14,6 @@ import org.w3c.dom.events.EventListener;
  * 
  * @author cfwei
  */
-
-
 class TextInter extends Text implements NodeInter {
 
 	private NodeList childNodeList = new NodeList();
