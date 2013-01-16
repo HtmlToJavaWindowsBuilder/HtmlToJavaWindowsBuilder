@@ -197,8 +197,12 @@ public class BorderPainter extends JPanel implements CSSPainter{
 	 * 
 	 * @throws NumberFormatException
 	 */
-	private void setBorderWidth() throws NumberFormatException{
-		borderWidth=Integer.parseInt(property.get("border-width"));
+	private void setBorderWidth(){
+		try{
+			borderWidth=Integer.parseInt(property.get("border-width"));
+	    }
+	    catch (NumberFormatException e){
+	    }
 	}
 	
 	/**
@@ -207,7 +211,11 @@ public class BorderPainter extends JPanel implements CSSPainter{
 	 * @throws NumberFormatException
 	 */
 	private void setWidth() throws NumberFormatException{
-        width=Integer.parseInt(property.get("width"));
+		try{
+			width=Integer.parseInt(property.get("width"));
+	    }
+	    catch (NumberFormatException e){
+	    }
 	}
 	
 	/**
@@ -216,7 +224,11 @@ public class BorderPainter extends JPanel implements CSSPainter{
 	 * @throws NumberFormatException
 	 */
 	private void setHeight() throws NumberFormatException{
-		height=Integer.parseInt(property.get("height"));
+		try{
+			height=Integer.parseInt(property.get("height"));
+	    }
+	    catch (NumberFormatException e){
+	    }
 	}
 	
 	/**
@@ -225,7 +237,11 @@ public class BorderPainter extends JPanel implements CSSPainter{
 	 * @throws NumberFormatException
 	 */
 	private void setTop() throws NumberFormatException{
-		top=Integer.parseInt(property.get("top"));
+		try{
+			top=Integer.parseInt(property.get("top"));
+	    }
+	    catch (NumberFormatException e){
+	    }
 	}
 	
 	/**
@@ -234,7 +250,11 @@ public class BorderPainter extends JPanel implements CSSPainter{
 	 * @throws NumberFormatException
 	 */
 	private void setLeft() throws NumberFormatException{
-		left=Integer.parseInt(property.get("left"));	
+		try{
+			left=Integer.parseInt(property.get("left"));
+	    }
+	    catch (NumberFormatException e){
+	    }
 	}
     
 	/**

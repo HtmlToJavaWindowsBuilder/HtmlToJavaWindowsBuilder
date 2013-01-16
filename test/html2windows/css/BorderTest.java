@@ -63,9 +63,9 @@ public class BorderTest {
         
         style.setProperty("border-width","2");
         style.setProperty("width","50");
-        style.setProperty("height","a");
+        style.setProperty("height","5");
         style.setProperty("top","5");
-        style.setProperty("left","5");
+        style.setProperty("left","10");
         style.setProperty("bottom","50");
         style.setProperty("border-style","dashed");
         style.setProperty("border-color","black");
