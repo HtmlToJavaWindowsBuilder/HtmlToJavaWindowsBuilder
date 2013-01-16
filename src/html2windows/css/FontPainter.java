@@ -39,7 +39,7 @@ import javax.swing.text.StyleConstants;
 
 @SuppressWarnings(value= { "serial" })
 public class FontPainter extends JPanel implements CSSPainter {
-    
+
     /**
      * g2d          mean Graphic
      */
@@ -82,11 +82,11 @@ public class FontPainter extends JPanel implements CSSPainter {
         this.property.put("font-variant", "normal");
         this.property.put("font-weight", "plain");
         this.property.put("font-style", "normal");
-		this.property.put("color","black");
-		this.property.put("text-align","default");
-		this.property.put("text-decoration","default");
-		this.property.put("text-indent","default");
-		this.property.put("line-height","default");
+        this.property.put("color","black");
+        this.property.put("text-align","default");
+        this.property.put("text-decoration","default");
+        this.property.put("text-indent","default");
+        this.property.put("line-height","default");
     }
 
     /**
@@ -103,11 +103,11 @@ public class FontPainter extends JPanel implements CSSPainter {
         getFontStyle(style, "font-size");
         getFontStyle(style, "font-weight");
         getFontStyle(style, "font-variant");
-		getFontStyle(style, "color");
-		getFontStyle(style, "text-align");
-		getFontStyle(style, "text-decoration");
-		getFontStyle(style, "text-indent");
-		getFontStyle(style, "line-height");
+        getFontStyle(style, "color");
+        getFontStyle(style, "text-align");
+        getFontStyle(style, "text-decoration");
+        getFontStyle(style, "text-indent");
+        getFontStyle(style, "line-height");
         getFontText(element);
         setFont();
         setColor();
@@ -120,20 +120,20 @@ public class FontPainter extends JPanel implements CSSPainter {
         else {
             attributedString.addAttribute(TextAttribute.FONT,this.font);
         }
-        
+
         setTextDecoration(attributedString);
-        
-        
-        
+
+
+
         this.g2d.drawString(attributedString.getIterator(), 30, 30);
-        
-        
-        
-        
+
+
+
+
         /*
-        this.g2d.drawString(this.text,20,30);
-        this.g2d.drawString("text",20,30);
-        */
+           this.g2d.drawString(this.text,20,30);
+           this.g2d.drawString("text",20,30);
+         */
     }
 
     /**
@@ -254,96 +254,96 @@ public class FontPainter extends JPanel implements CSSPainter {
         }
     }
 
-    
+
     /**
      * Function will get the length of the word
      *
      * @return  length  the length of the word
      */
-	public int getLength(){
-		FontMetrics f= g2d.getFontMetrics();
-		int length =f.stringWidth(this.text);
+    public int getLength(){
+        FontMetrics f= g2d.getFontMetrics();
+        int length =f.stringWidth(this.text);
 
-		return length;
-	}
-	
+        return length;
+    }
+
     /**
      * function will set Color     
      *
      */
-	public void setColor(){
-		
-		String color=property.get("color").toLowerCase();
-		
-		if(color.equals("maroon")){
-			
-			g2d.setColor(new Color(128,0,0));
-		}
-		else if(color.equals("red")){
-			
-			g2d.setColor(new Color(255,0,0));
-		}
-		else if(color.equals("orange")){
-			
-			g2d.setColor(new Color(255,165,0));
-			
-		}
-		else if(color.equals("yellow")){
-			
-			g2d.setColor(new Color(255,255,0));
-		}
-		else if(color.equals("olive")){
-			
-			g2d.setColor(new Color(128,128,0));
-		}
-		else if(color.equals("purple")){
-			
-			g2d.setColor(new Color(128,0,128));
-		}
-		else if(color.equals("fuchsia")){
-			
-			g2d.setColor(new Color(255,0,255));
-		}
-		else if(color.equals("white")){
-			
-			g2d.setColor(new Color(255,255,255));
-		}
-		else if(color.equals("lime")){
-			
-			g2d.setColor(new Color(0,255,255));
-		}
-		else if(color.equals("green")){
-			
-			g2d.setColor(new Color(0,255,0));
-		}
-		else if(color.equals("navy")){
-			
-			g2d.setColor(new Color(0,0,128));
-		}
-		else if(color.equals("blue")){
-			
-			g2d.setColor(new Color(0,0,255));
-		}
-		else if(color.equals("aqua")){
-			
-			g2d.setColor(new Color(0,255,255));
-		}
-		else if(color.equals("teal")){
-			
-			g2d.setColor(new Color(0,128,128));
-		}
-		else if(color.equals("black")||color.equals("default")){
-			g2d.setColor(new Color(0,0,0));
-		}
-		else if(color.equals("silver")){
-			
-			g2d.setColor(new Color(192,192,192));
-		}
-		else if(color.equals("gray")){
-			
-			g2d.setColor(new Color(128,128,128));
-		}
-		else if(color.matches("#[0-9A-Fa-f]{6}")){
+    public void setColor(){
+
+        String color=property.get("color").toLowerCase();
+
+        if(color.equals("maroon")){
+
+            g2d.setColor(new Color(128,0,0));
+        }
+        else if(color.equals("red")){
+
+            g2d.setColor(new Color(255,0,0));
+        }
+        else if(color.equals("orange")){
+
+            g2d.setColor(new Color(255,165,0));
+
+        }
+        else if(color.equals("yellow")){
+
+            g2d.setColor(new Color(255,255,0));
+        }
+        else if(color.equals("olive")){
+
+            g2d.setColor(new Color(128,128,0));
+        }
+        else if(color.equals("purple")){
+
+            g2d.setColor(new Color(128,0,128));
+        }
+        else if(color.equals("fuchsia")){
+
+            g2d.setColor(new Color(255,0,255));
+        }
+        else if(color.equals("white")){
+
+            g2d.setColor(new Color(255,255,255));
+        }
+        else if(color.equals("lime")){
+
+            g2d.setColor(new Color(0,255,255));
+        }
+        else if(color.equals("green")){
+
+            g2d.setColor(new Color(0,255,0));
+        }
+        else if(color.equals("navy")){
+
+            g2d.setColor(new Color(0,0,128));
+        }
+        else if(color.equals("blue")){
+
+            g2d.setColor(new Color(0,0,255));
+        }
+        else if(color.equals("aqua")){
+
+            g2d.setColor(new Color(0,255,255));
+        }
+        else if(color.equals("teal")){
+
+            g2d.setColor(new Color(0,128,128));
+        }
+        else if(color.equals("black")||color.equals("default")){
+            g2d.setColor(new Color(0,0,0));
+        }
+        else if(color.equals("silver")){
+
+            g2d.setColor(new Color(192,192,192));
+        }
+        else if(color.equals("gray")){
+
+            g2d.setColor(new Color(128,128,128));
+        }
+        else if(color.matches("#[0-9A-Fa-f]{6}")){
             String firstColor=color.substring(1, 3);
             int firstColorNum=Integer.parseInt(firstColor, 16);
 
@@ -355,17 +355,17 @@ public class FontPainter extends JPanel implements CSSPainter {
 
             g2d.setColor(new Color(firstColorNum,secondColorNum,thirdColorNum));
 
-		}
-        else {
-            
-			g2d.setColor(new Color(0,0,0));
         }
-	
-	}
+        else {
 
-	
-   
-		
+            g2d.setColor(new Color(0,0,0));
+        }
+
+    }
+
+
+
+
     /**
      * Function will set Text Decoration
      *
@@ -374,39 +374,39 @@ public class FontPainter extends JPanel implements CSSPainter {
      *
      * @return   
      */
-	public void setTextDecoration(AttributedString attributedString){
-		String textDecoration=property.get("text-decoration");
-		
-		if(textDecoration.equals("underline"))
-		    attributedString.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+    public void setTextDecoration(AttributedString attributedString){
+        String textDecoration=property.get("text-decoration");
 
-		if(textDecoration.equals("line-through"))
-			attributedString.addAttribute(TextAttribute.STRIKETHROUGH,TextAttribute.STRIKETHROUGH_ON);
-	
-		
-		
-	}
-	
+        if(textDecoration.equals("underline"))
+            attributedString.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+
+        if(textDecoration.equals("line-through"))
+            attributedString.addAttribute(TextAttribute.STRIKETHROUGH,TextAttribute.STRIKETHROUGH_ON);
+
+
+
+    }
+
     /**
      * Function set text indent
      *
      * @return   textIndent
      */
-	public int setTextIndent(){
-		String textIndent=property.get("text-align");
-		
-		return Integer.parseInt(textIndent);
-	}
-	
+    public int setTextIndent(){
+        String textIndent=property.get("text-align");
+
+        return Integer.parseInt(textIndent);
+    }
+
     /**
      * Function will get font text. 
      *
      * @param	element The element you want to get text from.  
      */
-	private void getFontText(Element element){
-		 NodeList nodeList =element.childNodes();
-		 Node nodeText=nodeList.item(0);
-		 this.text=nodeText.nodeValue();
-	}
-	
+    private void getFontText(Element element){
+        NodeList nodeList =element.childNodes();
+        Node nodeText=nodeList.item(0);
+        this.text=nodeText.nodeValue();
+    }
+
 }
