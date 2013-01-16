@@ -1,6 +1,5 @@
 package html2windows.dom;
 
-import html2windows.css.BorderProperty;
 import html2windows.css.BackgroundProperty;
 import html2windows.css.Style;
 import html2windows.dom.ElementInter;
@@ -51,7 +50,6 @@ public class BackgroundTest {
         frame.setLocationRelativeTo(null);
         frame.add(background);
         //frame.setVisible(true);
-        
         
         Thread.sleep(2000);
     }
