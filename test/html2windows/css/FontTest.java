@@ -1,7 +1,7 @@
 package html2windows.css;
 import java.io.File;
 
-import html2windows.css.FontProperty;
+import html2windows.css.FontPainter;
 import html2windows.css.Style;
 import html2windows.dom.ElementInter;
 import html2windows.dom.Element;
@@ -46,7 +46,7 @@ public class FontTest {
         Document document = new Document(){
             @Override
             public CSSPainter getPainter(){
-                return new FontProperty();
+                return new FontPainter();
             }
         };
 
