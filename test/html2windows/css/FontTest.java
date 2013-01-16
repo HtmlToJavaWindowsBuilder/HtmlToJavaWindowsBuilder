@@ -25,6 +25,8 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+
+@SuppressWarnings(value = { "serial"  }) 
 public class FontTest { 
 
     @BeforeClass
@@ -65,12 +67,19 @@ public class FontTest {
         assertEquals("family should be Arial", "Arial", fontFamily );
 
         style.setProperty("font-size","30");
+        style.setProperty("width","200");
+        style.setProperty("height","100");
+        style.setProperty("left","100");
+        style.setProperty("top","100");
+ //       style.setProperty("position","absolute");
+        style.setProperty("position","relative");
+
         style.setProperty("font-weight","bold");
         style.setProperty("font-style","italic");
         style.setProperty("font-variant","small-caps");
         JButton btn = new JButton("OK");
 
-        //customPanel.add(btn);
+        customPanel.add(btn);
         customPanel.add(elementNode);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
