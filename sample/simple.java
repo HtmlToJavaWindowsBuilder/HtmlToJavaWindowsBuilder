@@ -11,7 +11,7 @@ public class simple {
      */
     public static void main(String[] args) {
         Document document = new UIParser().parse("<html><head>simple</head><body><h1>Hello World</h1></body></html>");
-        document.setPainter(new FontPainter());
+        document.setPainter(new CSS2Painter());
         document.setSize(400, 300);
         new CSSParser().parse("h1 { font-color: black; }", document);
         document.setVisible(true);
