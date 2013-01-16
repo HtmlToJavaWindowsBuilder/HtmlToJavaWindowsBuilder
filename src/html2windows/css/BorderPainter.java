@@ -264,21 +264,21 @@ public class BorderPainter extends JPanel implements CSSPainter{
 	 */
 	private Stroke setStroke(){
 		Stroke s;
-		if (property.get("border-style").equals("dotted")) {
+		if ("dotted".equals(property.get("border-style"))) {
 			s = new BasicStroke(10, BasicStroke.CAP_ROUND,
 					BasicStroke.JOIN_ROUND, 5,
 					new float[] { 5 }, 10);
 			return s;
-		} else if (property.get("border-style").equals("dashed")) {
+		} else if ("dashed".equals(property.get("border-style"))) {
 			s = new BasicStroke(borderWidth, BasicStroke.CAP_BUTT,
 					BasicStroke.JOIN_MITER, borderWidth,
 					new float[] { borderWidth*2,borderWidth }, 0f);
 			return s;
-		} else if (property.get("border-style").equals("solid")) {
+		} else if ("solid".equals(property.get("border-style"))) {
 			s = new BasicStroke(borderWidth);
 			return s;
 
-		} else if (property.get("border-style").equals("double")) {
+		} else if ("double".equals(property.get("border-style"))) {
 			s = new BasicStroke(2);
 			return s;
 		}
