@@ -118,10 +118,10 @@ public class CSSParser {
         if (isNotEnd()) {
             if (getChar() == '@') {
                 pos++;
-                parseRuleSet(1);
+                parseAtRule();
             }
             else
-                parseRuleSet(0);
+                parseRuleSet();
         }
     }
 
@@ -209,7 +209,7 @@ public class CSSParser {
      * @return  the elements which are inserted ruleSet, if parsing didn't work,
      *          return null
      */
-    private void parseRuleSet(int state) {
+    private void parseRuleSet() {
         ArrayList<Element> elements = null;
         String selector = "";
 
