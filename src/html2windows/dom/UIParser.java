@@ -31,47 +31,47 @@ public class UIParser {
      *
      * @return element  
      */
-	private Element parseElement(org.w3c.dom.Element element, Document document){
-		
-		Element outputElement = document.createElement(element.getTagName());
+    private Element parseElement(org.w3c.dom.Element element, Document document){
 
-		org.w3c.dom.NamedNodeMap attributeMap = element.getAttributes();
-		for(int i = 0 ; i < attributeMap.getLength() ; i++){
-			org.w3c.dom.Node attribute  = attributeMap.item(i);	
-			String name = attribute.getNodeName();
-			String value = attribute.getNodeValue();
+        Element outputElement = document.createElement(element.getTagName());
 
-			Attr outputAttribute = document.createAttribute(name);
-			outputAttribute.setValue(value);
-			outputElement.setAttributeNode(outputAttribute);
-		}
-		
-		org.w3c.dom.NodeList childNodes = element.getChildNodes();
-		for(int i = 0 ; i < childNodes.getLength(); i++){
-			org.w3c.dom.Node node = childNodes.item(i);
-			short type = node.getNodeType();
-			switch (type){
-				case org.w3c.dom.Node.TEXT_NODE:{
-					org.w3c.dom.Text text = (org.w3c.dom.Text) node;
-					Text outputText = document.createTextNode(text.getData());
-					
-					outputElement.appendChild(outputText);
-				}
-					break;
-				case org.w3c.dom.Node.ELEMENT_NODE:{
-					org.w3c.dom.Element childElement = (org.w3c.dom.Element) node;
-					Element outputChildElement = parseElement(childElement, document);
+        org.w3c.dom.NamedNodeMap attributeMap = element.getAttributes();
+        for(int i = 0 ; i < attributeMap.getLength() ; i++){
+            org.w3c.dom.Node attribute  = attributeMap.item(i);	
+            String name = attribute.getNodeName();
+            String value = attribute.getNodeValue();
 
-					outputElement.appendChild(outputChildElement);
-				}
-					break;
-				default:
-					break;
-			}
-		}
+            Attr outputAttribute = document.createAttribute(name);
+            outputAttribute.setValue(value);
+            outputElement.setAttributeNode(outputAttribute);
+        }
 
-		return outputElement;
-	}
+        org.w3c.dom.NodeList childNodes = element.getChildNodes();
+        for(int i = 0 ; i < childNodes.getLength(); i++){
+            org.w3c.dom.Node node = childNodes.item(i);
+            short type = node.getNodeType();
+            switch (type){
+                case org.w3c.dom.Node.TEXT_NODE:{
+                    org.w3c.dom.Text text = (org.w3c.dom.Text) node;
+                    Text outputText = document.createTextNode(text.getData());
+
+                    outputElement.appendChild(outputText);
+                }
+                    break;
+                case org.w3c.dom.Node.ELEMENT_NODE:{
+                   org.w3c.dom.Element childElement = (org.w3c.dom.Element) node;
+                   Element outputChildElement = parseElement(childElement, document);
+
+                   outputElement.appendChild(outputChildElement);
+                }
+                   break;
+                default:
+                   break;
+            }
+        }
+
+        return outputElement;
+    }
 
     /**
      * Function will parse the file into document
@@ -80,13 +80,13 @@ public class UIParser {
      *
      * @return Document
      */
-	public Document parse(String input) {
+    public Document parse(String input) {
         input = input.replaceAll(">[ \t\n\r]*<", "><");
         InputStream inputStream = new ByteArrayInputStream( input.getBytes());
         Document outputDocument = parse(inputStream);
-        
+
         return outputDocument;
-	}
+    }
 
     /**
      * Function will read file and convert into string and parse into document
@@ -95,24 +95,24 @@ public class UIParser {
      *
      * @return document  
      */
-	public Document parse(File input) {
-		try{
+    public Document parse(File input) {
+        try{
             BufferedReader reader = new BufferedReader(new FileReader(input));
             String line;
             String inputString = "";
             while( (line = reader.readLine() ) != null ) {
                 inputString += line;    
             }
-			Document outputDocument = parse(inputString);
+            Document outputDocument = parse(inputString);
 
-			return outputDocument;
+            return outputDocument;
 
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		
-		return null;
-	}
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
 
     /**
      * others input will transform into InputStream type, then it will parse
@@ -121,19 +121,19 @@ public class UIParser {
      *
      * @return document   
      */
-	private Document parse(InputStream input){
-		try {
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			org.w3c.dom.Document doc = dBuilder.parse(input);
-			Document outputDocument = new Document();
-			Element outputElement = parseElement(doc.getDocumentElement(),outputDocument);
-			outputDocument.appendChild(outputElement);
+    private Document parse(InputStream input){
+        try {
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            org.w3c.dom.Document doc = dBuilder.parse(input);
+            Document outputDocument = new Document();
+            Element outputElement = parseElement(doc.getDocumentElement(),outputDocument);
+            outputDocument.appendChild(outputElement);
 
-			return outputDocument;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return null;	
-	}
+            return outputDocument;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;	
+    }
 }
