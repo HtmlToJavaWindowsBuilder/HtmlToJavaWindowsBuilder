@@ -106,6 +106,7 @@ public class FontPainter extends JPanel implements CSSPainter {
 		getFontStyle(style, "text-indent");
 		getFontStyle(style, "line-height");
         setFont();
+        //getFontText(element);
         /*
         AttributedString fontAttr = setTextDecoration(this.font,this.text);
         int fontwidth = 300;
@@ -120,6 +121,7 @@ public class FontPainter extends JPanel implements CSSPainter {
             attributedString.addAttribute(TextAttribute.FONT,this.font);
         }
         this.g2d.drawString(attributedString.getIterator(), 30, 30);
+        
         /*
         this.g2d.setFont(this.font);
         this.g2d.setColor(Color.red);
@@ -398,10 +400,7 @@ public class FontPainter extends JPanel implements CSSPainter {
 		
 		if(textDecoration.equals("underline"))
 		    as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-		/*
-		if(textDecoration.equals("overline"))
-			 as.addAttribute(TextAttribute., TextAttribute.UNDERLINE_ON);
-		*/
+
 		if(textDecoration.equals("line-through"))
 		    as.addAttribute(TextAttribute.STRIKETHROUGH,TextAttribute.STRIKETHROUGH_ON, 18, 25);
 	
@@ -433,4 +432,10 @@ public class FontPainter extends JPanel implements CSSPainter {
 		
 		return length;
 	}
+	
+	private void getFontText(Element element){
+		 this.text = element.nodeValue();
+		
+	}
+	
 }
