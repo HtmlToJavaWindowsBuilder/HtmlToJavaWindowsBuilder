@@ -85,7 +85,7 @@ public class CustomTest {
         Element elementNode = elementInter;
         //elementNode.setPreferredSize(new Dimension(100, 100));
         
-        Text textValueText=document.createTextNode("222222222");
+        Text textValueText=document.createTextNode("Test123456");
         elementNode.appendChild(textValueText);
         
         Style style = elementNode.getStyle();
@@ -103,7 +103,7 @@ public class CustomTest {
          *
          */
         style.setProperty("family","Arial");
-        style.setProperty("font-size","12px");
+        style.setProperty("font-size","20px");
         style.setProperty("font-weight","bold");
         style.setProperty("font-style","italic");
         style.setProperty("font-variant","small-caps");
@@ -120,11 +120,12 @@ public class CustomTest {
          * position     : relative
          *
          */
-        style.setProperty("width","200");
+        style.setProperty("width","150");
         style.setProperty("height","100");
-        style.setProperty("left","100");
-        style.setProperty("top","100");
+        //style.setProperty("left","100");
+ //       style.setProperty("margin-top","100");
         style.setProperty("position","relative");
+        style.setProperty("float","left");
         style.setProperty("text-decoration","line-through");
         style.setProperty("color","#182bbc");
         /**
@@ -133,9 +134,13 @@ public class CustomTest {
          * GUI Screen
          *
          */
+        JButton btn = new JButton("OK"); 
+        JButton btn1 = new JButton("OK111"); 
+        customPanel.add(btn);
         customPanel.add(elementNode);
+        customPanel.add(btn1);
 
-        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(360,200);
         frame.setLocationRelativeTo(null);
         frame.add(customPanel);

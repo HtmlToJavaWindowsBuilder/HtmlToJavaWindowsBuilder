@@ -1,0 +1,10 @@
+@document {width:400; height:300;}
+html{ background: black;
+          width: 100px;
+          height: 100px;
+        }
+
+body{ margin-top: 10px;
+          text-color: blue;
+          text-size: 10px;
+        }

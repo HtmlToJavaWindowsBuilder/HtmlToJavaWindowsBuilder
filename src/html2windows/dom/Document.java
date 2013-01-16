@@ -1,5 +1,8 @@
 package html2windows.dom;
+import html2windows.css.AtRuleHandler;
+
 import java.awt.Component;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 
@@ -28,11 +31,15 @@ import html2windows.css.CSSPainter;
 public class Document extends JFrame implements Node{
     private CSSPainter painter;
     
-    /**
-     * Return the document element, the root
-     *
-     * @return thie document element, the root
-     */
+
+    HashMap<String, AtRuleHandler> atRuleHandlerMap = new HashMap<String, AtRuleHandler>();
+    
+	
+	/**
+	 * Return the document element, the root
+	 *
+	 * @return thie document element, the root
+	 */
 	public Element documentElement(){
 		try{
 			return (Element)getContentPane().getComponent(0);
@@ -366,6 +373,14 @@ public class Document extends JFrame implements Node{
 	@Override
 	public boolean hasAttributes() {
 		return false;
+	}
+	
+	public void setAtRuleHandler(String atRule, AtRuleHandler handler){
+	    atRuleHandlerMap.put(atRule, handler);
+	}
+	
+	public AtRuleHandler getAtRuleHandler(String atRule){
+	    return atRuleHandlerMap.get(atRule);
 	}
 
 	/**
