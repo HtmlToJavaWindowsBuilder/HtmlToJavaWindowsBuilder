@@ -31,7 +31,7 @@ public class CSSParser {
      * @param document  the root of tree which has been built
      */
     
-    public void parser(String cssString, Document document) {
+    public void parse(String cssString, Document document) {
         this.cssString = cssString;
         this.pos = 0;
         this.document = document;
@@ -40,7 +40,31 @@ public class CSSParser {
 
         parseStyleSheet();
     }
-
+    
+    public CSSRuleSet parseRuleSet(String str){
+        ruleSet = new CSSRuleSet(priority);
+        cssString = str;
+        pos = 0;
+        
+        if (isNotEnd() && getChar() == '{') {
+            pos++;
+            parseSpace();
+            if (isNotEnd()) {
+                parseDeclaration();
+                while (isNotEnd() && getChar() == ';') {
+                    pos++;
+                    parseSpace();
+                    parseDeclaration();
+                }
+                if (isNotEnd() && getChar() == '}') {
+                    pos++;
+                    parseSpace();
+                }
+            }
+        }
+        
+        return ruleSet;
+    }
     
     /**
      * @return true if cssString is end, false otherwise;
@@ -105,18 +129,30 @@ public class CSSParser {
      * Rule: ATKEYWORD S* any* [ block | ';' S* ];
      */
     private void parseAtRule() {
+        int prePos;
+        int nextPos;
+        AtRuleHandler handler;
+        
         if (isNotEnd()) {
-            parseIdent();
+            String ident = parseIdent();
+            handler = document.getAtRuleHandler(ident);
             parseSpace();
             parseAny();
             if (isNotEnd()) {
+                prePos = pos;
                 if (getChar() == '{') {
                     pos++;
-                    parseBlock();
+                    while(isNotEnd() && getChar() != '}'){
+                        pos++;
+                    }
                 }
                 else if (getChar() == ';') {
                     pos++;
                     parseSpace();
+                }
+                nextPos = pos;
+                if(handler != null){
+                    handler.handle(cssString.substring(prePos, nextPos - prePos), document);
                 }
             }
         }
