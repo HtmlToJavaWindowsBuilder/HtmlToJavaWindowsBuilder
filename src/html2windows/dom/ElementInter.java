@@ -496,11 +496,14 @@ public class ElementInter extends Element implements NodeInter {
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
         int index=findChildIndex(refChild);
         if(index!=-1){
-        	if(newChild instanceof Component){
+        	if(newChild instanceof Element || newChild instanceof Text){
         		add((Component)newChild, index);
         		return refChild;
         	}
-        	
+        	else{
+        		throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,"HIERARCHY_REQUEST_ERR");
+        		
+        	}
         	
         }
 
@@ -522,10 +525,13 @@ public class ElementInter extends Element implements NodeInter {
         
     	 int index=findChildIndex(oldChild);
          if(index!=-1){
-         	if(newChild instanceof Component){
+         	if(newChild instanceof Element || newChild instanceof Text){
          		remove(index);
          		add((Component)newChild, index);
          		return oldChild;
+         	}
+         	else{
+         		throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,"HIERARCHY_REQUEST_ERR");
          	}
          	
          	
@@ -546,10 +552,14 @@ public class ElementInter extends Element implements NodeInter {
      */
     @Override
     public Node removeChild(Node oldChild) throws DOMException {
-        if(oldChild instanceof Component)
+        if(oldChild instanceof Element || oldChild instanceof Text){
         	remove((Component)oldChild);
-        return oldChild;
-
+        	return oldChild;
+        }
+        else{
+        	throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,"HIERARCHY_REQUEST_ERR");
+        	
+        }
     }
     
     /**
@@ -561,11 +571,16 @@ public class ElementInter extends Element implements NodeInter {
      */
     @Override
     public Node appendChild(Node newChild) throws DOMException {
-    	if(newChild instanceof Component){
+    	if(newChild instanceof Element ||newChild instanceof Text){
     		add((Component)newChild);
         	return newChild;
     	}
-    	return null;
+    	else{
+    		throw new DOMException(DOMException.HIERARCHY_REQUEST_ERR,"HIERARCHY_REQUEST_ERR");
+    	}
+    	
+    	
+    	
 
     }
     
