@@ -55,8 +55,8 @@ public class BorderPainter extends JPanel implements CSSPainter{
      */
     private void initial() {
     	property.put("border-width","2");
-		property.put("width","10");
-		property.put("height","10");
+		property.put("width","30");
+		property.put("height","30");
 		property.put("top","10");
 		property.put("left","5");
 		property.put("bottom","10");

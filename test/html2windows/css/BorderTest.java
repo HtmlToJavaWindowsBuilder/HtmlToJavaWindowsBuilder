@@ -38,8 +38,80 @@ public class BorderTest {
     public static void tearDownAfterClass() throws Exception {
     }
     
+    /**
+     * Test custom usage of BorderPainter
+     */
     @Test
-    public void test() throws Exception{
+    public void testCustomBorder(){
+    	
+    	/**
+    	 * Setup
+    	 * 
+    	 * Create a JFrame frame and JPanel and create document
+    	 * with defined getPainter() with BorderPainter(). Create
+    	 * element with custom style setting and add to frame.  
+    	 */
+    	
+    	//Create JFrame and JPanel 
+    	JFrame frame = new JFrame("Button Frame");
+        JPanel customPanel = new JPanel( new CustomLayoutManager());
+
+        //Create document with BorderPainter()
+        Document document = new Document(){
+            @Override
+            public CSSPainter getPainter(){
+                return new BorderPainter();
+            }
+        };
+
+        //Create element with defined test properties
+        String tagName = "div";
+        ElementInter elementInter = new ElementInter(tagName);
+        elementInter.setOwnerDocument(document);
+
+        Element elementNode = elementInter;
+        elementNode.setPreferredSize(new Dimension(100, 100));
+
+        Style style = elementNode.getStyle();
+        style.setProperty("border-width","2");
+        style.setProperty("width","50");
+        style.setProperty("height","5");
+        style.setProperty("top","5");
+        style.setProperty("left","10");
+        style.setProperty("bottom","50");
+        style.setProperty("border-style","dashed");
+        style.setProperty("border-color","black");
+        
+        /**
+         * Test
+         * 
+         * Add panel to Jframe and show
+         * 
+         * expect border with defined feature
+         */
+        customPanel.add(elementNode);
+
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.setSize(400,400);
+        frame.setLocationRelativeTo(null);
+        frame.add(customPanel);
+        frame.setVisible(true);
+        
+        try{
+        	Thread.sleep(2000);
+        }catch(Exception e){}
+    }
+    
+    @Test
+    public void testIllegalProperty() throws Exception{
+    	
+    	/**
+    	 * Setup
+    	 * 
+    	 * Create Jframe and panel with customLayoutManager.
+    	 * Create document with BorderPainter.
+    	 * Create element with illegal style properties in it.
+    	 */
     	JFrame frame = new JFrame("Button Frame");
         JPanel customPanel = new JPanel( new CustomLayoutManager());
 
@@ -50,7 +122,7 @@ public class BorderTest {
             }
         };
         
-
+        //create div
         String tagName = "div";
         ElementInter elementInter = new ElementInter(tagName);
         elementInter.setOwnerDocument(document);
@@ -58,20 +130,28 @@ public class BorderTest {
         Element elementNode = elementInter;
         elementNode.setPreferredSize(new Dimension(100, 100));
 
+        /*
+         * Create style with width "a", top "b",
+         * border-style "hello", and color "color" 
+         */
         Style style = elementNode.getStyle();
-
-        
         style.setProperty("border-width","2");
-        style.setProperty("width","50");
-        style.setProperty("height","5");
-        style.setProperty("top","5");
+        style.setProperty("width","a");
+        style.setProperty("height","20");
+        style.setProperty("top","b");
         style.setProperty("left","10");
         style.setProperty("bottom","50");
-        style.setProperty("border-style","dashed");
+        style.setProperty("border-style","hello");
         style.setProperty("border-color","black");
         
-
-        //customPanel.add(btn);
+        /**
+         * Test
+         * 
+         * Add panel to JFrame with element with illegal
+         * style properties.
+         * 
+         * Expect non crashed JFrame with border.
+         */
         customPanel.add(elementNode);
 
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -80,6 +160,8 @@ public class BorderTest {
         frame.add(customPanel);
         frame.setVisible(true);
         
-        Thread.sleep(2000);
+        try{
+        	Thread.sleep(2000);
+        }catch(Exception e){}
     }
 }
