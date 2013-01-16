@@ -5,6 +5,17 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
+
+/**
+ * This is the class that implements all abstract method in Text and the Interface NodeInter.
+ * All method is defined in http://www.w3.org/TR/DOM-Level-2-Core/core.html
+ * If you want to see detail how this function work.
+ * See above website.
+ * 
+ * @author cfwei
+ */
+
+
 class TextInter extends Text implements NodeInter {
 
 	private NodeList childNodeList = new NodeList();
@@ -12,25 +23,22 @@ class TextInter extends Text implements NodeInter {
 	private String dataValue = null;
 	private Document ownerDocument=null;
 
-	/*
-	 * 目的:constructor,設定此Text的dataValue
+	/**
+	 * Constructor of this class
 	 * 
-	 * 參數:data=>要給予此Text的Data
-	 * */
+	 * @param data The data you want to set to this text. 
+	 */
 	public TextInter(String data) {
 		dataValue = data;
 	}
 
-	/*
-	 * 目的:將TextData以offset為分界,切割成兩個新的Text並將其接回parent的ChildNodeList,使其二成為sibling
+	
+	/**
+	 * Breaks this node into two nodes at the specified offset.
 	 * 
-	 * 方法:
-	 * 1.先檢查offset是否 大於零 或 在dataValue範圍內 若否則throw DOMException
-	 * 2.New兩個Text newText1及newText2
-	 * 3.以offset為分界將Text切割並存入兩個新的Text裡面
-	 * 4.找出parent的ChildNodeList先將舊的Text移除 最後加入兩個新的Text
-	 * 
-	 * 參數:offset=>要從多少偏移量處開始切割,從0開始算
+	 * @param offset The offset at which to split, starting from 0.
+	 * @return The new node, of the same type as this node.
+	 * @throws DOMException INDEX_SIZE_ERR: Raised if the specified offset is negative or greater than the length of data of this text.
 	 */
 	public Text splitText(long offset) throws DOMException {
 		if (offset < 0 || offset >= dataValue.length())
@@ -51,56 +59,57 @@ class TextInter extends Text implements NodeInter {
 		return newTextNode;
 	}
 
-	// 目的:回傳此Text的dataValue
+	
+	/**
+	 * Return the data value of this Text
+	 * 
+	 * @return The data value of this Text
+	 */
 	public String data() {
 		return dataValue;
 	}
-
-	/*
-	 * 目的:將此Text的dataValue設置為參數的data
+	
+	/**
+	 * Set the data value of this text
 	 * 
-	 * 參數:data=>要重新給予此Text的字串
-	 * 
-	 * */
+	 * @param data The data value you want to set.
+	 */
 	public void setData(String data) {
 		dataValue = data;
 	}
+	
+	/**
+	 * Return the length of this data value.
+	 * 
+	 * @return The length of data value of this text.
+	 */
 
-	// 目的:回傳此Text的dataValue的長度
 	public long length() {
 		return dataValue.length();
 	}
 
-	/* 
-	 * 目的:擷取此dataValue的部份片段,傳入兩個參數: offset:以此為start position count:要擷取的數目
-	 * 回傳即為以start position為基準,往後算count個長度的字串
+	/**
+	 * Extracts a range of data from the text node.
 	 * 
-	 * 參數:
-	 * offset=>Start offset of substring to extract
-	 * count=>The number to extract.
+	 * @param offset Start offset of substring to extract.
+	 * @param count The number of to extract.
+	 * 
+	 * @return The specified substring. 
 	 */
-
 	public String substringData(long offset, long count) throws DOMException {
 		return dataValue.substring((int) offset, (int) offset + (int) count);
 	}
-
-	/* 
-	 * 目的:將參數字串arg串接到dataValue後
+	
+	/**
+	 * Append the string to the end of the character data of the node.
 	 * 
-	 * 參數:arg=>要append的字串
 	 * 
-	 * */
+	 * 
+	 */
 	public void appendData(String arg) throws DOMException {
-		dataValue.concat("arg");
+		dataValue=dataValue.concat("arg");
 	}
 
-	/*
-	 * 目的:將參數字串arg串接到dataValue中的offset處
-	 * 
-	 * 參數:
-	 * offset => The character offset at which to insert
-	 * arg => The String to insert
-	 * */
 	public void insertData(long offset, String arg) throws DOMException {
 		String newData = null;
 		newData.concat(dataValue.substring(0, (int) offset));
@@ -109,15 +118,6 @@ class TextInter extends Text implements NodeInter {
 		dataValue = newData;
 	}
 
-	/*
-	 * 目的:刪除dataValue裡面部份內容 offset:以此為start position count:要刪除的數目
-	 * 結果即為以offset為基準,往後刪除長度為count的內容
-	 * 
-	 * 參數:
-	 * offset => The offset from which to start removing
-	 * count => The number to delete. If the sum of offset and count exceeds length then all from offset to the end of the data are deleted.
-	 * 
-	 */
 	public void deleteData(long offset, long count) throws DOMException {
 		if (offset < 0 || count < 0 || offset >= dataValue.length())
 			throw new DOMException(
@@ -129,15 +129,7 @@ class TextInter extends Text implements NodeInter {
 		dataValue = newData;
 	}
 
-	/*
-	 * 目的:以新字串arg取代dataValue中以offset為基準長度為count的部份
-	 * 
-	 * 參數:
-	 * offset => The offset from which to start replacing
-	 * count => The number to replace
-	 * arg => The String with which the range must be replaced.
-	 * 
-	 * */
+	
 	public void replaceData(long offset, long count, String arg)
 			throws DOMException {
 		if (offset < 0 || count < 0 || offset >= dataValue.length())
