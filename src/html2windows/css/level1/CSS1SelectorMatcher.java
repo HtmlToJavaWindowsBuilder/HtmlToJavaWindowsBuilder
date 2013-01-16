@@ -35,8 +35,10 @@ public class CSS1SelectorMatcher implements html2windows.css.SelectorMatcher{
 		String[] selectorTexts = selectorGroupText.split("\\s*,\\s*");
 		for(String selectorText : selectorTexts){
 			Selector selector = compiler.compile(selectorText);
-			ArrayList<Element> elements = select(selector, document);
-			result.addAll(elements);
+            if( selector != null ) {
+                ArrayList<Element> elements = select(selector, document);
+                result.addAll(elements);
+            }
 		}
 		
 		return result;

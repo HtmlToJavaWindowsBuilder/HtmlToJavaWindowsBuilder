@@ -1,45 +1,71 @@
 package html2windows.css;
 
+import html2windows.css.level1.CSS1SelectorMatcher;
+import html2windows.dom.Document;
+import html2windows.dom.Element;
+
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import html2windows.dom.Document;
-
+/**
+ * Use for add style to each element
+ * 
+ * @author mutant
+ */
 public class CSSParser {
-    // the input String of CSS, to parse whether syntax is correct or not, then add element to each node
+    // the input String of CSS, to parse whether syntax is correct or not, then
+    // add style to each element
     String cssString;
     // the position of character of cssString
     int pos;
+    Document document;
+    // author normal priority is 3
+    private static final int priority = 3;
+    public CSSRuleSet ruleSet;
 
-    /** 
-     * Input cssString and document(the root of tree)
-     * Call this to start CSSParser, and it will parse cssString, and add element to each node 
+    /**
+     * Call this to start CSSParser, and it will parse cssString, 
+     * and add style to each element
+     * 
+     * @param cssString the cssRuleSet, used to add style to each element
+     * @param document  the root of tree which has been built
      */
+    
     public void parse(String cssString, Document document) {
         this.cssString = cssString;
         this.pos = 0;
+        this.document = document;
+
+        this.ruleSet = new CSSRuleSet(priority);
+
         parseStyleSheet();
     }
-
-    /**
-     *  [ CDO | CDC | S | statement ]*;
-     */
-    private void parseSpace() {
-        char ch = 0;
-
-        if (isNotEnd()) {
-            ch = getChar();
-            while (ch == '\t' || ch == '\r' || ch == '\n' || ch == '\f'
-                    || ch == ' ') {
-                pos++;
-                if (isNotEnd()) {
-                    ch = getChar();
+    
+    public CSSRuleSet parseRuleSet(String str){
+        ruleSet = new CSSRuleSet(priority);
+        cssString = str;
+        pos = 0;
+        
+        if (isNotEnd() && getChar() == '{') {
+            pos++;
+            parseSpace();
+            if (isNotEnd()) {
+                parseDeclaration();
+                while (isNotEnd() && getChar() == ';') {
+                    pos++;
+                    parseSpace();
+                    parseDeclaration();
                 }
-                else
-                    break;
+                if (isNotEnd() && getChar() == '}') {
+                    pos++;
+                    parseSpace();
+                }
             }
         }
+        
+        return ruleSet;
     }
-
+    
     /**
      * @return true if cssString is end, false otherwise;
      */
@@ -56,7 +82,27 @@ public class CSSParser {
     }
 
     /**
-     * [ CDO | CDC | S | statement ]*;
+     * Rule: [ CDO | CDC | S | statement ]*;
+     */
+    private void parseSpace() {
+        char ch;
+
+        if (isNotEnd()) {
+            ch = getChar();
+            while (ch == '\t' || ch == '\r' || ch == '\n' || ch == '\f'
+                    || ch == ' ') {
+                pos++;
+                if (isNotEnd()) {
+                    ch = getChar();
+                }
+                else
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Rule: [ CDO | CDC | S | statement ]*;
      */
     private void parseStyleSheet() {
         while (isNotEnd()) {
@@ -66,7 +112,7 @@ public class CSSParser {
     }
 
     /**
-     * ruleset | at-rule;
+     * Rule: ruleset | at-rule;
      */
     private void parseStatement() {
         if (isNotEnd()) {
@@ -80,64 +126,100 @@ public class CSSParser {
     }
 
     /**
-     * ATKEYWORD S* any* [ block | ';' S* ];
+     * Rule: ATKEYWORD S* any* [ block | ';' S* ];
      */
     private void parseAtRule() {
+        int prePos;
+        int nextPos;
+        AtRuleHandler handler;
+        
         if (isNotEnd()) {
-            parseIdent();
+            String ident = parseIdent();
+            handler = document.getAtRuleHandler(ident);
             parseSpace();
-            parseAny();
             if (isNotEnd()) {
+                prePos = pos;
                 if (getChar() == '{') {
                     pos++;
-                    parseBlock();
+                    while(isNotEnd() && getChar() != '}'){
+                        pos++;
+                    }
                 }
                 else if (getChar() == ';') {
                     pos++;
                     parseSpace();
+                }
+                nextPos = pos++;
+                if(handler != null){
+                    handler.handle(cssString.substring(prePos, nextPos ), document);
                 }
             }
         }
     }
 
     /**
-     * '{' S* [ any | block | ATKEYWORD S* | ';' S* ]* '}' S*;
+     * Rule: '{' S* [ any | block | ATKEYWORD S* | ';' S* ]* '}' S*;
+     * 
+     * @return  the part of content without '{' '}' ';'
      */
-    private void parseBlock() {
+    private String parseBlock() {
+        String buffer = "";
+        char ch;
+
         if (isNotEnd()) {
             parseSpace();
-            while (isNotEnd() && getChar() != '}') {
-                if (getChar() == '{') {
+            ch = getChar();
+            while (isNotEnd() && ch != '}') {
+                // block
+                if (ch == '{') {
                     pos++;
-                    parseBlock();
+                    buffer += parseBlock();
                 }
-                else if (getChar() == '@') {
+                // ATKEYWORD
+                else if (ch == '@') {
                     pos++;
-                    parseIdent();
+                    buffer += parseIdent();
                 }
-                else if (getChar() == ';') {
+                // ';'
+                else if (ch == ';') {
                     pos++;
                     parseSpace();
                 }
+                // any
                 else {
                     parseAny();
                 }
             }
-            if (isNotEnd() && getChar() == '}') {
+
+            if (isNotEnd() && ch == '}') {
                 pos++;
                 parseSpace();
             }
         }
+
+        return buffer;
     }
 
     /**
-     * selector? '{' S* declaration? [ ';' S* declaration? ]* '}' S*;
+     * Get seletorName and add ruleset to element.
+     * 
+     * Rule: selector? '{' S* declaration? [ ';' S* declaration? ]* '}' S*; 
+     * 
+     * @return  the elements which are inserted ruleSet, if parsing didn't work,
+     *          return null
      */
     private void parseRuleSet() {
+        ArrayList<Element> elements = null;
+        String selector = "";
+
         if (isNotEnd()) {
-            if (Pattern.compile("(.*) {").matcher(cssString.substring(pos))
+            selector = "";
+            ruleSet = new CSSRuleSet(priority);
+            if (Pattern.compile("(. *?)\\{").matcher(cssString.substring(pos))
                     .find()) {
-                parseSelector();
+                selector += parseSelector();
+                System.err.println(selector);
+
                 if (isNotEnd() && getChar() == '{') {
                     pos++;
                     parseSpace();
@@ -151,6 +233,11 @@ public class CSSParser {
                         if (isNotEnd() && getChar() == '}') {
                             pos++;
                             parseSpace();
+                            // put ruleset into element
+                            elements = new CSS1SelectorMatcher().getElementBySelector(selector, document);
+                            for(Element e: elements){
+                                e.getStyle().addCSSRuleSet(ruleSet);
+                            }
                         }
                     }
                 }
@@ -159,78 +246,110 @@ public class CSSParser {
     }
 
     /**
-     * any+;
+     * Rule: any+; but character can't be '{'
+     * 
+     * @return  string of selector
      */
-    private void parseSelector() {
-        while (isNotEnd()) {
-            parseAny();
+    private String parseSelector() {
+        String selector = "";
+        char ch;
+
+        if (isNotEnd()) {
+            do {
+                ch = getChar();
+                if (ch == '{') {
+                    selector = selector.trim();
+                    break;
+                }
+                else {
+                    selector += parseAny();
+                }
+            }
+            while (isNotEnd());
         }
+
+        return selector;
     }
 
     /**
-     * property S* ':' S* value;
+     * Rule: property S* ':' S* value;
      */
     private void parseDeclaration() {
+        String property = "";
+        String value = "";
+
         if (isNotEnd()) {
-            parseProperty();
+            property = parseProperty();
             parseSpace();
             if (isNotEnd()) {
                 if (getChar() == ':') {
                     pos++;
                     parseSpace();
-                    parseValue();
+                    value = parseValue();
                 }
             }
         }
+
+        ruleSet.setProperty(property, value);
     }
 
     /**
-     * IDENT;
+     * Rule: IDENT;
      */
-    private void parseProperty() {
+    private String parseProperty() {
         if (isNotEnd()) {
-            parseIdent();
+            return parseIdent();
         }
+
+        return null;
     }
 
     /**
-     * [ any | block | ATKEYWORD S* ]+;
+     * Rule: [ any | block | ATKEYWORD S* ]+;
      */
-    private void parseValue() {
+    private String parseValue() {
+        String buffer = "";
+
         if (isNotEnd()) {
             do {
+                // block
                 if (getChar() == '{') {
                     pos++;
-                    parseBlock();
+                    buffer += parseBlock();
                 }
+                // ATKEYWORD
                 else if (getChar() == '@') {
                     pos++;
-                    parseIdent();
+                    buffer += parseIdent();
                     parseSpace();
                 }
+                // any
                 else {
-                    parseAny();
+                    buffer += parseAny();
                 }
             }
-            while (isNotEnd());
+            while (isNotEnd() && getChar() != ';');
         }
+
+        return buffer;
     }
 
     /**
-     * [ IDENT | NUMBER | PERCENTAGE | DIMENSION | STRING | DELIM | URI | HASH |
-       UNICODE-RANGE | INCLUDES | DASHMATCH | ':' | FUNCTION S* [any|unused]*
-       ')' | '(' S* [any|unused]* ')' | '[' S* [any|unused]* ']' ] S*;
+     * Rule: [ IDENT | NUMBER | PERCENTAGE | DIMENSION | STRING | DELIM | URI | HASH |
+     * UNICODE-RANGE | INCLUDES | DASHMATCH | ':' | FUNCTION S* [any|unused]*
+     * ')' | '(' S* [any|unused]* ')' | '[' S* [any|unused]* ']' ] S*;
+     * 
+     * @return character;
      */
-    //FIX IT
-    private void parseAny() {
-        if (isNotEnd()) {
-            parseIdent();
+    private char parseAny() {
+        char ch = getChar();
+        pos++;
 
-        }
+        return ch;
     }
 
     /**
-     * block | ATKEYWORD S* | ';' S* | CDO S* | CDC S*;
+     * Rule: block | ATKEYWORD S* | ';' S* | CDO S* | CDC S*;
      */
     private void parseUnused() {
         if (getChar() == '{') {
@@ -258,7 +377,7 @@ public class CSSParser {
     }
 
     /**
-     * <!--
+     * Rule: <!--
      */
     private void parseCDO() {
         if (isNotEnd()) {
@@ -275,7 +394,7 @@ public class CSSParser {
     }
 
     /**
-     * -->
+     * Rule: -->
      */
     private void parseCDC() {
         if (isNotEnd()) {
@@ -286,8 +405,9 @@ public class CSSParser {
     }
 
     /**
-     * {ident}
-     * @return the parsing string
+     * Rule: {ident}
+     * 
+     * @return  the parsing string
      */
     private String parseIdent() {
         char ch = 0;
@@ -301,29 +421,26 @@ public class CSSParser {
                 if (isNotEnd())
                     ch = getChar();
             }
-            else {
-                System.out.println("ident no '-'");
-                buffer += ch;
 
-            }
             if (isNmstart(ch)) {
                 buffer += parseNmstart();
             }
-            while (isNmchar(ch)) {
-                buffer += ch;
-                pos++;
-                if (isNotEnd())
-                    ch = getChar();
+
+            String temp;
+            while ((temp = parseNmchar()) != "" && isNotEnd()) {
+                buffer += temp;
             }
+
         }
 
         return buffer;
     }
-    
+
     /**
-     * [_a-z]|{nonascii}|{escape}
-     * @param ch, 
-     * @return
+     * Rule: [_a-z]|{nonascii}|{escape}
+     * 
+     * @param   input character
+     * @return  true if ch is Nmstart, false otherwise;
      */
     private boolean isNmstart(char ch) {
         // [_a-z] || nonascii
@@ -339,8 +456,8 @@ public class CSSParser {
     }
 
     /**
-     * @param ch: input testing charater
-     * @return true if the syntax is Nonascii, false otherwise;
+     * @param   input character
+     * @return  true if ch is Nonascii, false otherwise;
      */
     private boolean isNonascii(char ch) {
         if (ch < 0 || ch > 159) {
@@ -350,8 +467,8 @@ public class CSSParser {
     }
 
     /**
-     * @param ch: input testing charater
-     * @return true if the syntax is Escape, false otherwise;
+     * @param   input character
+     * @return  true if ch is Escape, false otherwise;
      */
     private boolean isEscape(char ch) {
         if (ch == 92) {
@@ -360,10 +477,10 @@ public class CSSParser {
             // unicode in escape
             if (isHex(ch)) {
                 try {
-                    int hexCh = parseUnicode();
+                    // FIX IT
+                    // int hexCh = parseUnicode();
                 }
                 catch (Exception e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
                 ch = getChar();
@@ -389,13 +506,16 @@ public class CSSParser {
         return false;
     }
 
+    /**
+     * @param   input character
+     * @return  true if ch is Nmchar, false otherwise;
+     */
     private boolean isNmchar(char ch) {
         boolean isTrue;
 
         isTrue = false;
-        while (ch == 95 || (ch >= 97 && ch <= 122) || (ch >= 48 && ch <= 57)
+        if (ch == 95 || (ch >= 97 && ch <= 122) || (ch >= 48 && ch <= 57)
                 || isNonascii(ch) || isEscape(ch)) {
-            pos++;
             ch = getChar();
             isTrue = true;
         }
@@ -404,15 +524,15 @@ public class CSSParser {
     }
 
     /**
-     * @param ch: input the testing character;
-     * @return true if character is Hex, false otherwise;
+     * @param   input character
+     * @return  true if ch is Hex, false otherwise;
      */
     private boolean isHex(char ch) {
         return ((ch >= 48 && ch <= 57) || (ch >= 97 && ch <= 102));
     }
-    
+
     /**
-     * {nmchar}+
+     * Rule: {nmchar}+
      */
     private void parseName() {
         if (isNotEnd()) {
@@ -424,8 +544,9 @@ public class CSSParser {
     }
 
     /**
-     * [_a-z]|{nonascii}|{escape}
-     * @return the testing string
+     * Rule: [_a-z]|{nonascii}|{escape}
+     * 
+     * @return  the Nmstart string
      */
     private String parseNmstart() {
         char ch;
@@ -433,16 +554,49 @@ public class CSSParser {
 
         if (isNotEnd()) {
             ch = getChar();
-            // [_a-z] || nonascii
+            // [_a-z]
             if (ch == '_' || (ch >= 97 && ch <= 122)) {
                 buffer += ch;
+                pos++;
             }
             // escape
             else if (ch == '\\') {
+                buffer += ch;
+                pos++;
+                buffer += parseEscape();
+            }
+            // nonascii
+            else {
+                buffer += parseNonascii();
+            }
+        }
+
+        return buffer;
+    }
+
+    /**
+     * Rule: [_a-z0-9-]|{nonascii}|{escape}
+     * 
+     * @return  the Nmchar string
+     */
+    private String parseNmchar() {
+        String buffer = "";
+        char ch;
+
+        if (isNotEnd()) {
+            ch = getChar();
+            // [_a-z0-9-]
+            if (ch == '_' || ch >= 97 && ch <= 122 || ch >= 48 && ch <= 57
+                    || ch == '-') {
+                buffer += ch;
+                pos++;
+            }
+            else if (ch == '\\') {
+                buffer += ch;
                 pos++;
                 parseEscape();
             }
-            else {
+            else if (ch < 0 || ch > 159) {
                 parseNonascii();
             }
         }
@@ -451,31 +605,31 @@ public class CSSParser {
     }
 
     /**
-     * [^\0-\237]
+     * Rule: [^\0-\237]
+     * @return  the Nonascii string
      */
-    private void parseNonascii() {
+    private String parseNonascii() {
         char ch;
+        String buffer = "";
 
         if (isNotEnd()) {
             ch = getChar();
             if (ch < 0 || ch > 159) {
+                buffer += ch;
                 pos++;
             }
-            else {
-                System.out.println("error in parseNonascii()");
-            }
         }
-        else {
-            System.out.println("end in parseNonascii()");
-        }
+
+        return buffer;
     }
-    
+
     /**
-     * \\[0-9a-f]{1,6}(\r\n|[ \n\r\t\f])?
-     * @return the integer which is parsed from input hex
-     * @throws Exception
+     * Rule: \\[0-9a-f]{1,6}(\r\n|[ \n\r\t\f])?
+     * 
+     * @return  the integer which is parsed from input hex
+     * @throws  Exception
      */
-    private int parseUnicode() throws Exception {
+    private String parseUnicode() throws Exception {
         char ch;
         String buffer = "";
 
@@ -493,18 +647,38 @@ public class CSSParser {
                 }
                 while (times <= 6 && isNotEnd());
 
-                return Integer.parseInt(buffer, 16);
+                int hexInt = Integer.parseInt(buffer, 16);
+                char hexCh = (char) hexInt;
+                buffer += hexCh;
+            }
+
+            ch = getChar();
+            if (ch == '\r') {
+                buffer += ch;
+                pos++;
+                ch = getChar();
+                if (ch == '\n') {
+                    buffer += ch;
+                    pos++;
+                }
+            }
+            // space
+            else if (ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t'
+                    || ch == '\f') {
+                buffer += ch;
+                pos++;
             }
         }
-        else {
-            System.out.println("end in parseUnicode()");
-        }
-        throw new Exception();
+
+        return buffer;
     }
 
     /**
-     * {unicode}|\\[^\n\r\f0-9a-f] but \\ is used to identify whether it goes to
+     * Rule: {unicode}|\\[^\n\r\f0-9a-f] 
+     * but \\ is used to identify whether it goes to
      * parseEscape, so is not considered in this function()
+     * 
+     * @return  the escape string
      */
     private String parseEscape() {
         char ch = 0;
@@ -512,72 +686,22 @@ public class CSSParser {
 
         if (isNotEnd()) {
             ch = getChar();
-            // unicode in escape
-            if (isHex(ch)) {
-                try {
-                    int hexInt = parseUnicode();
-                    char hexCh = (char) hexInt;
-                }
-                catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                ch = getChar();
-                if (ch == '\r') {
-                    pos++;
-                    ch = getChar();
-                    if (ch == '\n') {
-
-                    }
-                }
-                // space
-                else if (ch == ' ' || ch == '\n' || ch == '\r' || ch == '\t'
-                        || ch == '\f') {
-
-                }
-            }
+            /*
+             * unicode in escape if (isHex(ch)) { try { buffer +=
+             * parseUnicode(); } catch (Exception e) { e.printStackTrace(); } }
+             */
             // else in escape
-            else if (!(ch == '\n' || ch == '\r' || ch == '\f' || isHex(ch))) {
-
+            if (!(ch == '\n' || ch == '\r' || ch == '\f' || isHex(ch))) {
+                buffer += ch;
+                pos++;
             }
-            else {
-                System.out.println("error in parseEscape()");
-            }
-        }
-        else {
-            System.out.println("end in parseEscape()");
         }
 
         return buffer;
     }
 
     /**
-     * [_a-z0-9-]|{nonascii}|{escape}
-     */
-    private void parseNmchar() {
-        char ch;
-
-        if (isNotEnd()) {
-            ch = getChar();
-            if (ch == '_' || ch >= 97 && ch <= 122 || ch >= 48 && ch <= 57
-                    || ch == '-') {
-                pos++;
-            }
-            else if (ch == '\\') {
-                pos++;
-                parseEscape();
-            }
-            else {
-                parseNonascii();
-            }
-        }
-        else {
-            System.out.println("end in parseNmchar()");
-        }
-    }
-
-    /**
-     *  [0-9]+|[0-9]*\.[0-9]+
+     * Rule: [0-9]+|[0-9]*\.[0-9]+
      */
     private void parseNum() {
         char ch;
@@ -594,7 +718,6 @@ public class CSSParser {
                     }
                     else {
                         if (times == 0) {
-                            System.out.println("error in parseNum");
                             break;
                         }
                     }
@@ -611,7 +734,6 @@ public class CSSParser {
                     }
                     else {
                         if (times == 0) {
-                            System.out.println("error in parseNum");
                             break;
                         }
                         else {
@@ -633,7 +755,6 @@ public class CSSParser {
                         }
                         else {
                             if (times == 0) {
-                                System.out.println("error in parseNum");
                                 break;
                             }
                         }
@@ -645,7 +766,7 @@ public class CSSParser {
     }
 
     /**
-     * {string1}|{string2}
+     * Rule: {string1}|{string2}
      */
     private void parseString() {
         char ch;
@@ -664,7 +785,7 @@ public class CSSParser {
     }
 
     /**
-     * \"([^\n\r\f\\"]|\\{nl}|{escape})*\"
+     * Rule: \"([^\n\r\f\\"]|\\{nl}|{escape})*\"
      */
     private void parseString1() {
         char ch;
@@ -694,7 +815,7 @@ public class CSSParser {
     }
 
     /**
-     * \'([^\n\r\f\\']|\\{nl}|{escape})*\'
+     * Rule: \'([^\n\r\f\\']|\\{nl}|{escape})*\'
      */
     private void parseString2() {
         char ch;
@@ -724,33 +845,24 @@ public class CSSParser {
     }
 
     /**
-     * \n|\r\n|\r|\f
+     * Rule: \n|\r\n|\r|\f
      */
     private void parseNl() {
         char ch;
 
         if (isNotEnd()) {
             ch = getChar();
-            if (ch == '\n' || ch == '\f') {
-                System.out.println("in parseNl isEnd(end of \n || \f)");
-            }
-            else if (ch == '\r') {
+            if (ch == '\r') {
                 pos++;
                 if (isNotEnd()) {
                     ch = getChar();
-                    if (ch == '\n') {
-                        System.out.println("in parseNl isEnd(end of \r\n)");
-                    }
-                }
-                else {
-                    System.out.println("in parseNl isEnd(end of \r)");
                 }
             }
         }
     }
 
     /**
-     * [ \t\r\n\f]*
+     * Rule: [ \t\r\n\f]*
      */
     private void parseW() {
         char ch;

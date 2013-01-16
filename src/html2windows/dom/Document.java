@@ -1,5 +1,8 @@
 package html2windows.dom;
+import html2windows.css.AtRuleHandler;
+
 import java.awt.Component;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 
@@ -8,6 +11,7 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
+import html2windows.css.CSSPainter;
 
 /**
  * Implementation of DOM Document and Top level window.
@@ -25,6 +29,11 @@ import org.w3c.dom.events.EventListener;
 @SuppressWarnings("serial")
 
 public class Document extends JFrame implements Node{
+
+    private CSSPainter painter;
+
+    HashMap<String, AtRuleHandler> atRuleHandlerMap = new HashMap<String, AtRuleHandler>();
+    
 	
 	/**
 	 * Return the document element, the root
@@ -365,6 +374,14 @@ public class Document extends JFrame implements Node{
 	public boolean hasAttributes() {
 		return false;
 	}
+	
+	public void setAtRuleHandler(String atRule, AtRuleHandler handler){
+	    atRuleHandlerMap.put(atRule, handler);
+	}
+	
+	public AtRuleHandler getAtRuleHandler(String atRule){
+	    return atRuleHandlerMap.get(atRule);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -567,4 +584,12 @@ public class Document extends JFrame implements Node{
 		TextInter text = (TextInter)createTextNode(importedNode.data());
 		return text;
 	}
+
+    public void setPainter(CSSPainter painter) {
+        this.painter = painter;
+    }
+
+    public CSSPainter getPainter() {
+        return this.painter;
+    }
 }

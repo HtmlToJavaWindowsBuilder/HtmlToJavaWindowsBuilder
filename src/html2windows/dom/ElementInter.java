@@ -1,10 +1,13 @@
 package html2windows.dom;
 
+import html2windows.css.CSSPainter;
 import html2windows.css.Style;
 
 import java.awt.Component;
 import java.awt.Container;
 import java.util.ArrayList;
+
+import java.awt.Graphics;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.events.Event;
@@ -663,7 +666,11 @@ public class ElementInter extends Element implements NodeInter {
 
     }
 
-
+    @Override
+    protected void paintComponent(Graphics g) {
+        CSSPainter painter = ownerDocument().getPainter();
+        painter.paint(this.elementStyle, this, g);
+    }
 
 	
 }
