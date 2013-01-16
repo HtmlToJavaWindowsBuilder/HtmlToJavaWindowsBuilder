@@ -144,7 +144,8 @@ public class FontProperty extends JPanel implements CSSPainter {
 
         return Integer.parseInt(this.property.get("font-size")) + variantSize;         
     }
-
+    
+    
     private void setFont() {
         int size = setFontSize();
         int weight = setFontWeight();
@@ -156,7 +157,8 @@ public class FontProperty extends JPanel implements CSSPainter {
         }
         this.font = new Font(family, weight, size+variant);
     }
-
+    
+    
     private int getFontStyleItalic(int weight) {
         String strStyle = this.property.get("font-style").toLowerCase();
 
@@ -169,6 +171,9 @@ public class FontProperty extends JPanel implements CSSPainter {
 
         return weight;
     }
+    
+    
+    
     private int setFontWeight() {
         String strWeight = this.property.get("font-weight").toLowerCase();
         int weight = Font.PLAIN;
@@ -289,16 +294,7 @@ public class FontProperty extends JPanel implements CSSPainter {
 			g2d.setColor(new Color(128,128,128));
 		}
 		else{
-			String firstColor=color.substring(1, 3);
-			int firstColorNum=Integer.parseInt(firstColor, 16);
-			
-			String secondColor=color.substring(3,5);
-			int secondColorNum=Integer.parseInt(secondColor, 16);
-			
-			String thirdColor=color.substring(5,7);
-			int thirdColorNum=Integer.parseInt(thirdColor, 16);
-			
-			g2d.setColor(new Color(firstColorNum,secondColorNum,thirdColorNum));
+
 			
 			
 		}

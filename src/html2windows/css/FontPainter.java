@@ -24,6 +24,9 @@ import javax.swing.JComponent;
 
 import html2windows.dom.Document;
 import html2windows.dom.Element;
+import html2windows.dom.Node;
+import html2windows.dom.NodeList;
+import html2windows.dom.Text;
 import html2windows.css.Style;
 
 import javax.swing.text.StyleConstants; 
@@ -79,7 +82,7 @@ public class FontPainter extends JPanel implements CSSPainter {
         this.property.put("font-variant", "normal");
         this.property.put("font-weight", "plain");
         this.property.put("font-style", "normal");
-		this.property.put("text-color","black");
+		this.property.put("color","black");
 		this.property.put("text-align","default");
 		this.property.put("text-decoration","default");
 		this.property.put("text-indent","default");
@@ -100,18 +103,15 @@ public class FontPainter extends JPanel implements CSSPainter {
         getFontStyle(style, "font-size");
         getFontStyle(style, "font-weight");
         getFontStyle(style, "font-variant");
-		getFontStyle(style, "text-color");
+		getFontStyle(style, "color");
 		getFontStyle(style, "text-align");
 		getFontStyle(style, "text-decoration");
 		getFontStyle(style, "text-indent");
 		getFontStyle(style, "line-height");
         setFont();
-        //getFontText(element);
-        /*
-        AttributedString fontAttr = setTextDecoration(this.font,this.text);
-        int fontwidth = 300;
-        int textIndent = setTextIndent();
-        */
+        setColor();
+        getFontText(element);
+
         AttributedString attributedString = new AttributedString(this.text);
         if( setFontVariant() != 0 ) {
             attributedString.addAttribute(TextAttribute.FONT,this.fontVariant,0,1);
@@ -120,11 +120,17 @@ public class FontPainter extends JPanel implements CSSPainter {
         else {
             attributedString.addAttribute(TextAttribute.FONT,this.font);
         }
+        
+        setTextDecoration(attributedString);
+        
+        
+        
         this.g2d.drawString(attributedString.getIterator(), 30, 30);
         
+        
+        
+        
         /*
-        this.g2d.setFont(this.font);
-        this.g2d.setColor(Color.red);
         this.g2d.drawString(this.text,20,30);
         this.g2d.drawString("text",20,30);
         */
@@ -261,7 +267,7 @@ public class FontPainter extends JPanel implements CSSPainter {
      */
 	public void setColor(){
 		
-		String color=property.get("text-color");
+		String color=property.get("color").toLowerCase();
 		
 		if(color.equals("maroon")){
 			
@@ -332,79 +338,33 @@ public class FontPainter extends JPanel implements CSSPainter {
 			g2d.setColor(new Color(128,128,128));
 		}
 		else{
-			String firstColor=color.substring(1, 3);
-			int firstColorNum=Integer.parseInt(firstColor, 16);
-			
-			String secondColor=color.substring(3,5);
-			int secondColorNum=Integer.parseInt(secondColor, 16);
-			
-			String thirdColor=color.substring(5,7);
-			int thirdColorNum=Integer.parseInt(thirdColor, 16);
-			
-			g2d.setColor(new Color(firstColorNum,secondColorNum,thirdColorNum));
-			
-			
+			g2d.setColor(new Color(0,0,0));
+				
 		}
 	
 	}
+
 	
-    /**
-     * Function will set light height 
-     *
-     */
-	public void setLineHeight(){
-		String textAlign=property.get("line-height");
-		
-	}
-	
-    /**
-     * Function will set text align
-     *
-     * @param   s     text
-     *
-     * @return  length   
-     */
-	public int setTextAlign(String s){
-		String textAlign=property.get("text-align");
-		int width=getWidth();
-		int stringLength = getFontLength(s);
-		
-		if(textAlign.equals("center")){
-			return (width/2-stringLength/2);
-			
-		}
-		if(textAlign.equals("left")){
-			
-			return 0;
-		}
-		if(textAlign.equals("right")){
-			return (width-stringLength);
-			
-		}
-		
-		return 0;
-	}
+   
 		
     /**
      * Function will set Text Decoration
      *
-     * @param f
+     * @param f The font f is 
      * @param s
      *
      * @return   
      */
-	public AttributedString setTextDecoration(Font f,String s){
+	public void setTextDecoration(AttributedString attributedString){
 		String textDecoration=property.get("text-decoration");
-		AttributedString as = new AttributedString(s);
-		as.addAttribute(TextAttribute.FONT, f);
 		
 		if(textDecoration.equals("underline"))
-		    as.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+		    attributedString.addAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 
 		if(textDecoration.equals("line-through"))
-		    as.addAttribute(TextAttribute.STRIKETHROUGH,TextAttribute.STRIKETHROUGH_ON, 18, 25);
+			attributedString.addAttribute(TextAttribute.STRIKETHROUGH,TextAttribute.STRIKETHROUGH_ON);
 	
-		return as;
+		
 		
 	}
 	
@@ -420,28 +380,14 @@ public class FontPainter extends JPanel implements CSSPainter {
 	}
 	
     /**
-     * Function will get font length 
+     * Function will get font text. 
      *
-     * @param   s       text
-     *
-     * @return  length     
-     */
-	public int getFontLength(String s){
-		FontMetrics fm = g2d.getFontMetrics();
-		int length = fm.stringWidth(s);
-		
-		return length;
-	}
-    /**
-     * Function will get font length 
-     *
-     * @param   s       text
-     *
-     * @return  length     
+     * @param	element The element you want to get text from.  
      */
 	private void getFontText(Element element){
-		 this.text = element.nodeValue();
-		
+		 NodeList nodeList =element.childNodes();
+		 Node nodeText=nodeList.item(0);
+		 this.text=nodeText.nodeValue();
 	}
 	
 }

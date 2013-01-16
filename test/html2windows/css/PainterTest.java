@@ -84,6 +84,7 @@ public class PainterTest {
         style.setProperty("height","10");
         style.setProperty("background-color","orange");
         
+        
         //document.setPainter();
         JButton btn = new JButton("OK");
         JButton btn1 = new JButton("OK");
@@ -97,5 +98,6 @@ public class PainterTest {
         frame.setLocationRelativeTo(null);
         frame.add(customPanel);
         frame.setVisible(true);
+        
     }
 }

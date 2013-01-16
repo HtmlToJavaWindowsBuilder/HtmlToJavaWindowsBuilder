@@ -6,6 +6,8 @@ import html2windows.css.Style;
 import html2windows.dom.ElementInter;
 import html2windows.dom.Element;
 import html2windows.dom.Document;
+import html2windows.dom.Text;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Color;
@@ -74,7 +76,7 @@ public class CustomTest {
          * Create a ElementInter
          * Create a Element
          * Create a Style
-         * 
+         * Create a Text and append it to element
          */
         String tagName = "h1";
         ElementInter elementInter = new ElementInter(tagName);
@@ -82,7 +84,10 @@ public class CustomTest {
 
         Element elementNode = elementInter;
         elementNode.setPreferredSize(new Dimension(100, 100));
-
+        
+        Text textValueText=document.createTextNode("5555555555555555555555555555555");
+        elementNode.appendChild(textValueText);
+        
         Style style = elementNode.getStyle();
             
 
@@ -98,7 +103,7 @@ public class CustomTest {
          *
          */
         style.setProperty("family","Arial");
-        style.setProperty("font-size","30");
+        style.setProperty("font-size","12px");
         style.setProperty("font-weight","bold");
         style.setProperty("font-style","italic");
         style.setProperty("font-variant","small-caps");
@@ -120,7 +125,8 @@ public class CustomTest {
         style.setProperty("left","100");
         style.setProperty("top","100");
         style.setProperty("position","relative");
-
+        style.setProperty("text-decoration","line-through");
+        style.setProperty("color","red");
         /**
          * Test
          * 
@@ -134,6 +140,7 @@ public class CustomTest {
         frame.setLocationRelativeTo(null);
         frame.add(customPanel);
         frame.setVisible(true);
-        Thread.sleep(300);
+        
+        
     }
 }
