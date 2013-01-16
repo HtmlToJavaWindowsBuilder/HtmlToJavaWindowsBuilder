@@ -50,7 +50,7 @@ public class BackgroundTest {
         frame.setSize(360,360);
         frame.setLocationRelativeTo(null);
         frame.add(background);
-        frame.setVisible(true);
+        //frame.setVisible(true);
         
         
         Thread.sleep(2000);
