@@ -12,7 +12,7 @@ import java.awt.Dimension;
 
 import java.io.File;
 
-import java.lang.Thread
+import java.lang.Thread;
 
 import javax.swing.JPanel;
 import javax.swing.JFrame;
