@@ -5,58 +5,58 @@ import java.awt.Color;
 public class ColorConverter {
 
 	static Color convert(String color){
-		if(color.equals("maroon")){
+		if("maroon".equals(color)){
 			return new Color(128,0,0);
 		}
-		else if(color.equals("red")){
+		else if("red".equals(color)){
 			return new Color(255,0,0);
 		}
-		else if(color.equals("orange")){
+		else if("orange".equals(color)){
 			return new Color(255,165,0);
 		}
-		else if(color.equals("yellow")){
+		else if("yellow".equals(color)){
 			return new Color(255,255,0);
 		}
-		else if(color.equals("olive")){
+		else if("olive".equals(color)){
 			return new Color(128,128,0);
 		}
-		else if(color.equals("purple")){
+		else if("purple".equals(color)){
 			return new Color(128,0,128);
 		}
-		else if(color.equals("fuchsia")){
+		else if("fuchsia".equals(color)){
 			return new Color(255,0,255);
 		}
-		else if(color.equals("white")){
+		else if("white".equals(color)){
 			return new Color(255,255,255);
 		}
-		else if(color.equals("lime")){
+		else if("lime".equals(color)){
 			return new Color(0,255,255);
 		}
-		else if(color.equals("green")){
+		else if("green".equals(color)){
 			return new Color(0,255,0);
 		}
-		else if(color.equals("navy")){
+		else if("navy".equals(color)){
 			return new Color(0,0,128);
 		}
-		else if(color.equals("blue")){
+		else if("blue".equals(color)){
 			return new Color(0,0,255);
 		}
-		else if(color.equals("aqua")){
+		else if("aqua".equals(color)){
 			return new Color(0,255,255);
 		}
-		else if(color.equals("teal")){
+		else if("teal".equals(color)){
 			return new Color(0,128,128);
 		}
-		else if(color.equals("black")||color.equals("default")){
+		else if("black".equals(color)||"default".equals(color)){
 			return new Color(0,0,0);
 		}
-		else if(color.equals("silver")){
+		else if("silver".equals(color)){
 			return new Color(192,192,192);
 		}
-		else if(color.equals("gray")){
+		else if("gray".equals(color)){
 			return new Color(128,128,128);
 		}
-		else if(color.matches("#[0-9A-Fa-f]{6}")){
+		else if(color!=null && color.matches("#[0-9A-Fa-f]{6}")){
             String firstColor=color.substring(1, 3);
             int firstColorNum=Integer.parseInt(firstColor, 16);
 
