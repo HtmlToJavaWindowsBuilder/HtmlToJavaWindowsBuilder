@@ -105,7 +105,7 @@ class TextInter extends Text implements NodeInter {
 	 * 
 	 */
 	public void appendData(String arg) throws DOMException {
-		dataValue=dataValue.concat("arg");
+		dataValue=dataValue.concat(arg);
 	}
 
 	/**
