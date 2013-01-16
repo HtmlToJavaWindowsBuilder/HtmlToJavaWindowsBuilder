@@ -220,7 +220,27 @@ public class CSSParser {
                     .find()) {
                 selector += parseSelector();
 
-                
+                if (isNotEnd() && getChar() == '{') {
+                    pos++;
+                    parseSpace();
+                    if (isNotEnd()) {
+                        parseDeclaration();
+                        while (isNotEnd() && getChar() == ';') {
+                            pos++;
+                            parseSpace();
+                            parseDeclaration();
+                        }
+                        if (isNotEnd() && getChar() == '}') {
+                            pos++;
+                            parseSpace();
+                            // put ruleset into element
+                            elements = new CSS1SelectorMatcher().getElementBySelector(selector, document);
+                            for(Element e: elements){
+                                e.getStyle().addCSSRuleSet(ruleSet);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
