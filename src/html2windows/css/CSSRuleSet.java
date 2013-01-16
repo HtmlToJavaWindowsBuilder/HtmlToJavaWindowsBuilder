@@ -17,13 +17,14 @@ public class CSSRuleSet{
 	private HashMap<String,String> cssRule=new HashMap<String,String>();
 	
 	/**
-	 * this rule set's priority
+	 * This CSS rule set's priority.
 	 */
 	private int priority;
 	
 	
 	/**
-	 * construct CSSRuleSet and set priority
+	 * Construct CSSRuleSet and set priority.
+	 * 
 	 * @param priority		CSSRuleSet's priority
 	 */
 	public CSSRuleSet(int priority){
@@ -31,7 +32,8 @@ public class CSSRuleSet{
 	}
 	
 	/**
-	 * get CSSRuleSet's Priority
+	 * Get CSSRuleSet's Priority.
+	 * 
 	 * @return				CSSRuleSet's Priority
 	 */
 	public int getPriority(){
@@ -39,7 +41,8 @@ public class CSSRuleSet{
 	}
 	
     /**
-     * get CSS rule by given property name
+     * Get CSS rule by given property name.
+     * 
      * @param propertyName			property to get
      * @return					property's value
      */
@@ -48,7 +51,8 @@ public class CSSRuleSet{
     }
     
     /**
-     * set new CSS rule to CSSRuleSet
+     * Set new CSS rule to CSSRuleSet.
+     * 
      * @param propertyName			property's name
      * @param value				property's value
      */
