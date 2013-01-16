@@ -125,6 +125,7 @@ public class CustomTest {
         style.setProperty("left","100");
         style.setProperty("top","100");
         style.setProperty("position","relative");
+        style.setProperty("float","left");
         style.setProperty("text-decoration","line-through");
         style.setProperty("color","#182bbc");
         /**
