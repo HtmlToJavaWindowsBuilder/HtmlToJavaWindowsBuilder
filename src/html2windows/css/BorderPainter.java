@@ -124,75 +124,8 @@ public class BorderPainter extends JPanel implements CSSPainter{
      * Set color by user defined property "border-color"     
      */
     public void setColor(){
-
 		String color=property.get("border-color").toLowerCase();
-
-		if(color.equals("maroon")){
-			g2d.setColor(new Color(128,0,0));
-		}
-		else if(color.equals("red")){
-			g2d.setColor(new Color(255,0,0));
-		}
-		else if(color.equals("orange")){
-			g2d.setColor(new Color(255,165,0));
-		}
-		else if(color.equals("yellow")){
-			g2d.setColor(new Color(255,255,0));
-		}
-		else if(color.equals("olive")){
-			g2d.setColor(new Color(128,128,0));
-		}
-		else if(color.equals("purple")){
-			g2d.setColor(new Color(128,0,128));
-		}
-		else if(color.equals("fuchsia")){
-			g2d.setColor(new Color(255,0,255));
-		}
-		else if(color.equals("white")){
-			g2d.setColor(new Color(255,255,255));
-		}
-		else if(color.equals("lime")){
-			g2d.setColor(new Color(0,255,255));
-		}
-		else if(color.equals("green")){
-			g2d.setColor(new Color(0,255,0));
-		}
-		else if(color.equals("navy")){
-			g2d.setColor(new Color(0,0,128));
-		}
-		else if(color.equals("blue")){
-			g2d.setColor(new Color(0,0,255));
-		}
-		else if(color.equals("aqua")){
-			g2d.setColor(new Color(0,255,255));
-		}
-		else if(color.equals("teal")){
-			g2d.setColor(new Color(0,128,128));
-		}
-		else if(color.equals("black")||color.equals("default")){
-			g2d.setColor(new Color(0,0,0));
-		}
-		else if(color.equals("silver")){
-			g2d.setColor(new Color(192,192,192));
-		}
-		else if(color.equals("gray")){
-			g2d.setColor(new Color(128,128,128));
-		}
-		else if(color.matches("#[0-9A-Fa-f]{6}")){
-            String firstColor=color.substring(1, 3);
-            int firstColorNum=Integer.parseInt(firstColor, 16);
-
-            String secondColor=color.substring(3,5);
-            int secondColorNum=Integer.parseInt(secondColor, 16);
-
-            String thirdColor=color.substring(5,7);
-            int thirdColorNum=Integer.parseInt(thirdColor, 16);
-
-            g2d.setColor(new Color(firstColorNum,secondColorNum,thirdColorNum));
-		}
-        else{
-			g2d.setColor(new Color(0,0,0));
-        }
+		g2d.setColor(ColorConverter.convert(color));
     }
 	
 	/**

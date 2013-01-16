@@ -81,9 +81,7 @@ public class BackgroundPainter extends JPanel implements CSSPainter{
      * Set color by user defined property "border-color"     
      */
     public void setColor(){
-
 		String color=property.get("background-color").toLowerCase();
-
 		g2d.setColor(ColorConverter.convert(color));
     }
 }
