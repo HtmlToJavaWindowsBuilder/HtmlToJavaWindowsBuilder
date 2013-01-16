@@ -1,5 +1,7 @@
 package html2windows.dom;
 
+import html2windows.css.Style;
+
 import java.util.ArrayList;
 
 import org.w3c.dom.DOMException;
@@ -8,16 +10,23 @@ import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
 @SuppressWarnings(value = { "serial" })
-class ElementInter extends Element implements NodeInter {
+public class ElementInter extends Element implements NodeInter {
 
     private ArrayList<AttrInter> attributeList = new ArrayList<AttrInter>();
     private NodeList childNodeList = new NodeList();
     private String tagNameValue = null;
     private Node parentNode=null;
     private Document ownerDocument;
+    private Style elementStyle;
     
     public ElementInter(String tagName) {
+    	 tagNameValue = tagName;
+    	 setStyle(null);
+    }
+    
+    public ElementInter(String tagName,Style style) {
         tagNameValue = tagName;
+        setStyle(style);
     }
 
 
@@ -39,9 +48,16 @@ class ElementInter extends Element implements NodeInter {
 
 
     public void setAttribute(String name, String value) throws DOMException {
-        AttrInter newAttr=new AttrInter(name);
-        newAttr.setValue(value);
-        attributeList.add(newAttr);
+    	Document document=ownerDocument();
+    	AttrInter newAttr=(AttrInter)document.createAttribute(name);
+		newAttr.setValue(value);
+		int index=attributeList.indexOf(name);
+    	if(index==-1)	
+    		attributeList.add(newAttr);
+    	else
+    		attributeList.set(index, newAttr);
+
+    		
     }
 
 
@@ -125,6 +141,25 @@ class ElementInter extends Element implements NodeInter {
         return false;
     }
 
+    
+	private void setStyle(Style style) {
+		if(style==null){
+			elementStyle=new Style(this);
+		}
+		else {
+			elementStyle=style;
+		}
+		
+	
+	}
+
+
+	public Style getStyle() {
+		
+		return elementStyle;
+	}
+    
+    
     @Override
     public String nodeName() {
         // TODO Auto-generated method stub
@@ -150,27 +185,27 @@ class ElementInter extends Element implements NodeInter {
     }
 
     @Override
-        public void setParentNode(Node newParent) {
+    public void setParentNode(Node newParent){
             // TODO Auto-generated method stub
             parentNode=newParent;
-        }
+    }
 
 
     @Override
-        public NodeList childNodes() {
+    public NodeList childNodes(){
             // TODO Auto-generated method stub
             return childNodeList;
-        }
+    }
 
     @Override
-        public Node firstChild() {
+    public Node firstChild(){
             // TODO Auto-generated method stub
             if (childNodeList.length() > 0)
                 return childNodeList.get(0);
             else
                 return null;
 
-        }
+   }
 
     @Override
     public Node lastChild() {
@@ -312,7 +347,10 @@ class ElementInter extends Element implements NodeInter {
             return false;
 
     }
-
+    
+    
+    
+    
     @Override
     public void addEventListener(String type, EventListener listener,
             boolean useCapture) {
@@ -333,4 +371,8 @@ class ElementInter extends Element implements NodeInter {
         return false;
 
     }
+
+
+
+	
 }
