@@ -16,7 +16,7 @@ import org.w3c.dom.events.EventListener;
  *  If you want to see detail how this function work.
  *  See above website.
  * 
- *  @author CFWei
+ *  @author	CFWei
  */
 @SuppressWarnings(value = { "serial" })
 public class ElementInter extends Element implements NodeInter {
@@ -31,7 +31,7 @@ public class ElementInter extends Element implements NodeInter {
      * You must input one parameter tagName to set this element's tagName.
      * And it will also new its style automatically.
      * 
-     * @param tagName This element's tagName
+     * @param	tagName This element's tagName
      */
     public ElementInter(String tagName) {
     	 tagNameValue = tagName;
@@ -45,8 +45,8 @@ public class ElementInter extends Element implements NodeInter {
      * One is this Element's style.
      * And the constructor will set this two for you.
      * 
-     * @param tagName This element's tagName
-     * @param style This element's style
+     * @param	tagName This element's tagName
+     * @param	style This element's style
      */
     public ElementInter(String tagName,Style style) {
         tagNameValue = tagName;
@@ -56,7 +56,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Get this element's tagName.
      * 
-     * @return Retrun this element's tagName
+     * @return	Retrun this element's tagName
      * 
      */
     public String tagName() {
@@ -66,9 +66,9 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Retrieves an attribute value by name.
      * 
-     * @param name What attribute you want to get.
+     * @param	name What attribute you want to get.
      * 
-     * @return Attribute's value as a string. Null will be returned if this element doesn't have this attribute.
+     * @return	Attribute's value as a string. Null will be returned if this element doesn't have this attribute.
      */
     public String getAttribute(String name) {
         for (int i = 0; i < attributeList.size(); i++) {
@@ -83,8 +83,8 @@ public class ElementInter extends Element implements NodeInter {
      * Set one attribute of this element.You send what attribute you want to set and its value.
      * The old attribute will be replace.
      * 
-     * @param name attribute
-     * @param value attribute's value
+     * @param	name attribute
+     * @param	value attribute's value
      * 
      * @exception DOMException 
      */
@@ -101,7 +101,7 @@ public class ElementInter extends Element implements NodeInter {
     /** 
      * Removes an attribute by name. 
      * 
-     * @param The name of the attribute to remove.
+     * @param	The name of the attribute to remove.
      */
     public void removeAttribute(String name) throws DOMException {
         for (int i = 0; i < attributeList.size(); i++) {
@@ -115,8 +115,8 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Retrieves an attribute node by name.
      * 
-     * @param name The name of the attribute to retrieve.
-     * @return The Attr node with the specified name (nodeName) or null if there is no such attribute
+     * @param	name The name of the attribute to retrieve.
+     * @return	The Attr node with the specified name (nodeName) or null if there is no such attribute
      */
     public Attr getAttributeNode(String name) {
         for (int i = 0; i < attributeList.size(); i++) {
@@ -132,8 +132,8 @@ public class ElementInter extends Element implements NodeInter {
      * Adds a new attribute node. 
      * If an attribute with that name (nodeName) is already present in the element, it is replaced by the new one.
      * 
-     * @param newAttr The Attr node to add to the attribute list.
-     * @return If the newAttr attribute replaces an existing attribute, the replaced Attr node is returned, otherwise null is returned
+     * @param	newAttr The Attr node to add to the attribute list.
+     * @return	If the newAttr attribute replaces an existing attribute, the replaced Attr node is returned, otherwise null is returned
      */
     public Attr setAttributeNode(Attr newAttr) throws DOMException {
 
@@ -156,9 +156,9 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Removes the specified attribute node. 
      * 
-     * @param oldAttr The Attr node to remove from the attribute list.
-     * @exception DOMException NOT_FOUND_ERR: Raised if oldAttr is not an attribute of the element.
-     * @return The Attr node that was removed.
+     * @param	oldAttr The Attr node to remove from the attribute list.
+     * @exception	DOMException NOT_FOUND_ERR: Raised if oldAttr is not an attribute of the element.
+     * @return	The Attr node that was removed.
      */
     public Attr removeAttributeNode(Attr oldAttr) throws DOMException {
         if(!attributeList.contains(oldAttr))
@@ -171,8 +171,8 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Returns a NodeList of all the Elements with a given tag name in the order in which they are encountered in a preorder traversal of the Document tree.
      * 
-     * @param name The name of the tag to match on
-     * @return A new NodeList object containing all the matched Elements.
+     * @param	name The name of the tag to match on
+     * @return	A new NodeList object containing all the matched Elements.
      * 
      */
     public NodeList getElementsByTagName(String name) {
@@ -200,7 +200,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Returns whether this node has any attributes.
      * 
-     * @param name boolean true if this node has any attributes, false otherwise.
+     * @param	name boolean true if this node has any attributes, false otherwise.
      * 
      */
     public boolean hasAttribute(String name) {
@@ -217,7 +217,7 @@ public class ElementInter extends Element implements NodeInter {
      * Set the style for this element. 
      * If parameter style is null,it will automatically create a new Style for this element.
      * 
-     * @param style style you want to set to this element
+     * @param	style style you want to set to this element
      */
 	private void setStyle(Style style) {
 		if(style==null){
@@ -234,7 +234,7 @@ public class ElementInter extends Element implements NodeInter {
 	/**
 	 * Return this element's style.
 	 * 
-	 * @return This element's style.
+	 * @return	This element's style.
 	 */
 	public Style getStyle() {
 		
@@ -255,7 +255,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Return this element's node value.
      * 
-     * @return It is defined null in DOM.
+     * @return	It is defined null in DOM.
      */
     @Override
     public String nodeValue() {
@@ -267,7 +267,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * A code representing the type of the underlying object.
      * 
-     * @return The code defined in DOM.
+     * @return	The code defined in DOM.
      */
     @Override
     public short nodeType() {
@@ -278,7 +278,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * The parent of this node.
      * 
-     * @return The parent of this node
+     * @return	The parent of this node
      */
     @Override
     public Node parentNode() {
@@ -294,7 +294,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Set the parent of this element.
      * 
-     * @param newParent The parent of this element.
+     * @param	newParent The parent of this element.
      */
     @Override
     public void setParentNode(Node newParent){
@@ -308,7 +308,7 @@ public class ElementInter extends Element implements NodeInter {
     /** 
      * Get the child list of this element.
      * 
-     * @return A node list of this element's child.
+     * @return	A node list of this element's child.
      * 
      */
     @Override
@@ -328,7 +328,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Get the first child of this element.
      * 
-     * @return The first child of this element.
+     * @return	The first child of this element.
      */
     @Override
     public Node firstChild(){
@@ -344,7 +344,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Get the last child of this element.
      * 
-     * @return The last child of this element.
+     * @return	The last child of this element.
      */
     @Override
     public Node lastChild() {
@@ -360,7 +360,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Find this element's index in the parent's child list.
      * 
-     * @return The index of this element in parent's child list.
+     * @return	The index of this element in parent's child list.
      */
     private int findIndexInParent(){
     	
@@ -378,7 +378,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Get the previous sibling node in parent's child list.
      * 
-     * @return The previous sibling of this element.
+     * @return	The previous sibling of this element.
      */
     @Override
     public Node previousSibling() {
@@ -398,7 +398,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Get the next sibling node in parent's child list.
      * 
-     * @return The next sibling of this element.
+     * @return	The next sibling of this element.
      */
     @Override
     public Node nextSibling() {
@@ -418,7 +418,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * A NamedNodeMap containing the attributes of this element.
      * 
-     * @return A NamedNodeMap containing the attributes of this element.
+     * @return	A NamedNodeMap containing the attributes of this element.
      * 
      */
     @Override
@@ -438,7 +438,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Get the ownerDocument of this element.
      * 
-     * @return The owner document of this element.
+     * @return	The owner document of this element.
      */
     @Override
     public Document ownerDocument() {
@@ -450,7 +450,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Set the ownerDocument of this element.
      * 
-     * @param The ownerDocument of this element. 
+     * @param	The ownerDocument of this element. 
      */
     @Override
     public void setOwnerDocument(Document newOwnerDocument) {
@@ -463,8 +463,8 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Find the child index in this element's child list. 
      * 
-     * @param refChild The child you want to find.
-     * @return The index of refChild.
+     * @param	refChild The child you want to find.
+     * @return	The index of refChild.
      */
     public int findChildIndex(Node refChild){
     	
@@ -486,10 +486,10 @@ public class ElementInter extends Element implements NodeInter {
      * Inserts the node newChild before the existing child node refChild. 
      * If refChild is null, insert newChild at the end of the list of children.
      * 
-     * @param newChild The node to insert.
-     * @param refChild The node before which the new node must be inserted.
+     * @param	newChild The node to insert.
+     * @param	refChild The node before which the new node must be inserted.
      * 
-     * @return The node being inserted.
+     * @return	The node being inserted.
      */
     @Override
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
@@ -511,10 +511,10 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Replaces the child node oldChild with newChild in the list of children, and returns the oldChild node.
      * 
-     * @param newChild The new node to put in the child list.
-     * @param oldChild The node being replaced in the list.
+     * @param	newChild The new node to put in the child list.
+     * @param	oldChild The node being replaced in the list.
      * 
-     * @return The node replaced.
+     * @return	The node replaced.
      * 
      */
     @Override
@@ -539,9 +539,9 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Removes the child node indicated by oldChild from the list of children, and returns it.
      * 
-     * @param oldChild The node being removed.
+     * @param	oldChild The node being removed.
      * 
-     * @return The node removed.
+     * @return	The node removed.
      * 
      */
     @Override
@@ -556,8 +556,8 @@ public class ElementInter extends Element implements NodeInter {
      * Adds the node newChild to the end of the list of children of this node. 
      * If the newChild is already in the tree, it is first removed.
      * 
-     * @param newChild The node to add.
-     * @return The node added.
+     * @param	newChild The node to add.
+     * @return	The node added.
      */
     @Override
     public Node appendChild(Node newChild) throws DOMException {
@@ -572,7 +572,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Returns whether this node has any children.
      * 
-     * @return true if this node has any children, false otherwise.
+     * @return	true if this node has any children, false otherwise.
      */
     @Override
     public boolean hasChildNodes() {
@@ -589,7 +589,7 @@ public class ElementInter extends Element implements NodeInter {
     /**
      * Returns whether this element has any attributes.
      * 
-     * @return true if this node has any attributes, false otherwise.
+     * @return	true if this node has any attributes, false otherwise.
      */
     @Override
     public boolean hasAttributes() {
