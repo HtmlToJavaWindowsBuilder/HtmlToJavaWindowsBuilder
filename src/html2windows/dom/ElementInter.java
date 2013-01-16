@@ -629,3 +629,4 @@ public class ElementInter extends Element implements NodeInter {
 
 	
 }
+
