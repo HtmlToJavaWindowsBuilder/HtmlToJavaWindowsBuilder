@@ -66,7 +66,7 @@ public class DocumentTest {
          * 
          * expect body be appended to document
          */
-        assertEquals("body's first child should be body",doc.firstChild());
+        assertEquals("document's element should be body",body,doc.documentElement());
     }
     
     /**
