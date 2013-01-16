@@ -50,13 +50,13 @@ public class NamedNodeMap extends HashMap<String, Node> {
 	}
 
 	public Node item(long index) {
-		Collection collection = values();
-		Iterator iterator = collection.iterator();
+		Collection<Node> collection = values();
+		Iterator<Node> iterator = collection.iterator();
 		int i = 0;
 		Node returnNode = null;
 		while (iterator.hasNext()) {
 			if (i == (int) index)
-				returnNode = (Node) iterator.next();
+				returnNode = iterator.next();
 			else
 				iterator.next();
 		}
