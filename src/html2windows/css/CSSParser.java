@@ -14,7 +14,6 @@ import html2windows.dom.Element;
 import html2windows.dom.ElementInter;
 
 public class CSSParser {
-    /* this is for Junit test 
     public static void main(String arg[]) {
         String cssString = "";
 
@@ -40,8 +39,9 @@ public class CSSParser {
         CSSParserClass CSSParser = new CSSParserClass();
         CSSParser.parser(cssString, new Document());
     }
-    */
+}
 
+    class CSSParserClass {
     // the input String of CSS, to parse whether syntax is correct or not, then
     // add style to each element
     String cssString;
@@ -63,6 +63,11 @@ public class CSSParser {
         this.cssString = cssString;
         this.pos = 0;
         this.document = document;
+        Element body = document.createElement("body");
+        ElementInter buttona = new ElementInter("buttona");
+        body.appendChild(buttona);
+        document.appendChild(body);
+        
         this.ruleSet = new CSSRuleSet(priority);
 
         parseStyleSheet();
@@ -243,9 +248,18 @@ public class CSSParser {
                             pos++;
                             parseSpace();
                             // put ruleset into element
+                            System.out.println(selector);
                             elements = new CSS1SelectorMatcher().getElementBySelector(selector, document);
+                            if(elements != null){
+                                System.out.println(elements.size());
+                            }
                             for(Element e: elements){
+                                System.out.println("add ruleset e:" + e.tagName());
                                 e.getStyle().addCSSRuleSet(ruleSet);
+                            }
+                            for(Element e: elements){
+                                System.out.println("print ruleset e:" + e.tagName());
+                                System.out.println(e.getStyle().getProperty("background"));
                             }
                         }
                     }
