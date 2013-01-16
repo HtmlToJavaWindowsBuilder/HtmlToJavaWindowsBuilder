@@ -12,24 +12,46 @@ import java.util.HashMap;
 
 import javax.swing.JPanel;
 
+/**
+ * Draw border by border painter according to some 
+ * user defined property in style.
+ *  
+ * @author Jason Kuo
+ */
+
 @SuppressWarnings("serial")
 public class BorderPainter extends JPanel implements CSSPainter{
-
+	
+	/**
+	 * graphic to draw on
+	 */
 	private Graphics2D g2d;
+	
+	/**
+	 * HashMap that contains properties.
+	 */
 	private HashMap<String, String> property = new HashMap<String, String>();
-
-	private int height;
-	private int width;
-	private int top;
-	private int left;
-	private int borderWidth;
+	
+	/**
+	 * height, width, top, left values of border.
+	 */
+	private int height=10;
+	private int width=10;
+	private int top=10;
+	private int left=10;
+	
+	/**
+	 * Width of border
+	 */
+	private int borderWidth=2;
 
     public BorderPainter() { 
         initial();
     }
 
     /**
-     * initial some property ,ex: font-size is 12 ...
+     * Initial property to prevent user from not defining
+     * those property.
      */
     private void initial() {
     	property.put("border-width","2");
@@ -43,15 +65,17 @@ public class BorderPainter extends JPanel implements CSSPainter{
     }
 
     /**
-     * It will paint ,when frame add or setVisible , Our Manager will start paint
+     * Function to paint. First, get property from user defined style.
+     * Then, set color, stroke and draw on graphic.
      *
-     * @param style     style is css style
-     * @param element   element also can get his style
-     * @param g         Graphic is painted by Font Painter
-     *
+     * @param style     user defined style property
+     * @param element   element to be drawn
+     * @param g         graphic to draw on
      */
     public void paint(Style style, Element element, Graphics g) {
         this.g2d = (Graphics2D) g;
+        
+        //get property we want from user defined property
         getBorderStyle(style,"width");
 		getBorderStyle(style,"height");
 		getBorderStyle(style,"top");
@@ -59,30 +83,35 @@ public class BorderPainter extends JPanel implements CSSPainter{
 		getBorderStyle(style,"border-width");
 		getBorderStyle(style,"border-style");
 		getBorderStyle(style,"border-color");
-
-		borderWidth=Integer.parseInt(property.get("border-width"));
-        width=Integer.parseInt(property.get("width"));
-        height=Integer.parseInt(property.get("height"));
-        top=Integer.parseInt(property.get("top"));
-        left=Integer.parseInt(property.get("left"));
-
+		
+		//set basic property from user defined property
+		setBorderWidth();
+		setHeight();
+		setWidth();
+		setTop();
+		setLeft();
 		setColor();
-		g2d.setStroke(setStroke());
-		if (property.get("border-style").equals("double")){
+		
+		//set stroke from user defined property
+		if(setStroke()!=null)
+			g2d.setStroke(setStroke());
+		
+		//draw different type due to user defined border-style
+		if ("double".equals(property.get("border-style"))){
 			g2d.drawRect(top,left,width,height);
 			g2d.drawRect(top-borderWidth,left-borderWidth,width+2*borderWidth,height+2*borderWidth);
 		}
-		else
+		else{
 			g2d.drawRect(top,left,width,height);
+		}
     }
 
 
     /**
-     * Function will get Font style  
+     * Get property we want from user defined style property  
      *
-     * @param style     element style
-     * @param name      style name, ex: font-size
-     *
+     * @param style     user defined style
+     * @param name      property name to get
      */
     public void getBorderStyle(Style style,String name) {
         String type = style.getProperty(name);
@@ -91,83 +120,62 @@ public class BorderPainter extends JPanel implements CSSPainter{
         }
     }
 
-    
-    
-
     /**
-     * function will set Color     
-     *
+     * Set color by user defined property "border-color"     
      */
 	public void setColor(){
 
 		String color=property.get("border-color");
 
 		if(color.equals("maroon")){
-
 			g2d.setColor(new Color(128,0,0));
 		}
 		else if(color.equals("red")){
-
 			g2d.setColor(new Color(255,0,0));
 		}
 		else if(color.equals("orange")){
-
 			g2d.setColor(new Color(255,165,0));
-
 		}
 		else if(color.equals("yellow")){
-
 			g2d.setColor(new Color(255,255,0));
 		}
 		else if(color.equals("olive")){
-
 			g2d.setColor(new Color(128,128,0));
 		}
 		else if(color.equals("purple")){
-
 			g2d.setColor(new Color(128,0,128));
 		}
 		else if(color.equals("fuchsia")){
-
 			g2d.setColor(new Color(255,0,255));
 		}
 		else if(color.equals("white")){
-
 			g2d.setColor(new Color(255,255,255));
 		}
 		else if(color.equals("lime")){
-
 			g2d.setColor(new Color(0,255,255));
 		}
 		else if(color.equals("green")){
-
 			g2d.setColor(new Color(0,255,0));
 		}
 		else if(color.equals("navy")){
-
 			g2d.setColor(new Color(0,0,128));
 		}
 		else if(color.equals("blue")){
-
 			g2d.setColor(new Color(0,0,255));
 		}
 		else if(color.equals("aqua")){
-
 			g2d.setColor(new Color(0,255,255));
 		}
 		else if(color.equals("teal")){
-
 			g2d.setColor(new Color(0,128,128));
 		}
 		else if(color.equals("black")||color.equals("default")){
 			g2d.setColor(new Color(0,0,0));
 		}
 		else if(color.equals("silver")){
-
 			g2d.setColor(new Color(192,192,192));
 		}
 		else if(color.equals("gray")){
-
 			g2d.setColor(new Color(128,128,128));
 		}
 		else{
@@ -181,12 +189,59 @@ public class BorderPainter extends JPanel implements CSSPainter{
 			int thirdColorNum=Integer.parseInt(thirdColor, 16);
 
 			g2d.setColor(new Color(firstColorNum,secondColorNum,thirdColorNum));
-
-
 		}
-
 	}
-
+	
+	/**
+	 * Set border width according to user defined border-width
+	 * 
+	 * @throws NumberFormatException
+	 */
+	private void setBorderWidth() throws NumberFormatException{
+		borderWidth=Integer.parseInt(property.get("border-width"));
+	}
+	
+	/**
+	 * Set width according to user defined width
+	 * 
+	 * @throws NumberFormatException
+	 */
+	private void setWidth() throws NumberFormatException{
+        width=Integer.parseInt(property.get("width"));
+	}
+	
+	/**
+	 * Set height according to user defined height
+	 * 
+	 * @throws NumberFormatException
+	 */
+	private void setHeight() throws NumberFormatException{
+		height=Integer.parseInt(property.get("height"));
+	}
+	
+	/**
+	 * Set top according to user defined top
+	 * 
+	 * @throws NumberFormatException
+	 */
+	private void setTop() throws NumberFormatException{
+		top=Integer.parseInt(property.get("top"));
+	}
+	
+	/**
+	 * Set left according to user defined left
+	 * 
+	 * @throws NumberFormatException
+	 */
+	private void setLeft() throws NumberFormatException{
+		left=Integer.parseInt(property.get("left"));	
+	}
+    
+	/**
+	 * Set stroke by user defined property "border-style"
+	 * 
+	 * @return 		stroke style, return null once no matched pattern
+	 */
 	private Stroke setStroke(){
 		Stroke s;
 		if (property.get("border-style").equals("dotted")) {
