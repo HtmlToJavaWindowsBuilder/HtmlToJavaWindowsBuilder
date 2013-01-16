@@ -31,7 +31,7 @@ public class CSSParser {
      * @param document  the root of tree which has been built
      */
     
-    public void parser(String cssString, Document document) {
+    public void parse(String cssString, Document document) {
         this.cssString = cssString;
         this.pos = 0;
         this.document = document;
