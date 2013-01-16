@@ -9,6 +9,13 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
+/** This is the class that implements all abstract method in Element and the Interface NodeInter.
+ *  All method is defined in http://www.w3.org/TR/DOM-Level-2-Core/core.html#ID-745549614
+ *  If you want to see detail how this function work.
+ *  See above website.
+ * 
+ *  @author CFWei
+ */
 @SuppressWarnings(value = { "serial" })
 public class ElementInter extends Element implements NodeInter {
 
@@ -19,24 +26,49 @@ public class ElementInter extends Element implements NodeInter {
     private Document ownerDocument;
     private Style elementStyle;
     
+    /**
+     * This is one of the constructor of this class.
+     * You must input one parameter tagName to set this element's tagName.
+     * And it will also new its style automatically.
+     * 
+     * @param tagName this element's tagName
+     */
     public ElementInter(String tagName) {
     	 tagNameValue = tagName;
     	 setStyle(null);
     }
     
+    /**
+     * This is one of the constructor of this class.
+     * You must input two parameter.
+     * One is this Element's tagName.
+     * One is this Element's style.
+     * And the constructor will set this two for you.
+     * 
+     * @param tagName this element's tagName
+     * @param style this element's style
+     */
     public ElementInter(String tagName,Style style) {
         tagNameValue = tagName;
         setStyle(style);
     }
-
-
-
+    
+    /**
+     * Get this element's tagName.
+     * 
+     * @return retrun this element's tagName
+     * 
+     */
     public String tagName() {
         return tagNameValue;
     }
-
-
-
+    
+    /**
+     * Retrieves an attribute value by name.
+     * @param name What attribute you want to get.
+     * 
+     * @return Attribute's value as a string. Null will be returned if this element doesn't have this attribute.
+     */
     public String getAttribute(String name) {
         for (int i = 0; i < attributeList.size(); i++) {
             if (attributeList.get(i).name() == name)
@@ -45,17 +77,27 @@ public class ElementInter extends Element implements NodeInter {
         }
         return null;
     }
-
-
+    
+    /**
+     * Set one attribute of this element.You send what attribute you want to set and its value.
+     * @param name attribute
+     * @param value attribute's value
+     * 
+     * @exception DOMException 
+     */
     public void setAttribute(String name, String value) throws DOMException {
-    	Document document=new Document();
+    	Document document=ownerDocument();
     	AttrInter newAttr=(AttrInter)document.createAttribute(name);
         newAttr.setValue(value);
+
         attributeList.add(newAttr);
     }
 
-
-
+    /** 
+     * Removes an attribute by name. 
+     * 
+     * @param The name of the attribute to remove.
+     */
     public void removeAttribute(String name) throws DOMException {
         for (int i = 0; i < attributeList.size(); i++) {
             if (attributeList.get(i).name() == name) {
@@ -65,8 +107,12 @@ public class ElementInter extends Element implements NodeInter {
 
     }
 
-
-
+    /**
+     * Retrieves an attribute node by name.
+     * 
+     * @param name The name of the attribute to retrieve.
+     * @return The Attr node with the specified name (nodeName) or null if there is no such attribute
+     */
     public Attr getAttributeNode(String name) {
         for (int i = 0; i < attributeList.size(); i++) {
             Attr AttributeNode = attributeList.get(i);
