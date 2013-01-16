@@ -135,7 +135,7 @@ public class CustomTest {
          */
         customPanel.add(elementNode);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.setSize(360,200);
         frame.setLocationRelativeTo(null);
         frame.add(customPanel);
