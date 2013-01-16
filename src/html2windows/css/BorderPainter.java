@@ -125,7 +125,7 @@ public class BorderPainter extends JPanel implements CSSPainter{
      */
     public void setColor(){
 
-		String color=property.get("color").toLowerCase();
+		String color=property.get("border-color").toLowerCase();
 
 		if(color.equals("maroon")){
 			g2d.setColor(new Color(128,0,0));

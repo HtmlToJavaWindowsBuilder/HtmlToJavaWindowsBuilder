@@ -87,7 +87,7 @@ public class BorderTest {
         style.setProperty("left","10");
         style.setProperty("bottom","50");
         style.setProperty("border-style","dashed");
-        style.setProperty("border-color","black");
+        style.setProperty("border-color","blue");
         
         /**
          * Test
@@ -149,7 +149,7 @@ public class BorderTest {
         style.setProperty("left","10");
         style.setProperty("bottom","50");
         style.setProperty("border-style","hello");
-        style.setProperty("border-color","black");
+        style.setProperty("border-color","color");
         
         /**
          * Test
