@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.ByteArrayInputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+import java.lang.String;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,15 +16,20 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import java.io.UnsupportedEncodingException;
 
+/**
+ * It will read file or String ,then building the document 
+ *
+ * @author bee040811
+ */
 public class UIParser {
-	public Document createDocument() {
-		return null;
-	}
 
-    /*
-     *  content:
-     *  parsing the css struct will construct the Document
-     *  
+    /**
+     * parsing the css struct will construct the Document by recursive
+     *
+     * @param element   mean element will save nodeType and nodeValue
+     * @param document  mean the document
+     *
+     * @return element  
      */
 	private Element parseElement(org.w3c.dom.Element element, Document document){
 		
@@ -63,46 +72,38 @@ public class UIParser {
 
 		return outputElement;
 	}
-    /*
-     *  input: string is css style string
-     *  ex: 
-     *  <?xml version="1.0"?>  
-     *   <company>
-     *       <employee>
-     *           <firstname>Tom</firstname>
-     *           <lastname>Cruise</lastname>
-     *       </employee>
-     *       <employee>
-     *           <firstname>Paul</firstname>
-     *           <lastname>Enderson</lastname>
-     *       </employee>
-     *       <employee>
-     *           <firstname>George</firstname>
-     *           <lastname>Bush</lastname>
-     *       </employee>
-     *   </company>
-     * 
-     *  output : Document 
+
+    /**
+     * Function will parse the file into document
      *
+     * @param input     String 
+     *
+     * @return Document
      */
 	public Document parse(String input) {
+        input = input.replaceAll(">[ \t\n\r]*<", "><");
         InputStream inputStream = new ByteArrayInputStream( input.getBytes());
         Document outputDocument = parse(inputStream);
         
         return outputDocument;
-
 	}
 
-    /*
-     *  input: file contains css style string
-     *  ex: 
-     *  output : Document 
+    /**
+     * Function will read file and convert into string and parse into document
      *
+     * @param input
+     *
+     * @return document  
      */
 	public Document parse(File input) {
 		try{
-			InputStream inputStream = new FileInputStream(input); 
-			Document outputDocument = parse(inputStream);
+            BufferedReader reader = new BufferedReader(new FileReader(input));
+            String line;
+            String inputString = "";
+            while( (line = reader.readLine() ) != null ) {
+                inputString += line;    
+            }
+			Document outputDocument = parse(inputString);
 
 			return outputDocument;
 
@@ -113,15 +114,14 @@ public class UIParser {
 		return null;
 	}
 
-    /*
-     *  content:
-     *  others input will transform into InputStream type
-     *  , then it will parse
-     *  ex: 
-     *  output : Document 
+    /**
+     * others input will transform into InputStream type, then it will parse
      *
+     * @param input
+     *
+     * @return document   
      */
-	public Document parse(InputStream input){
+	private Document parse(InputStream input){
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
