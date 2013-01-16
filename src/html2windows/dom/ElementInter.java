@@ -498,7 +498,6 @@ public class ElementInter extends Element implements NodeInter {
         if(index!=-1){
         	if(newChild instanceof Component){
         		add((Component)newChild, index);
-        
         		return refChild;
         	}
         	
