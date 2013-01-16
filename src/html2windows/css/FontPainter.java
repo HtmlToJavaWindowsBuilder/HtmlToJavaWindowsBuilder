@@ -432,7 +432,13 @@ public class FontPainter extends JPanel implements CSSPainter {
 		
 		return length;
 	}
-	
+    /**
+     * Function will get font length 
+     *
+     * @param   s       text
+     *
+     * @return  length     
+     */
 	private void getFontText(Element element){
 		 this.text = element.nodeValue();
 		
