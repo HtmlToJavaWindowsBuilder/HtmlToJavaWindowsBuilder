@@ -113,7 +113,7 @@ public class BorderPainter extends JPanel implements CSSPainter{
      * @param style     user defined style
      * @param name      property name to get
      */
-    public void getBorderStyle(Style style,String name) {
+    private void getBorderStyle(Style style,String name) {
         String type = style.getProperty(name);
         if( type != null ) {
             this.property.put(name, type) ;    
@@ -123,7 +123,7 @@ public class BorderPainter extends JPanel implements CSSPainter{
     /**
      * Set color by user defined property "border-color"     
      */
-    public void setColor(){
+    private void setColor(){
 		String color=property.get("border-color").toLowerCase();
 		g2d.setColor(ColorConverter.convert(color));
     }
