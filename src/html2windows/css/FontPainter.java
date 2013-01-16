@@ -28,34 +28,51 @@ import html2windows.css.Style;
 
 import javax.swing.text.StyleConstants; 
 
+/**
+ * Font painter, it will get element style and paint 
+ * @author bee040811
+ */
 
-class WindowEventHandler extends WindowAdapter {
-    int count = 0;
-    
-    public WindowEventHandler() {
-        while(this.count == 0){}
-    }
-    public void windowClosing(WindowEvent evt) {
-        this.count = 1;
-    }
-}
 
 @SuppressWarnings(value= { "serial" })
-public class FontProperty extends JPanel implements CSSPainter {
-
+public class FontPainter extends JPanel implements CSSPainter {
+    
+    /**
+     * g2d          mean Graphic
+     */
     private Graphics2D g2d;
-    private Graphics fontd;
-    private Graphics tmp;
+
+    /**
+     * text         mean the font text
+     */
     private String text;
+
+    /**
+     * font         mean the font style
+     */
     private Font font;
+
+    /**
+     * fontVariant  mean the font variant is used
+     */
     private Font fontVariant;
+
+    /**
+     * property     mean param will save the style property   
+     */
     HashMap<String, String> property = new HashMap<String, String>();
 
-    public FontProperty() { 
+    /**
+     * Construct FontPainter
+     */
+    public FontPainter() { 
         initial();
         this.text = "test";
     }
 
+    /**
+     * initial some property ,ex: font-size is 12 ...
+     */
     private void initial() {
         this.property.put("family", "Arial");
         this.property.put("font-size", "12");
@@ -68,33 +85,15 @@ public class FontProperty extends JPanel implements CSSPainter {
 		this.property.put("text-indent","default");
 		this.property.put("line-height","default");
     }
-    @Override 
-    public void paint(Graphics g) {
-        
-        setFont();
-        AttributedString fontAttr = setTextDecoration(this.font,this.text);
-        int fontwidth = 300;
-        int textIndent = setTextIndent();
-        
-        this.fontd.setFont(this.font);
-        this.fontd.setColor(Color.red);
-        
-        AttributedString attributedString = new AttributedString(this.text);
-        if( setFontVariant() != 0 ) {
-            attributedString.addAttribute(TextAttribute.FONT,this.fontVariant,0,1);
-            attributedString.addAttribute(TextAttribute.FONT,this.font, 1, this.text.length());
-        }
-        else {
-            attributedString.addAttribute(TextAttribute.FONT,this.font);
-        }
-        /*
-        Font font = new Font("URW Chancery L", Font.BOLD, 21);
-        g2d.setFont(font);
-        this.g2d.drawString("text",20,30);
-        */
-        this.fontd.drawString(attributedString.getIterator(), 0, 0);
-    }
 
+    /**
+     * It will paint ,when frame add or setVisible , Our Manager will start paint
+     *
+     * @param style     style is css style
+     * @param element   element also can get his style
+     * @param g         Graphic is painted by Font Painter
+     *
+     */
     public void paint(Style style, Element element, Graphics g) {
         this.g2d = (Graphics2D) g;
         getFontStyle(style, "family");
@@ -129,22 +128,37 @@ public class FontProperty extends JPanel implements CSSPainter {
         */
     }
 
+    /**
+     * Function will set size of the words, when setting variant
+     *
+     * @return  size    int 
+     */
     private int setFontVariant() {
         String variant = this.property.get("font-variant").toLowerCase();
+        int variantSmall = -8;
         if(variant == "small-caps") {
             this.text = this.text.toUpperCase();
-            return -8;
+
+            return variantSmall;
         }
 
         return 0;
     }
 
+    /**
+     * Function will set font size 
+     *
+     * @return  font-size int  
+     */
     private int setFontSize() {
         int variantSize = setFontVariant(); 
 
-        return Integer.parseInt(this.property.get("font-size")) + variantSize;         
+        return Integer.parseInt(this.property.get("font-size")) + variantSize;
     }
 
+    /**
+     * Function will set Font family, ex: Arial
+     */
     private void setFont() {
         int size = setFontSize();
         int weight = setFontWeight();
@@ -157,7 +171,12 @@ public class FontProperty extends JPanel implements CSSPainter {
         this.font = new Font(family, weight, size+variant);
     }
 
-    private int getFontStyleItalic(int weight) {
+    /**
+     * Function will set Font Style, ex: Italic
+     *
+     * @param weight    mean the font weight 
+     */
+    private int setFontStyleItalic(int weight) {
         String strStyle = this.property.get("font-style").toLowerCase();
 
         if(weight == Font.BOLD && strStyle == "italic") {
@@ -169,6 +188,12 @@ public class FontProperty extends JPanel implements CSSPainter {
 
         return weight;
     }
+
+    /**
+     * Function will set Font weight, ex: Bold 
+     *
+     * @return  weight  font bold
+     */
     private int setFontWeight() {
         String strWeight = this.property.get("font-weight").toLowerCase();
         int weight = Font.PLAIN;
@@ -185,15 +210,29 @@ public class FontProperty extends JPanel implements CSSPainter {
         else if(strWeight == "bold+italic") {
             weight = Font.BOLD + Font.ITALIC;       
         }
-        weight = getFontStyleItalic(weight);
+        weight = setFontStyleItalic(weight);
+
         return weight;
     }
 
+    /**
+     * Function will set Font text
+     *
+     * @param text
+     *
+     */
     public void setText(String text) {
         this.text = text;
-        this.repaint();
+        //this.repaint();
     }
 
+    /**
+     * Function will get Font style  
+     *
+     * @param style     element style
+     * @param name      style name, ex: font-size
+     *
+     */
     public void getFontStyle(Style style,String name) {
         String type = style.getProperty(name);
         if( type != null ) {
@@ -201,21 +240,23 @@ public class FontProperty extends JPanel implements CSSPainter {
         }
     }
 
-    private boolean isNumberic(String name) {
-       Pattern pattern = Pattern.compile("[0-9]*");
-       Matcher isNum = pattern.matcher(name);
-       if(!isNum.matches() ){
-           return false;
-       }
-       return true;
-    }
-
-	public int  getLength(){
+    
+    /**
+     * Function will get the length of the word
+     *
+     * @return  length  the length of the word
+     */
+	public int getLength(){
 		FontMetrics f= g2d.getFontMetrics();
 		int length =f.stringWidth(this.text);
+
 		return length;
 	}
 	
+    /**
+     * function will set Color     
+     *
+     */
 	public void setColor(){
 		
 		String color=property.get("text-color");
@@ -305,11 +346,22 @@ public class FontProperty extends JPanel implements CSSPainter {
 	
 	}
 	
+    /**
+     * Function will set light height 
+     *
+     */
 	public void setLineHeight(){
 		String textAlign=property.get("line-height");
 		
 	}
 	
+    /**
+     * Function will set text align
+     *
+     * @param   s     text
+     *
+     * @return  length   
+     */
 	public int setTextAlign(String s){
 		String textAlign=property.get("text-align");
 		int width=getWidth();
@@ -331,6 +383,14 @@ public class FontProperty extends JPanel implements CSSPainter {
 		return 0;
 	}
 		
+    /**
+     * Function will set Text Decoration
+     *
+     * @param f
+     * @param s
+     *
+     * @return   
+     */
 	public AttributedString setTextDecoration(Font f,String s){
 		String textDecoration=property.get("text-decoration");
 		AttributedString as = new AttributedString(s);
@@ -349,12 +409,24 @@ public class FontProperty extends JPanel implements CSSPainter {
 		
 	}
 	
+    /**
+     * Function set text indent
+     *
+     * @return   textIndent
+     */
 	public int setTextIndent(){
 		String textIndent=property.get("text-align");
 		
 		return Integer.parseInt(textIndent);
 	}
 	
+    /**
+     * Function will get font length 
+     *
+     * @param   s       text
+     *
+     * @return  length     
+     */
 	public int getFontLength(String s){
 		FontMetrics fm = g2d.getFontMetrics();
 		int length = fm.stringWidth(s);

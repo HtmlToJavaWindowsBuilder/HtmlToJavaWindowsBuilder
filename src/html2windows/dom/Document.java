@@ -8,6 +8,7 @@ import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
+import html2windows.css.CSSPainter;
 
 /**
  * Document is top window.
@@ -21,9 +22,12 @@ import org.w3c.dom.events.EventListener;
 @SuppressWarnings("serial")
 
 public class Document extends JFrame implements Node{
+
+    private CSSPainter painter;
+
 	public Element documentElement(){
 		try{
-			return (Element)getComponent(0);
+			return (Element)getContentPane().getComponent(0);
 		}
 		catch(Exception ex){
 			return null;
@@ -291,15 +295,15 @@ public class Document extends JFrame implements Node{
 		}
 	}
 
-	private void setDocumentElement(Element element){
+	private void setDocumentElement(Element element) throws DOMException{
 		if(element.ownerDocument() != this){
 			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, "Need import the node first");
 		}
 		Element oldChild = documentElement();
 		if(oldChild != null)
-			remove(oldChild);
+			getContentPane().remove(oldChild);
 		if(element != null){
-			add(element);
+			getContentPane().add(element);
 		}
 	}
 
@@ -356,4 +360,12 @@ public class Document extends JFrame implements Node{
 		TextInter text = (TextInter)createTextNode(importedNode.data());
 		return text;
 	}
+
+    public void setPainter(CSSPainter painter) {
+        this.painter = painter;
+    }
+
+    public CSSPainter getPainter() {
+        return this.painter;
+    }
 }
