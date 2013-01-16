@@ -316,9 +316,11 @@ public class ElementInter extends Element implements NodeInter {
     public NodeList childNodes(){
     	Component[] components=getComponents();
     	NodeList childNodeList=new NodeList(); 
-        for(Component eachComponent:components){
-        	if(eachComponent instanceof Node)
-        		childNodeList.add((Node)eachComponent);
+    	
+        for(int i=0;i<components.length;i++){
+        	Component eachComponent=components[i];
+        	if(eachComponent instanceof Element)
+        		childNodeList.add(i,(Node)eachComponent);
         }
            
         return childNodeList;
@@ -333,9 +335,12 @@ public class ElementInter extends Element implements NodeInter {
      */
     @Override
     public Node firstChild(){
+    	int count = getComponentCount();
+    	if(count==0)
+    		return null;
     	Component component=getComponent(0);
     	if(component instanceof Node)
-    		return (Node)getComponent(0);
+    		return (Node)component;
     	else
     		return null;
 
@@ -349,7 +354,11 @@ public class ElementInter extends Element implements NodeInter {
      */
     @Override
     public Node lastChild() {
+    	
     	int count=getComponentCount();
+    	if(count==0)
+    		return null;
+    	
     	Component component = getComponent(count-1);
     	if(component instanceof Node)
     		return (Node)component;
@@ -366,6 +375,9 @@ public class ElementInter extends Element implements NodeInter {
     private int findIndexInParent(){
     	
     	Node parent = parentNode();
+    	if(parent==null)
+    		return -1;
+    	
     	NodeList parentChildNodeList = parent.childNodes();
     	for(int i=0;i<parentChildNodeList.size();i++){
     		Node node = parentChildNodeList.item(i);
@@ -383,14 +395,18 @@ public class ElementInter extends Element implements NodeInter {
      */
     @Override
     public Node previousSibling() {
+    	
     	int thisIndex=findIndexInParent();
     	
-    	if(thisIndex!=-1){
-    		Component previousSiblingComponent = getComponent(thisIndex-1);
-    		if(previousSiblingComponent instanceof Node)
-    			return (Node)previousSiblingComponent;
+    	if(thisIndex!=-1&&thisIndex!=0){
+    		Node parent = parentNode();
+    		NodeList parentChildNodeList = parent.childNodes();
+    		
+    		Node previousSiblingComponent = parentChildNodeList.item(thisIndex-1);
+    		return previousSiblingComponent;
+    		
     	}
-
+		
     	return null;
     	
     }
@@ -406,9 +422,11 @@ public class ElementInter extends Element implements NodeInter {
     	int thisIndex=findIndexInParent();
     	
     	if(thisIndex!=-1){
-    		Component previousSiblingComponent = getComponent(thisIndex+1);
-    		if(previousSiblingComponent instanceof Node)
-    			return (Node)previousSiblingComponent;
+    		Node parent = parentNode();
+    		NodeList parentChildNodeList = parent.childNodes();
+    		
+    		Node nextSiblingComponent = parentChildNodeList.item(thisIndex+1);
+    		return nextSiblingComponent;
     	}
 
     	return null;
@@ -469,15 +487,16 @@ public class ElementInter extends Element implements NodeInter {
      */
     public int findChildIndex(Node refChild){
     	
-    	Component refChildComponent=(Component)refChild;
     	
-    	Component[] childComponentList=getComponents();
-    	for(int i=0;i<childComponentList.length;i++){
-    		Component eachComponent =childComponentList[0];
-    		if(eachComponent.equals(childComponentList))
+    	NodeList childNodeList=childNodes();
+    	for(int i=0;i<childNodeList.length();i++){
+    		Node node = childNodeList.item(i);
+    		if(node.equals(refChild))
     			return i;
     		
     	}
+    	
+    
     	
     	return -1;
     }
@@ -495,6 +514,7 @@ public class ElementInter extends Element implements NodeInter {
     @Override
     public Node insertBefore(Node newChild, Node refChild) throws DOMException {
         int index=findChildIndex(refChild);
+        
         if(index!=-1){
         	if(newChild instanceof Element || newChild instanceof Text){
         		add((Component)newChild, index);
@@ -507,7 +527,10 @@ public class ElementInter extends Element implements NodeInter {
         	
         }
 
-        return null;
+        else{
+        	appendChild(newChild);
+        	return null;
+        }
 
     }
     

@@ -115,9 +115,9 @@ public class ElementTest{
 	public void appendChildNodes(){
 		ArrayList<Node> children = new ArrayList<Node>();
 		
-		NodeInter childNodeElement = mock(NodeInter.class);
+		Node childNodeElement = document.createElement("h1");
 		children.add(childNodeElement);
-		children.add(document.createTextNode("text"));
+		
 		
 		for(Node child : children){
 			element.appendChild(child);
@@ -134,8 +134,8 @@ public class ElementTest{
 		assertNull("Expect no child(null)", element.firstChild());
 		assertNull("Expect no child(null)", element.lastChild());
 
-		Node child1 = mock(Node.class);
-		Node child2 = mock(Node.class);
+		Node child1 = document.createElement("h1");
+		Node child2 = document.createElement("h1");
 		element.appendChild(child1);
 		element.appendChild(child2);
 		
@@ -148,8 +148,8 @@ public class ElementTest{
 		assertNull(null, element.previousSibling());
 		assertNull(null, element.nextSibling());
 
-		Node prevSibling = mock(Node.class);
-		Node nextSibling = mock(Node.class);
+		Node prevSibling = document.createElement("h1");
+		Node nextSibling = document.createElement("h1");
 		Element parent = document.createElement("div");
 
 		parent.appendChild(prevSibling);
@@ -170,11 +170,12 @@ public class ElementTest{
 		element.insertBefore(child2, child3);
 		element.insertBefore(child1, child2);
 		
+		
 		NodeList list1 = element.childNodes();
 		assertEquals(null, child1, list1.item(0));
 		assertEquals(null, child2, list1.item(1));
 		assertEquals(null, child3, list1.item(2));
-
+		
 		element.insertBefore(child3, child1);
 
 		NodeList list2 = element.childNodes();
@@ -188,6 +189,7 @@ public class ElementTest{
 		assertEquals(null, child1, list3.item(1));
 		assertEquals(null, child2, list3.item(2));
 		assertEquals(null, child3, list3.item(0));
+		
 	}
 
 	@Test
