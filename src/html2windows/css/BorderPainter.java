@@ -4,7 +4,6 @@ import html2windows.css.Style;
 import html2windows.dom.Element;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
@@ -37,8 +36,8 @@ public class BorderPainter extends JPanel implements CSSPainter{
 	 */
 	private int height=10;
 	private int width=10;
-	private int top=10;
-	private int left=10;
+	private int top=0;
+	private int left=0;
 	
 	/**
 	 * Width of border
