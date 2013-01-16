@@ -137,7 +137,6 @@ public class CSSParser {
             String ident = parseIdent();
             handler = document.getAtRuleHandler(ident);
             parseSpace();
-            parseAny();
             if (isNotEnd()) {
                 prePos = pos;
                 if (getChar() == '{') {
@@ -150,9 +149,9 @@ public class CSSParser {
                     pos++;
                     parseSpace();
                 }
-                nextPos = pos;
+                nextPos = pos++;
                 if(handler != null){
-                    handler.handle(cssString.substring(prePos, nextPos - prePos), document);
+                    handler.handle(cssString.substring(prePos, nextPos ), document);
                 }
             }
         }
@@ -219,6 +218,7 @@ public class CSSParser {
             if (Pattern.compile("(. *?)\\{").matcher(cssString.substring(pos))
                     .find()) {
                 selector += parseSelector();
+                System.err.println(selector);
 
                 if (isNotEnd() && getChar() == '{') {
                     pos++;

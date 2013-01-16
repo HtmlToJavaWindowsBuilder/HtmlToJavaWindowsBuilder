@@ -8,6 +8,8 @@ import java.io.FileReader;
 
 import java.util.ArrayList;
 
+import java.awt.Dimension;
+
 import static org.junit.Assert.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -86,6 +88,8 @@ public class CSSParserTest {
             body.appendChild(text);
             doc.appendChild(html);
         }
+        
+        
         /**Get doc from UIParser result whether is not null 
          * 
          */
@@ -94,9 +98,26 @@ public class CSSParserTest {
         /**Setting doc Style from CSSParser
          * 
          */
-        CSSParser CSSParser = new CSSParser();
-        CSSParser.parser(cssString, doc); 
-            
+        CSSParser CSSParser = new CSSParser() {
+            @Override
+            public CSSRuleSet parseRuleSet(String input) {
+                System.err.println(input);
+                System.err.println(":)");
+                return super.parseRuleSet(input);
+            }
+
+        };
+        doc.setAtRuleHandler("document", new DocumentAtRuleHandler());
+        CSSParser.parse(cssString, doc); 
+        
+        assertNotNull(doc.getAtRuleHandler("document"));
+        Dimension dim = doc.getPreferredSize(); 
+
+        int docWidth = (int)dim.getWidth();
+     //   assertEquals("width should be 300", 300, docWidth);
+
+        int docHeight = (int)dim.getHeight();
+     //   assertEquals("height should be 400", 400, docHeight);
         Element html = doc.documentElement();    
 
         /** Test whether the tag Name is correct
@@ -154,8 +175,13 @@ public class CSSParserTest {
          * 
          */
         assertEquals("text-color should be blue", "blue", bodyStyle.getProperty("text-color"));
+        doc.setVisible(true);
+        while(true){}
     }
 
+    @Test 
+    public void testDocument() {
+    }
     /**
      * Test parsing string by UIParser
      * 

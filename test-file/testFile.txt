@@ -1,3 +1,4 @@
+@document {width:400; height:300;}
 html{ background: black;
           width: 100px;
           height: 100px;
