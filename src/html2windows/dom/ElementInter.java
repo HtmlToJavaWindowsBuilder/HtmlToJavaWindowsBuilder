@@ -319,7 +319,7 @@ public class ElementInter extends Element implements NodeInter {
     	
         for(int i=0;i<components.length;i++){
         	Component eachComponent=components[i];
-        	if(eachComponent instanceof Element)
+        	if(eachComponent instanceof Element || eachComponent instanceof Text)
         		childNodeList.add(i,(Node)eachComponent);
         }
            
