@@ -1,6 +1,11 @@
 package html2windows.dom;
 
+import html2windows.css.CSSPainter;
+import html2windows.css.Style;
+
 import java.util.ArrayList;
+
+import java.awt.Graphics;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.events.Event;
@@ -8,16 +13,23 @@ import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
 @SuppressWarnings(value = { "serial" })
-class ElementInter extends Element implements NodeInter {
+public class ElementInter extends Element implements NodeInter {
 
     private ArrayList<AttrInter> attributeList = new ArrayList<AttrInter>();
     private NodeList childNodeList = new NodeList();
     private String tagNameValue = null;
     private Node parentNode=null;
     private Document ownerDocument;
+    private Style elementStyle;
     
     public ElementInter(String tagName) {
+    	 tagNameValue = tagName;
+    	 setStyle(null);
+    }
+    
+    public ElementInter(String tagName,Style style) {
         tagNameValue = tagName;
+        setStyle(style);
     }
 
 
@@ -125,6 +137,25 @@ class ElementInter extends Element implements NodeInter {
         return false;
     }
 
+    
+	private void setStyle(Style style) {
+		if(style==null){
+			elementStyle=new Style(this);
+		}
+		else {
+			elementStyle=style;
+		}
+		
+	
+	}
+
+
+	public Style getStyle() {
+		
+		return elementStyle;
+	}
+    
+    
     @Override
     public String nodeName() {
         // TODO Auto-generated method stub
@@ -312,7 +343,10 @@ class ElementInter extends Element implements NodeInter {
             return false;
 
     }
-
+    
+    
+    
+    
     @Override
     public void addEventListener(String type, EventListener listener,
             boolean useCapture) {
@@ -333,4 +367,12 @@ class ElementInter extends Element implements NodeInter {
         return false;
 
     }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        CSSPainter painter = ownerDocument().getPainter();
+        painter.paint(this.elementStyle, this, g);
+    }
+
+	
 }
