@@ -1,12 +1,24 @@
-package html2windows.dom;
+package html2windows.css;
 
-import html2windows.css.BackgroundProperty;
+import html2windows.css.BackgroundPainter;
 import html2windows.css.Style;
 import html2windows.dom.ElementInter;
-
-import java.awt.Container;
+import html2windows.dom.Element;
+import html2windows.dom.Document;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.GridLayout;
+import java.awt.FlowLayout;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -14,15 +26,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static java.lang.Thread.sleep;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
 
 public class BackgroundTest {
 
 	private JFrame frame = new JFrame();
 	private JPanel panel=new JPanel();
-	private Container c;
+
 	@BeforeClass
     public static void setUpBeforeClass() throws Exception {
     }
@@ -31,28 +40,61 @@ public class BackgroundTest {
     public static void tearDownAfterClass() throws Exception {
     }
     
+    /**
+     * Test custom usage of BorderPainter
+     */
     @Test
-    public void test() throws Exception{
-    	Graphics g = null;
+    public void testCustomBorder(){
+    	
+    	/**
+    	 * Setup
+    	 * 
+    	 * Create a JFrame frame and JPanel and create document
+    	 * with defined getPainter() with BorderPainter(). Create
+    	 * element with custom style setting and add to frame.  
+    	 */
+    	
+    	//Create JFrame and JPanel 
+    	JFrame frame = new JFrame("Button Frame");
+        JPanel customPanel = new JPanel( new CustomLayoutManager());
 
-    	BackgroundProperty background=new BackgroundProperty();
-        
-        ElementInter body=new ElementInter("body");
-        Style bodyStyle = new Style(body);
+        //Create document with BorderPainter()
+        Document document = new Document(){
+            @Override
+            public CSSPainter getPainter(){
+                return new BackgroundPainter();
+            }
+        };
 
-        bodyStyle.setProperty("background-color","red");
+        //Create element with defined test properties
+        String tagName = "div";
+        ElementInter elementInter = new ElementInter(tagName);
+        elementInter.setOwnerDocument(document);
+
+        Element elementNode = elementInter;
+        elementNode.setPreferredSize(new Dimension(100, 100));
+
+        Style style = elementNode.getStyle();
+        style.setProperty("border-width","2");
         
-        background.paint(bodyStyle, body, g);
-        
-        
+        /**
+         * Test
+         * 
+         * Add panel to Jframe and show
+         * 
+         * expect border with defined feature
+         */
+        customPanel.add(elementNode);
+
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        frame.setSize(360,360);
+        frame.setSize(400,400);
         frame.setLocationRelativeTo(null);
-        frame.add(background);
+        frame.add(customPanel);
         frame.setVisible(true);
         
-        
-        Thread.sleep(2000);
+        try{
+        	Thread.sleep(2000);
+        }catch(Exception e){}
     }
 
 }
