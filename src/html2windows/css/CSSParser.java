@@ -40,7 +40,31 @@ public class CSSParser {
 
         parseStyleSheet();
     }
-
+    
+    public CSSRuleSet parseRuleSet(String str){
+        ruleSet = new CSSRuleSet(priority);
+        cssString = str;
+        pos = 0;
+        
+        if (isNotEnd() && getChar() == '{') {
+            pos++;
+            parseSpace();
+            if (isNotEnd()) {
+                parseDeclaration();
+                while (isNotEnd() && getChar() == ';') {
+                    pos++;
+                    parseSpace();
+                    parseDeclaration();
+                }
+                if (isNotEnd() && getChar() == '}') {
+                    pos++;
+                    parseSpace();
+                }
+            }
+        }
+        
+        return ruleSet;
+    }
     
     /**
      * @return true if cssString is end, false otherwise;
@@ -94,10 +118,10 @@ public class CSSParser {
         if (isNotEnd()) {
             if (getChar() == '@') {
                 pos++;
-                parseAtRule();
+                parseRuleSet(1);
             }
             else
-                parseRuleSet();
+                parseRuleSet(0);
         }
     }
 
@@ -173,7 +197,7 @@ public class CSSParser {
      * @return  the elements which are inserted ruleSet, if parsing didn't work,
      *          return null
      */
-    private void parseRuleSet() {
+    private void parseRuleSet(int state) {
         ArrayList<Element> elements = null;
         String selector = "";
 
@@ -184,27 +208,7 @@ public class CSSParser {
                     .find()) {
                 selector += parseSelector();
 
-                if (isNotEnd() && getChar() == '{') {
-                    pos++;
-                    parseSpace();
-                    if (isNotEnd()) {
-                        parseDeclaration();
-                        while (isNotEnd() && getChar() == ';') {
-                            pos++;
-                            parseSpace();
-                            parseDeclaration();
-                        }
-                        if (isNotEnd() && getChar() == '}') {
-                            pos++;
-                            parseSpace();
-                            // put ruleset into element
-                            elements = new CSS1SelectorMatcher().getElementBySelector(selector, document);
-                            for(Element e: elements){
-                                e.getStyle().addCSSRuleSet(ruleSet);
-                            }
-                        }
-                    }
-                }
+                
             }
         }
     }
