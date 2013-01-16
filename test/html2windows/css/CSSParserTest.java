@@ -75,26 +75,29 @@ public class CSSParserTest {
          * Create a file 
          * Create a cssString
          */
-        UIParser uiParserTest = new UIParser();
-        String input = "<html><head></head><body>test message</body></html>";
-
+        Document doc = new Document();
+        {
+            Element html = doc.createElement("html");
+            Element head = doc.createElement("head");
+            Element body = doc.createElement("body");
+            Node text = doc.createTextNode("test message");
+            html.appendChild(head);
+            html.appendChild(body);
+            body.appendChild(text);
+            doc.appendChild(html);
+        }
         /**Get doc from UIParser result whether is not null 
          * 
          */
-        Document doc = uiParserTest.parse(input);
-        assertNotNull(doc);
+        assertNotNull(doc.documentElement());
 
         /**Setting doc Style from CSSParser
          * 
          */
         CSSParser CSSParser = new CSSParser();
         CSSParser.parser(cssString, doc); 
-
-        /**Use doc to get documentElement and test that it is not null.
-         * 
-         */
-        Element html = doc.documentElement();
-        assertNotNull(html);
+            
+        Element html = doc.documentElement();    
 
         /** Test whether the tag Name is correct
          * 
@@ -127,8 +130,7 @@ public class CSSParserTest {
         /**Get the first child and test whether the node name is correct.
          * 
          */
-        Node head = list.item(0);
-        assertEquals("first child of <html> should be <head>", "head", head.nodeName());
+        assertEquals("first child of <html> should be <head>", "head", list.item(0).nodeName());
 
         /**Get the first child and test whether the node name is correct.
          * 
