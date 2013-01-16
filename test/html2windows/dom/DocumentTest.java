@@ -202,16 +202,17 @@ public class DocumentTest {
          * Add two div to nodeList to compare with the result
          */
         Element body = doc.createElement("body");
-        ElementInter div=new ElementInter("div");
+        ElementInter div1 = new ElementInter("div");
+        ElementInter div2 = new ElementInter("div");
         ElementInter span=new ElementInter("span");
         
         body.appendChild(span);
-        body.appendChild(div);
-        body.appendChild(div);
+        body.appendChild(div1);
+        body.appendChild(div2);
         doc.appendChild(body);
         
-        nodeList.add(div);
-        nodeList.add(div);
+        nodeList.add(div1);
+        nodeList.add(div2);
         
         /**
          * Test
@@ -221,7 +222,11 @@ public class DocumentTest {
          * 
          * Expect nodeList with expected tag name
          */
-        assertEquals("get element by tag name should return nodelist with element", nodeList, doc.getElementsByTagName("div"));
+		NodeList divResultList = doc.getElementsByTagName("div");
+
+		Node[] expect = new Node[nodeList.size()];
+		Node[] result = new Node[divResultList.size()];
+        assertArrayEquals("get element by tag name should return nodelist with element", nodeList.toArray(expect), divResultList.toArray(result));
     }
     
     
