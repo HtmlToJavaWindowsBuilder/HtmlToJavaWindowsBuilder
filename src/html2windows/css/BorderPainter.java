@@ -4,7 +4,6 @@ import html2windows.css.Style;
 import html2windows.dom.Element;
 
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
@@ -18,11 +17,13 @@ public class BorderPainter extends JPanel implements CSSPainter{
 	private Graphics2D g2d;
 	private HashMap<String, String> property = new HashMap<String, String>();
 	
-	private int height;
-	private int width;
-	private int top;
-	private int left;
-	private int borderWidth;
+	/**
+	 * height, width, top, left values of border.
+	 */
+	private int height=10;
+	private int width=10;
+	private int top=0;
+	private int left=0;
 	
     public BorderPainter() { 
         initial();
@@ -84,7 +85,7 @@ public class BorderPainter extends JPanel implements CSSPainter{
      * @param name      style name, ex: font-size
      *
      */
-    public void getBorderStyle(Style style,String name) {
+    private void getBorderStyle(Style style,String name) {
         String type = style.getProperty(name);
         if( type != null ) {
             this.property.put(name, type) ;    
@@ -98,94 +99,50 @@ public class BorderPainter extends JPanel implements CSSPainter{
      * function will set Color     
      *
      */
-	public void setColor(){
-		
-		String color=property.get("border-color");
-		
-		if(color.equals("maroon")){
-			
-			g2d.setColor(new Color(128,0,0));
-		}
-		else if(color.equals("red")){
-			
-			g2d.setColor(new Color(255,0,0));
-		}
-		else if(color.equals("orange")){
-			
-			g2d.setColor(new Color(255,165,0));
-			
-		}
-		else if(color.equals("yellow")){
-			
-			g2d.setColor(new Color(255,255,0));
-		}
-		else if(color.equals("olive")){
-			
-			g2d.setColor(new Color(128,128,0));
-		}
-		else if(color.equals("purple")){
-			
-			g2d.setColor(new Color(128,0,128));
-		}
-		else if(color.equals("fuchsia")){
-			
-			g2d.setColor(new Color(255,0,255));
-		}
-		else if(color.equals("white")){
-			
-			g2d.setColor(new Color(255,255,255));
-		}
-		else if(color.equals("lime")){
-			
-			g2d.setColor(new Color(0,255,255));
-		}
-		else if(color.equals("green")){
-			
-			g2d.setColor(new Color(0,255,0));
-		}
-		else if(color.equals("navy")){
-			
-			g2d.setColor(new Color(0,0,128));
-		}
-		else if(color.equals("blue")){
-			
-			g2d.setColor(new Color(0,0,255));
-		}
-		else if(color.equals("aqua")){
-			
-			g2d.setColor(new Color(0,255,255));
-		}
-		else if(color.equals("teal")){
-			
-			g2d.setColor(new Color(0,128,128));
-		}
-		else if(color.equals("black")||color.equals("default")){
-			g2d.setColor(new Color(0,0,0));
-		}
-		else if(color.equals("silver")){
-			
-			g2d.setColor(new Color(192,192,192));
-		}
-		else if(color.equals("gray")){
-			
-			g2d.setColor(new Color(128,128,128));
-		}
-		else{
-			String firstColor=color.substring(1, 3);
-			int firstColorNum=Integer.parseInt(firstColor, 16);
-			
-			String secondColor=color.substring(3,5);
-			int secondColorNum=Integer.parseInt(secondColor, 16);
-			
-			String thirdColor=color.substring(5,7);
-			int thirdColorNum=Integer.parseInt(thirdColor, 16);
-			
-			g2d.setColor(new Color(firstColorNum,secondColorNum,thirdColorNum));
-			
-			
-		}
+    private void setColor(){
+		String color=property.get("border-color").toLowerCase();
+		g2d.setColor(ColorConverter.convert(color));
+    }
 	
+	/**
+	 * Set border width according to user defined border-width
+	 * 
+	 * @throws NumberFormatException
+	 */
+	private void setBorderWidth(){
+		try{
+			borderWidth=Integer.parseInt(property.get("border-width"));
+	    }
+	    catch (NumberFormatException e){
+	    }
 	}
+	
+	/**
+	 * Set width according to user defined width
+	 * 
+	 * @throws NumberFormatException
+	 */
+	private void setWidth() throws NumberFormatException{
+		try{
+			width=Integer.parseInt(property.get("width"));
+	    }
+	    catch (NumberFormatException e){
+	    }
+	}
+	
+	/**
+	 * Set height according to user defined height
+	 * 
+	 * @throws NumberFormatException
+	 */
+	private void setHeight() throws NumberFormatException{
+		try{
+			height=Integer.parseInt(property.get("height"));
+	    }
+	    catch (NumberFormatException e){
+	    }
+	}
+	
 	
 	private Stroke setStroke(){
 		Stroke s;
