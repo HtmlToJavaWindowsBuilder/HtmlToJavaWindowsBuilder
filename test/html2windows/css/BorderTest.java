@@ -49,6 +49,7 @@ public class BorderTest {
                 return new BorderPainter();
             }
         };
+        
 
         String tagName = "div";
         ElementInter elementInter = new ElementInter(tagName);
