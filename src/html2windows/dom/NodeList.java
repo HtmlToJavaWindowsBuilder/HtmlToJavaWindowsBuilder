@@ -1,6 +1,6 @@
 package html2windows.dom;
 import java.util.ArrayList;
-
+@SuppressWarnings(value = { "serial" })
 public class NodeList extends ArrayList<Node>{
 	
 	//目的:回傳index的Node

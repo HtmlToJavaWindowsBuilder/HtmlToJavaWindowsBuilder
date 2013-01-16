@@ -235,9 +235,12 @@ class AttrInter implements Attr, NodeInter{
 			 * and children after newChild will shift 1 position 
 			 * so insertion index need to subtract 1.
 			 */
-			if(newChild.parentNode() == this && childNodes.indexOf(newChild) < index)
-				index--;
-			newChild.parentNode().removeChild(newChild);
+			Node parentNode = newChild.parentNode();
+			if (parentNode != null) {
+				if(newChild.parentNode() == this && childNodes.indexOf(newChild) < index)
+					index--;
+				newChild.parentNode().removeChild(newChild);
+			}
 			childNodes.add(index, newChild);
 			
 			NodeInter newChildInternal = (NodeInter)newChild;

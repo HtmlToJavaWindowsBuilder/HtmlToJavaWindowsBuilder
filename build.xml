@@ -52,13 +52,13 @@
     <target name="test"  depends="compile-test" >
         <!--"compile-test"-->
         <mkdir dir="${result}"/>
-        <junit printsummary="yes" >
+        <junit printsummary="withOutAndErr" >
             <classpath >
                 <pathelement path="${build}"/>
                 <pathelement location="${junit}"/>
             </classpath>
             <batchtest todir="${result}">
-                <fileset dir="${build}" includes="**/*Test*"/>
+                <fileset dir="${build}" includes="**/*Test.class"/>
                 <formatter type="xml"/>
             </batchtest>
         </junit>
