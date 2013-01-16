@@ -198,7 +198,6 @@ public class CSSParser {
                             pos++;
                             parseSpace();
                             // put ruleset into element
-                            System.out.println(selector);
                             elements = new CSS1SelectorMatcher().getElementBySelector(selector, document);
                             for(Element e: elements){
                                 e.getStyle().addCSSRuleSet(ruleSet);
@@ -385,9 +384,6 @@ public class CSSParser {
                 pos++;
                 if (isNotEnd())
                     ch = getChar();
-            }
-            else {
-                System.out.println("ident no '-'");
             }
 
             if (isNmstart(ch)) {
@@ -820,19 +816,10 @@ public class CSSParser {
 
         if (isNotEnd()) {
             ch = getChar();
-            if (ch == '\n' || ch == '\f') {
-                System.out.println("in parseNl isEnd(end of \n || \f)");
-            }
-            else if (ch == '\r') {
+            if (ch == '\r') {
                 pos++;
                 if (isNotEnd()) {
                     ch = getChar();
-                    if (ch == '\n') {
-                        System.out.println("in parseNl isEnd(end of \r\n)");
-                    }
-                }
-                else {
-                    System.out.println("in parseNl isEnd(end of \r)");
                 }
             }
         }
