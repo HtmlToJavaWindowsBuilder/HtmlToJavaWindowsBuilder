@@ -1,5 +1,7 @@
 package html2windows.dom;
 
+import java.awt.Component;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.events.Event;
 import org.w3c.dom.events.EventException;
@@ -16,8 +18,6 @@ import org.w3c.dom.events.EventListener;
  */
 class TextInter extends Text implements NodeInter {
 
-	private NodeList childNodeList = new NodeList();
-	private Node parentNode = null;
 	private String dataValue = null;
 	private Document ownerDocument=null;
 
@@ -46,8 +46,12 @@ class TextInter extends Text implements NodeInter {
 
 		String newString1 = dataValue.substring(0, (int) offset);
 		String newString2 = dataValue.substring((int) offset + 1);
+		
+		dataValue=newString1;
+		
 		TextInter newTextNode = new TextInter(newString2);
 		
+		Node parentNode=parentNode();
 		if (parentNode != null) {
 			newTextNode.setParentNode(parentNode);
 			NodeList parentsChildNodeList = parentNode.childNodes();
@@ -211,9 +215,12 @@ class TextInter extends Text implements NodeInter {
 	 */
 	@Override
 	public Node parentNode() {
-		
-		return parentNode;
-	}
+    	Component parent = getParent();
+    	if(parent instanceof Node)
+    		return (Node)parent;
+    	else
+    		return null;
+    }
 	
 	
 	/**
@@ -222,10 +229,12 @@ class TextInter extends Text implements NodeInter {
 	 * @param newParent The parent of this element.
 	 */
 	@Override
-	public void setParentNode(Node newParent) {
-		
-		parentNode=newParent;
-
+	public void setParentNode(Node newParent){
+		Node oldParentNode = parentNode();
+		oldParentNode.removeChild(this);
+	 
+	    newParent.appendChild(this);
+	    		
 	}
 	
 	/**
@@ -236,7 +245,7 @@ class TextInter extends Text implements NodeInter {
 	@Override
 	public NodeList childNodes() {
 		
-		return childNodeList;
+		return null;
 	}
 	
 	/**
@@ -246,11 +255,7 @@ class TextInter extends Text implements NodeInter {
 	 */
 	@Override
 	public Node firstChild() {
-		
-		if (childNodeList.size() > 0)
-			return childNodeList.item(0);
-		else
-			return null;
+		return null;
 	}
 	
 	/**
@@ -261,12 +266,29 @@ class TextInter extends Text implements NodeInter {
 	@Override
 	public Node lastChild() {
 		
-		int nodeListSize = childNodeList.size();
-		if (nodeListSize > 0)
-			return childNodeList.item(nodeListSize - 1);
-		else
-			return null;
+		return null;
 	}
+	
+	/**
+     * Find this element's index in the parent's child list.
+     * 
+     * @return	The index of this element in parent's child list.
+     */
+    private int findIndexInParent(){
+    	
+    	Node parent = parentNode();
+    	if(parent==null)
+    		return -1;
+    	
+    	NodeList parentChildNodeList = parent.childNodes();
+    	for(int i=0;i<parentChildNodeList.size();i++){
+    		Node node = parentChildNodeList.item(i);
+    		if(node.equals(this))
+    			return i;
+    	}
+    	
+    	return -1;
+    }
 	
 	/**
 	 * Get the previous sibling node in parent's child list.
@@ -276,16 +298,18 @@ class TextInter extends Text implements NodeInter {
 	@Override
 	public Node previousSibling() {
 		
-		if(parentNode==null)
-			return null;
+		int thisIndex=findIndexInParent();
+    	
+    	if(thisIndex!=-1&&thisIndex!=0){
+    		Node parent = parentNode();
+    		NodeList parentChildNodeList = parent.childNodes();
+    		
+    		Node previousSiblingComponent = parentChildNodeList.item(thisIndex-1);
+    		return previousSiblingComponent;
+    		
+    	}
 		
-		NodeList siblingList = parentNode.childNodes();
-		int index = siblingList.indexOf(this);
-		if (index == 0)
-			return null;
-
-		else
-			return siblingList.item(index - 1);
+    	return null;
 
 	}
 	
@@ -297,17 +321,17 @@ class TextInter extends Text implements NodeInter {
 	 */
 	@Override
 	public Node nextSibling() {
-		
-		if(parentNode==null)
-			return null;
-		
-		NodeList siblingList = parentNode.childNodes();
-		int index = siblingList.indexOf(this);
-		if (index == siblingList.size() - 1)
-			return null;
+		int thisIndex=findIndexInParent();
+    	
+    	if(thisIndex!=-1){
+    		Node parent = parentNode();
+    		NodeList parentChildNodeList = parent.childNodes();
+    		
+    		Node nextSiblingComponent = parentChildNodeList.item(thisIndex+1);
+    		return nextSiblingComponent;
+    	}
 
-		else
-			return siblingList.item(index + 1);
+    	return null;
 
 	}
 	
@@ -357,16 +381,7 @@ class TextInter extends Text implements NodeInter {
 	@Override
 	public Node insertBefore(Node newChild, Node refChild) throws DOMException {
 		
-		if (newChild == null)
-			return null;
-		else if (refChild == null) {
-			childNodeList.add(newChild);
-			return newChild;
-		} else {
-			int index = childNodeList.indexOf(refChild);
-			childNodeList.add(index - 1, newChild);
-			return newChild;
-		}
+		return null;
 	}
 	
 	
@@ -381,14 +396,7 @@ class TextInter extends Text implements NodeInter {
 	@Override
 	public Node replaceChild(Node newChilde, Node oldChild) throws DOMException {
 		
-		int index = childNodeList.indexOf(oldChild);
-		if (index == -1) {
-			return null;
-		} else {
-			childNodeList.remove(index);
-			childNodeList.add(index, newChilde);
-			return oldChild;
-		}
+		return null;
 	}
 	
 	
@@ -402,14 +410,7 @@ class TextInter extends Text implements NodeInter {
 	 */
 	@Override
 	public Node removeChild(Node oldChild) throws DOMException {
-		
-		int index = childNodeList.indexOf(oldChild);
-		if (index == -1)
-			return null;
-		else {
-			childNodeList.remove(index);
-			return oldChild;
-		}
+		return null;
 	}
 	
 
@@ -423,8 +424,7 @@ class TextInter extends Text implements NodeInter {
 	@Override
 	public Node appendChild(Node newChild) throws DOMException {
 		
-		childNodeList.add(newChild);
-		return newChild;
+		return null;
 	}
 	
 	
@@ -436,10 +436,6 @@ class TextInter extends Text implements NodeInter {
 	@Override
 	public boolean hasChildNodes() {
 		
-		
-		if (!childNodeList.isEmpty())
-			return true;
-		else
 			return false;
 	}
 	
