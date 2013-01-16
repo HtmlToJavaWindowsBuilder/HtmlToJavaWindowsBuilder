@@ -26,6 +26,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static java.lang.Thread.sleep;
 
+/**
+ * Test draw border with element with user defined 
+ * style. 
+ *  
+ * @author Jason Kuo
+ */
+
 public class BorderTest {
 	private JFrame frame = new JFrame();
 	private JPanel panel=new JPanel();

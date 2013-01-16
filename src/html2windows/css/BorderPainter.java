@@ -123,9 +123,9 @@ public class BorderPainter extends JPanel implements CSSPainter{
     /**
      * Set color by user defined property "border-color"     
      */
-	public void setColor(){
+    public void setColor(){
 
-		String color=property.get("border-color");
+		String color=property.get("color").toLowerCase();
 
 		if(color.equals("maroon")){
 			g2d.setColor(new Color(128,0,0));
@@ -178,19 +178,22 @@ public class BorderPainter extends JPanel implements CSSPainter{
 		else if(color.equals("gray")){
 			g2d.setColor(new Color(128,128,128));
 		}
-		else{
-			String firstColor=color.substring(1, 3);
-			int firstColorNum=Integer.parseInt(firstColor, 16);
+		else if(color.matches("#[0-9A-Fa-f]{6}")){
+            String firstColor=color.substring(1, 3);
+            int firstColorNum=Integer.parseInt(firstColor, 16);
 
-			String secondColor=color.substring(3,5);
-			int secondColorNum=Integer.parseInt(secondColor, 16);
+            String secondColor=color.substring(3,5);
+            int secondColorNum=Integer.parseInt(secondColor, 16);
 
-			String thirdColor=color.substring(5,7);
-			int thirdColorNum=Integer.parseInt(thirdColor, 16);
+            String thirdColor=color.substring(5,7);
+            int thirdColorNum=Integer.parseInt(thirdColor, 16);
 
-			g2d.setColor(new Color(firstColorNum,secondColorNum,thirdColorNum));
+            g2d.setColor(new Color(firstColorNum,secondColorNum,thirdColorNum));
 		}
-	}
+        else{
+			g2d.setColor(new Color(0,0,0));
+        }
+    }
 	
 	/**
 	 * Set border width according to user defined border-width
