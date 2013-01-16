@@ -83,9 +83,9 @@ public class CustomTest {
         elementInter.setOwnerDocument(document);
 
         Element elementNode = elementInter;
-        elementNode.setPreferredSize(new Dimension(100, 100));
+        //elementNode.setPreferredSize(new Dimension(100, 100));
         
-        Text textValueText=document.createTextNode("5555555555555555555555555555555");
+        Text textValueText=document.createTextNode("222222222");
         elementNode.appendChild(textValueText);
         
         Style style = elementNode.getStyle();
@@ -126,7 +126,7 @@ public class CustomTest {
         style.setProperty("top","100");
         style.setProperty("position","relative");
         style.setProperty("text-decoration","line-through");
-        style.setProperty("color","red");
+        style.setProperty("color","#182bbc");
         /**
          * Test
          * 

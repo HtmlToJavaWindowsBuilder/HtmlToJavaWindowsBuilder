@@ -108,13 +108,13 @@ public class FontPainter extends JPanel implements CSSPainter {
 		getFontStyle(style, "text-decoration");
 		getFontStyle(style, "text-indent");
 		getFontStyle(style, "line-height");
+        getFontText(element);
         setFont();
         setColor();
-        getFontText(element);
 
         AttributedString attributedString = new AttributedString(this.text);
         if( setFontVariant() != 0 ) {
-            attributedString.addAttribute(TextAttribute.FONT,this.fontVariant,0,1);
+            attributedString.addAttribute(TextAttribute.FONT,this.fontVariant, 0, 1);
             attributedString.addAttribute(TextAttribute.FONT,this.font, 1, this.text.length());
         }
         else {
@@ -143,8 +143,8 @@ public class FontPainter extends JPanel implements CSSPainter {
      */
     private int setFontVariant() {
         String variant = this.property.get("font-variant").toLowerCase();
-        int variantSmall = -8;
-        if(variant == "small-caps") {
+        int variantSmall = 4;
+        if(variant.equals("small-caps")) {
             this.text = this.text.toUpperCase();
 
             return variantSmall;
@@ -159,9 +159,15 @@ public class FontPainter extends JPanel implements CSSPainter {
      * @return  font-size int  
      */
     private int setFontSize() {
-        int variantSize = setFontVariant(); 
-
-        return Integer.parseInt(this.property.get("font-size")) + variantSize;
+        String fontSize = this.property.get("font-size");
+        if( fontSize.matches("[0-9]+") ) {
+            return Integer.parseInt(fontSize);
+        }
+        else if(fontSize.matches("[0-9]+px")) {
+            fontSize = fontSize.replaceAll("([0-9]+)px","$1");          
+            return Integer.parseInt(fontSize);
+        }
+        return 12;
     }
 
     /**
@@ -174,9 +180,9 @@ public class FontPainter extends JPanel implements CSSPainter {
         String family = this.property.get("family");
 
         if(variant != 0) {
-            this.fontVariant = new Font(family, weight, size);
+            this.fontVariant = new Font(family, weight, size+variant);
         }
-        this.font = new Font(family, weight, size+variant);
+        this.font = new Font(family, weight, size);
     }
 
     /**
@@ -187,10 +193,10 @@ public class FontPainter extends JPanel implements CSSPainter {
     private int setFontStyleItalic(int weight) {
         String strStyle = this.property.get("font-style").toLowerCase();
 
-        if(weight == Font.BOLD && strStyle == "italic") {
+        if(weight == Font.BOLD && strStyle.equals("italic")) {
             weight = Font.BOLD + Font.ITALIC;       
         }
-        else if(weight != Font.BOLD && strStyle == "italic") {
+        else if(weight != Font.BOLD && strStyle.equals("italic")) {
             weight = Font.ITALIC;       
         }
 
@@ -206,16 +212,16 @@ public class FontPainter extends JPanel implements CSSPainter {
         String strWeight = this.property.get("font-weight").toLowerCase();
         int weight = Font.PLAIN;
 
-        if(strWeight == "bold" ) {
+        if(strWeight.equals("bold" )) {
             weight = Font.BOLD;       
         }
-        else if(strWeight == "italic") {
+        else if(strWeight.equals("italic")) {
             weight = Font.ITALIC;       
         }
-        else if(strWeight == "plain") {
+        else if(strWeight.equals("plain")) {
             weight = Font.PLAIN;       
         }
-        else if(strWeight == "bold+italic") {
+        else if(strWeight.equals("bold+italic")) {
             weight = Font.BOLD + Font.ITALIC;       
         }
         weight = setFontStyleItalic(weight);
@@ -337,10 +343,23 @@ public class FontPainter extends JPanel implements CSSPainter {
 			
 			g2d.setColor(new Color(128,128,128));
 		}
-		else{
-			g2d.setColor(new Color(0,0,0));
-				
+		else if(color.matches("#[0-9A-Fa-f]{6}")){
+            String firstColor=color.substring(1, 3);
+            int firstColorNum=Integer.parseInt(firstColor, 16);
+
+            String secondColor=color.substring(3,5);
+            int secondColorNum=Integer.parseInt(secondColor, 16);
+
+            String thirdColor=color.substring(5,7);
+            int thirdColorNum=Integer.parseInt(thirdColor, 16);
+
+            g2d.setColor(new Color(firstColorNum,secondColorNum,thirdColorNum));
+
 		}
+        else {
+            
+			g2d.setColor(new Color(0,0,0));
+        }
 	
 	}
 
