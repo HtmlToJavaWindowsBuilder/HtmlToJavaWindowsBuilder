@@ -226,8 +226,9 @@ public class CustomLayoutManager implements LayoutManager {
      */
     private int getWidth(Style style) {
         int width = 100;
-        if(style.getProperty("width") != null) {
-            return Integer.parseInt(style.getProperty("width"));
+        int value = getPxNumber(style.getProperty("width"));
+        if(value != 0) {
+            return value;
         }
         return width;
     }
@@ -256,8 +257,9 @@ public class CustomLayoutManager implements LayoutManager {
      */
     private int getHeight(Style style) {
         int height = 100;
-        if(style.getProperty("height") != null) {
-            return Integer.parseInt(style.getProperty("height"));
+        int value = getPxNumber(style.getProperty("height"));
+        if(value != 0) {
+            return value;
         }
         return height;
     }
@@ -271,8 +273,9 @@ public class CustomLayoutManager implements LayoutManager {
      */
     private int getTop(Style style) {
         int top = 0;
-        if(style.getProperty("top") != null) {
-            return Integer.parseInt(style.getProperty("top"));
+        int value = getPxNumber(style.getProperty("top"));
+        if(value != 0) {
+            return value;
         }
         return top;
     }
@@ -286,10 +289,31 @@ public class CustomLayoutManager implements LayoutManager {
      */
     private int getLeft(Style style) {
         int left = 0;
-        if(style.getProperty("left") != null) {
-            return Integer.parseInt(style.getProperty("left"));
+        int value = getPxNumber(style.getProperty("left"));
+        if(value != 0) {
+            return value;
         }
         return left;
+    }
+    
+    /**
+     * covert number px into number
+     *
+     * @param numString
+     *
+     * @return value mean that number
+     */
+    private int getPxNumber(String numString) {
+        if( numString != null) {
+            if( numString.matches("[0-9]+") ) {
+                return Integer.parseInt(numString);
+            }
+            else if(numString.matches("[0-9]+px")) {
+                numString = numString.replaceAll("([0-9]+)px","$1");          
+                return Integer.parseInt(numString);
+            }
+        }
+        return 0;
     }
 
     /**
@@ -301,8 +325,9 @@ public class CustomLayoutManager implements LayoutManager {
      */
     private int getPaddingLeft(Style style) {
         int paddingLeft = 0;
-        if(style.getProperty("left") != null) {
-            return Integer.parseInt(style.getProperty("left"));
+        int value = getPxNumber(style.getProperty("padding-left"));
+        if(value != 0) {
+            return value;
         }
         return paddingLeft;
     }
