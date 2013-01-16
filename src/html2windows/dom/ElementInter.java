@@ -220,6 +220,7 @@ public class ElementInter extends Element implements NodeInter {
      * @param	style style you want to set to this element
      */
     private void setStyle(Style style) {
+
     	if(style==null){
     		elementStyle=new Style(this);
     	}
@@ -228,16 +229,17 @@ public class ElementInter extends Element implements NodeInter {
     	}
 		
 	
-	}
+    }
 	
 	
-	/**
-	 * Return this element's style.
-	 * 
-	 * @return	This element's style.
-	 */
+    /**
+     * Return this element's style.
+     * 
+     * @return This element's style.
+     */
     public Style getStyle() {
-    	return elementStyle;
+		
+	return elementStyle;
     }
     
     /**
