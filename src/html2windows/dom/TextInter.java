@@ -103,33 +103,57 @@ class TextInter extends Text implements NodeInter {
 	/**
 	 * Append the string to the end of the character data of the node.
 	 * 
-	 * 
+	 * @param arg The string to append.
 	 * 
 	 */
 	public void appendData(String arg) throws DOMException {
 		dataValue=dataValue.concat("arg");
 	}
 
+	/**
+	 * Insert a string at the specified offset.
+	 * 
+	 * @param offset The character offset at which to insert.
+	 * @param The string to insert.
+	 * 
+	 */
 	public void insertData(long offset, String arg) throws DOMException {
 		String newData = null;
-		newData.concat(dataValue.substring(0, (int) offset));
-		newData.concat(arg);
-		newData.concat(dataValue.substring((int) offset + 1));
+		newData=newData.concat(dataValue.substring(0, (int) offset));
+		newData=newData.concat(arg);
+		newData=newData.concat(dataValue.substring((int) offset + 1));
 		dataValue = newData;
 	}
-
+	
+	
+	/**
+	 * Remove a range from the node.
+	 * 
+	 * @param offset The offset from which to start removing.
+	 * @param count The number of 16-bit units to delete.
+	 * 
+	 * @exception DOMException INDEX_SIZE_ERR: Raised if the specified offset is negative or greater than the number in data, or if the specified count is negative.
+	 */
 	public void deleteData(long offset, long count) throws DOMException {
 		if (offset < 0 || count < 0 || offset >= dataValue.length())
 			throw new DOMException(
 					DOMException.INDEX_SIZE_ERR,
 					" The specified offset is negative or greater than the number of 16-bit units in data, or if the specified count is negative");
 		String newData = null;
-		newData.concat(dataValue.substring(0, (int) offset));
-		newData.concat(dataValue.substring((int) offset + (int) count));
+		newData=newData.concat(dataValue.substring(0, (int) offset));
+		newData=newData.concat(dataValue.substring((int) offset + (int) count));
 		dataValue = newData;
 	}
-
 	
+	/**
+	 * Replace the characters starting at the specified offset with the specified string.
+	 * 
+	 * @param offset The offset from which to start replacing.
+	 * @param count The number to replace.
+	 * @param arg The string with which the range must be replaced.
+	 * 
+	 * @exception DOMException INDEX_SIZE_ERR: Raised if the specified offset is negative or greater than the number in data, or if the specified count is negative.
+	 */
 	public void replaceData(long offset, long count, String arg)
 			throws DOMException {
 		if (offset < 0 || count < 0 || offset >= dataValue.length())
@@ -145,65 +169,115 @@ class TextInter extends Text implements NodeInter {
 	}
 	
 	
+	/**
+	 * Return this node name.
+	 * 
+	 * @return The definition name of text.  
+	 * 
+	 */
 	@Override
 	public String nodeName() {
-		// TODO Auto-generated method stub
+		
 		return "#text";
 	}
-
+	
+	
+	/**
+	 * Return the data value of this text
+	 * 
+	 * @return The data value of this text
+	 */
 	@Override
 	public String nodeValue() {
-		// TODO Auto-generated method stub
+		
 		return dataValue;
 	}
-
+	
+	/**
+	 * A code representing the type of the underlying object.
+	 * 
+	 * @return The code defined in DOM
+	 */
 	@Override
 	public short nodeType() {
-		// TODO Auto-generated method stub
+	
 		return TEXT_NODE;
 	}
-
+	
+	
+	/**
+	 * The parent of this node.
+	 * 
+	 * @return The parent of this node
+	 * 
+	 */
 	@Override
 	public Node parentNode() {
-		// TODO Auto-generated method stub
+		
 		return parentNode;
 	}
-
+	
+	
+	/**
+	 * Set the parent of this element.
+	 * 
+	 * @param newParent The parent of this element.
+	 */
 	@Override
 	public void setParentNode(Node newParent) {
-		// TODO Auto-generated method stub
+		
 		parentNode=newParent;
 
 	}
-
+	
+	/**
+	 * Get the child list of this text.
+	 * 
+	 * @return A node list of this text's child.
+	 */
 	@Override
 	public NodeList childNodes() {
-		// TODO Auto-generated method stub
+		
 		return childNodeList;
 	}
-
+	
+	/**
+	 * Get the first child of this text.
+	 * 
+	 * @return The first child of this text.
+	 */
 	@Override
 	public Node firstChild() {
-		// TODO Auto-generated method stub
+		
 		if (childNodeList.size() > 0)
 			return childNodeList.item(0);
 		else
 			return null;
 	}
-
+	
+	/**
+	 * Get the last child of this text.
+	 * 
+	 * @return The last child of this text.
+	 */
 	@Override
 	public Node lastChild() {
-		// TODO Auto-generated method stub
+		
 		int nodeListSize = childNodeList.size();
 		if (nodeListSize > 0)
 			return childNodeList.item(nodeListSize - 1);
 		else
 			return null;
 	}
-
+	
+	/**
+	 * Get the previous sibling node in parent's child list.
+	 * 
+	 * @return The previous sibling of this element.
+	 */
 	@Override
 	public Node previousSibling() {
-		// TODO Auto-generated method stubs
+		
 		if(parentNode==null)
 			return null;
 		
@@ -216,10 +290,16 @@ class TextInter extends Text implements NodeInter {
 			return siblingList.item(index - 1);
 
 	}
-
+	
+	
+	/**
+	 * Get the next sibling node in parent's child list.
+	 * 
+	 * @return The next sibling of this element.
+	 */
 	@Override
 	public Node nextSibling() {
-		// TODO Auto-generated method stub
+		
 		if(parentNode==null)
 			return null;
 		
@@ -232,29 +312,53 @@ class TextInter extends Text implements NodeInter {
 			return siblingList.item(index + 1);
 
 	}
-
+	
+	/**
+	 * A NamedNodeMap containing the attributes of this text.
+	 * 
+	 *  @return A NamedNodeMap containing the attributes of this text.
+	 */
 	@Override
 	public NamedNodeMap attributes() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
-
+	
+	/**
+	 * Get the ownerDocument of this text.
+	 * 
+	 * @return The owner document of this text.
+	 */
 	@Override
 	public Document ownerDocument() {
-		// TODO Auto-generated method stub
+		
 		return this.ownerDocument;
 	}
-
+	
+	/**
+	 * Set the ownerDocument of this text.
+	 * 
+	 * @param The ownerDocument of this text. 
+	 */
 	@Override
 	public void setOwnerDocument(Document newOwnerDocument) {
-		// TODO Auto-generated method stub
+		
 		this.ownerDocument=newOwnerDocument;
 
 	}
-
+	
+	/**
+	 * Inserts the node newChild before the existing child node refChild. 
+     * If refChild is null, insert newChild at the end of the list of children.
+	 * 
+     * @param newChild The node to insert.
+     * @param refChild The node before which the new node must be inserted.
+     * 
+     * @return The node being inserted.
+	 */
 	@Override
 	public Node insertBefore(Node newChild, Node refChild) throws DOMException {
-		// TODO Auto-generated method stub
+		
 		if (newChild == null)
 			return null;
 		else if (refChild == null) {
@@ -266,10 +370,19 @@ class TextInter extends Text implements NodeInter {
 			return newChild;
 		}
 	}
-
+	
+	
+	/**
+	 *  Replaces the child node oldChild with newChild in the list of children, and returns the oldChild node.
+	 * 
+	 * @param newChild The new node to put in the child list.
+     * @param oldChild The node being replaced in the list.
+     * 
+     * @return The node replaced.
+	 */
 	@Override
 	public Node replaceChild(Node newChilde, Node oldChild) throws DOMException {
-		// TODO Auto-generated method stub
+		
 		int index = childNodeList.indexOf(oldChild);
 		if (index == -1) {
 			return null;
@@ -279,10 +392,19 @@ class TextInter extends Text implements NodeInter {
 			return oldChild;
 		}
 	}
-
+	
+	
+	/**
+	 * Removes the child node indicated by oldChild from the list of children, and returns it.
+     * 
+     * @param oldChild The node being removed.
+     * 
+     * @return The node removed.
+     * 
+	 */
 	@Override
 	public Node removeChild(Node oldChild) throws DOMException {
-		// TODO Auto-generated method stub
+		
 		int index = childNodeList.indexOf(oldChild);
 		if (index == -1)
 			return null;
@@ -291,47 +413,67 @@ class TextInter extends Text implements NodeInter {
 			return oldChild;
 		}
 	}
+	
 
+    /**
+     * Adds the node newChild to the end of the list of children of this node. 
+     * If the newChild is already in the tree, it is first removed.
+     * 
+     * @param newChild The node to add.
+     * @return The node added.
+     */
 	@Override
 	public Node appendChild(Node newChild) throws DOMException {
-		// TODO Auto-generated method stub
+		
 		childNodeList.add(newChild);
 		return newChild;
 	}
-
+	
+	
+	/**
+     * Returns whether this node has any children.
+     * 
+     * @return true if this node has any children, false otherwise.
+     */
 	@Override
 	public boolean hasChildNodes() {
-		// TODO Auto-generated method stub
+		
 		
 		if (!childNodeList.isEmpty())
 			return true;
 		else
 			return false;
 	}
-
+	
+	
+	/**
+     * Returns whether this element has any attributes.
+     * 
+     * @return true if this node has any attributes, false otherwise.
+     */
 	@Override
 	public boolean hasAttributes() {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 
 	@Override
 	public void addEventListener(String type, EventListener listener,
 			boolean useCapture) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public void removeEventListener(String type, EventListener listener,
 			boolean useCapture) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public boolean dispatchEvent(Event evt) throws EventException {
-		// TODO Auto-generated method stub
+		
 		return false;
 	}
 }
