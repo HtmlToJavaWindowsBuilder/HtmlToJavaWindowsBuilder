@@ -66,21 +66,21 @@ public class UIParser {
     /*
      *  input: string is css style string
      *  ex: 
-        <?xml version="1.0"?>  
-        <company>
-            <employee>
-                <firstname>Tom</firstname>
-                <lastname>Cruise</lastname>
-            </employee>
-            <employee>
-                <firstname>Paul</firstname>
-                <lastname>Enderson</lastname>
-            </employee>
-            <employee>
-                <firstname>George</firstname>
-                <lastname>Bush</lastname>
-            </employee>
-        </company>
+     *  <?xml version="1.0"?>  
+     *   <company>
+     *       <employee>
+     *           <firstname>Tom</firstname>
+     *           <lastname>Cruise</lastname>
+     *       </employee>
+     *       <employee>
+     *           <firstname>Paul</firstname>
+     *           <lastname>Enderson</lastname>
+     *       </employee>
+     *       <employee>
+     *           <firstname>George</firstname>
+     *           <lastname>Bush</lastname>
+     *       </employee>
+     *   </company>
      * 
      *  output : Document 
      *
