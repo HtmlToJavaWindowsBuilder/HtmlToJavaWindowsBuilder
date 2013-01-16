@@ -7,7 +7,7 @@ import org.w3c.dom.events.EventException;
 import org.w3c.dom.events.EventListener;
 
 
-public abstract class Text implements Node {
+public abstract class Text extends JComponent implements Node {
     public abstract String data();
     
     public abstract void setData(String data);

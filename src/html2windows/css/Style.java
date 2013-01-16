@@ -5,16 +5,40 @@ import java.util.TreeSet;
 
 import html2windows.dom.Element;
 
+/**
+ * Style simulate CSS's style. It contains a set of CSSRuleSets.
+ * You can add CSSRuleSet to Style or set property to CSSRuleSet in Style.
+ * You can also get properties from CSSRuleSet in Style in the order of priority.
+ * 
+ * @author 		Jason Kuo
+ */
+
 public class Style {
+
+	/**
+	 * Define CSSRuleSet's max priority as 5
+	 */
 	private static final int MAX_PRIORITY=5;
-	Element element;
-	Comparator<CSSRuleSet> comparator = new CssRuleSetComparator();
-	TreeSet <CSSRuleSet> set = new TreeSet<CSSRuleSet>(comparator);
 	
-	/*
-	 * constructor of style
-	 * create style and add inline property CSSRuleSet
-	 * arg1 parent node
+	/**
+	 * Element that own this style
+	 */
+	private Element element;
+	
+	/**
+	 * Comparator that compare CSSRuleSet with priority
+	 */
+	private Comparator<CSSRuleSet> comparator = new CssRuleSetComparator();
+	
+	/**
+	 * TreeSet of CSSRuleSet
+	 */
+	private TreeSet <CSSRuleSet> set = new TreeSet<CSSRuleSet>(comparator);
+	
+	/**
+	 * Create style and add it to CSSRuleSet
+	 * 
+	 * @param element 			parent node
 	 */
 	public Style(Element element){
 		this.element=element;
@@ -22,54 +46,62 @@ public class Style {
 		set.add(ruleSet);
 	}
 	
-	/*
-	 * set CssRuleSet's property
-	 * inline property set CssRuleSet's property 
-	 * arg1 priority name
-	 * arg2 priority value
-	 * arg3 CSSRuleSet priority
-	 */
+    /**
+     * Set CssRuleSet's property to first of CSSRuleSet
+     * 
+     * @param propertyName 			inserted property name
+     * @param value		 		inserted property value
+     */
     public void setProperty(String propertyName, String value){
         set.first().setProperty(propertyName,value);
     }
     
-    /*
-     * get property
-     * get the property value according to the order of treeSet(property)
-     * arg1 property name
-     * return property value
+    /**
+     * Get property value according to the order of treeSet(property)
+     * 
+     * @param propertyName			property name
+     * @return					property's value, return null if property value is null
      */
     public String getProperty(String propertyName){
-    	
     	String value=null;
     	for(CSSRuleSet ruleSet : set){
     		value=ruleSet.getProperty(propertyName);
     		if(value!=null)
     			return value;
     	}
-        return null;
+        return null;	
     }
   
-    /*
-     * add Css ruleset
-     * add new ruleset into css ruleset's treeSet
-     * arg1 ruleset
-     * arg2 ruleset priority
+    /**
+     * Add new CSSRuleSet to Style
+     * 
+     * @param cssRuleSet		CSSRuleSet to be added
      */
     public void addCSSRuleSet(CSSRuleSet cssRuleSet){
     	set.add(cssRuleSet);
     }
     
-    /*
-     * get parent node
-     * return prarent node
+    /**
+     * Get element that own this style
+     * 
+     * @return			owner of the Style 
      */
     public Element getElement(){
         return element;
     }
     
+    /**
+     * CSSRuleSet's comparator
+     * Compare CSSRuleSets with their priority
+     */
     public class CssRuleSetComparator implements Comparator<CSSRuleSet>{
-		@Override
+		
+    	/**
+    	 *	Compare two CSSRuleSets with their priority
+    	 *	
+    	 *	@return		return 1 if o1>o2, otherwise -1 
+    	 */
+    	@Override
 		public int compare(CSSRuleSet o1, CSSRuleSet o2) {
 			return (o1.getPriority()>o2.getPriority())?1:-1;
 		}
