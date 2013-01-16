@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import org.w3c.dom.DOMException;
 
+@SuppressWarnings("serial")
 public class NamedNodeMap extends HashMap<String, Node> {
 
 	/*
