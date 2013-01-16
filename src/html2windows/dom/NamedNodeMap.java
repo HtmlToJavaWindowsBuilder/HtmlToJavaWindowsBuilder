@@ -11,6 +11,7 @@ import org.w3c.dom.DOMException;
  * 
  * @author CFWei
  */
+@SuppressWarnings("serial")
 public class NamedNodeMap extends LinkedHashMap<String, Node> {
 
 	/**
@@ -65,13 +66,13 @@ public class NamedNodeMap extends LinkedHashMap<String, Node> {
 	 * @return The node at the indexth position in the map, or null if that is not a valid index.
 	 */
 	public Node item(long index) {
-		Collection collection = values();
-		Iterator iterator = collection.iterator();
+		Collection<Node> collection = values();
+		Iterator<Node> iterator = collection.iterator();
 		int i = 0;
 		Node returnNode = null;
 		while (iterator.hasNext()) {
 			if (i == (int) index)
-				returnNode = (Node) iterator.next();
+				returnNode = iterator.next();
 			else
 				iterator.next();
 		}
