@@ -11,19 +11,28 @@ import html2windows.dom.Element;
  * You can also get properties from CSSRuleSet in Style in the order of priority.
  * 
  * @author 		Jason Kuo
- * @date		2013/01/16
  */
+
 public class Style {
 
 	/**
-	 *	MAX_PRIORITY 		define CSSRuleSet's max priority as 5
-	 *	element 			element that own this style
-	 * 	comparator			comparator that compare CSSRuleSet with priority
-	 *	set					TreeSet of CSSRuleSet 
+	 * define CSSRuleSet's max priority as 5
 	 */
 	private static final int MAX_PRIORITY=5;
+	
+	/**
+	 * element that own this style
+	 */
 	private Element element;
+	
+	/**
+	 * comparator that compare CSSRuleSet with priority
+	 */
 	private Comparator<CSSRuleSet> comparator = new CssRuleSetComparator();
+	
+	/**
+	 * TreeSet of CSSRuleSet
+	 */
 	private TreeSet <CSSRuleSet> set = new TreeSet<CSSRuleSet>(comparator);
 	
 	/**
@@ -48,7 +57,7 @@ public class Style {
     /**
      * get property value according to the order of treeSet(property)
      * @param propertyName		property name
-     * @return					property's value
+     * @return					property's value, return null if property value is null
      */
     public String getProperty(String propertyName){
     	String value=null;
@@ -57,7 +66,7 @@ public class Style {
     		if(value!=null)
     			return value;
     	}
-        return null;	//return null if property value is null
+        return null;	
     }
   
     /**
@@ -78,10 +87,15 @@ public class Style {
     
     /**
      * CSSRuleSet's comparator
-     * compare CSSRuleSet with its priority
+     * compare CSSRuleSets with their priority
      */
     public class CssRuleSetComparator implements Comparator<CSSRuleSet>{
-		@Override
+		
+    	/**
+    	 *	compare two CSSRuleSets with their priority
+    	 *	@return		return 1 if o1>o2, otherwise -1 
+    	 */
+    	@Override
 		public int compare(CSSRuleSet o1, CSSRuleSet o2) {
 			return (o1.getPriority()>o2.getPriority())?1:-1;
 		}

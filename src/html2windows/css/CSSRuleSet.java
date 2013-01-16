@@ -7,15 +7,18 @@ import java.util.HashMap;
  * You can get or set priority to CSSRuleSet.
  * 
  * @author 		JasonKuo
- * @date		2012/01/16
  */
+
 public class CSSRuleSet{
 
-	/**	
-	 * cssRule		A HashMap that maps property name to its value.
-	 * priority		this rule set's priority
+	/**
+	 * A HashMap that maps property name to its value.
 	 */
 	private HashMap<String,String> cssRule=new HashMap<String,String>();
+	
+	/**
+	 * this rule set's priority
+	 */
 	private int priority;
 	
 	
