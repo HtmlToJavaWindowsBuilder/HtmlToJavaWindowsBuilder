@@ -1,5 +1,8 @@
 package html2windows.dom;
+import html2windows.css.AtRuleHandler;
+
 import java.awt.Component;
+import java.util.HashMap;
 
 import javax.swing.JFrame;
 
@@ -10,7 +13,7 @@ import org.w3c.dom.events.EventListener;
 
 
 /**
- * Document is top window.
+ * Document is top window
  *
  * The Document is not standard DOM Document. It removes some methods which
  * handle namespace and prefix.
@@ -21,6 +24,8 @@ import org.w3c.dom.events.EventListener;
 @SuppressWarnings("serial")
 
 public class Document extends JFrame implements Node{
+    HashMap<String, AtRuleHandler> atRuleHandlerMap = new HashMap<String, AtRuleHandler>();
+    
 	public Element documentElement(){
 		try{
 			return (Element)getContentPane().getComponent(0);
@@ -227,6 +232,14 @@ public class Document extends JFrame implements Node{
 	@Override
 	public boolean hasAttributes() {
 		return false;
+	}
+	
+	public void setAtRuleHandler(String atRule, AtRuleHandler handler){
+	    atRuleHandlerMap.put(atRule, handler);
+	}
+	
+	public AtRuleHandler getAtRuleHandler(String atRule){
+	    return atRuleHandlerMap.get(atRule);
 	}
 
 	@Override

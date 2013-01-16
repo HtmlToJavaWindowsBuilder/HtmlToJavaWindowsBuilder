@@ -129,18 +129,30 @@ public class CSSParser {
      * Rule: ATKEYWORD S* any* [ block | ';' S* ];
      */
     private void parseAtRule() {
+        int prePos;
+        int nextPos;
+        AtRuleHandler handler;
+        
         if (isNotEnd()) {
-            parseIdent();
+            String ident = parseIdent();
+            handler = document.getAtRuleHandler(ident);
             parseSpace();
             parseAny();
             if (isNotEnd()) {
+                prePos = pos;
                 if (getChar() == '{') {
                     pos++;
-                    parseBlock();
+                    while(isNotEnd() && getChar() != '}'){
+                        pos++;
+                    }
                 }
                 else if (getChar() == ';') {
                     pos++;
                     parseSpace();
+                }
+                nextPos = pos;
+                if(handler != null){
+                    handler.handle(cssString.substring(prePos, nextPos - prePos), document);
                 }
             }
         }

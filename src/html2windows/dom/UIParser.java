@@ -1,5 +1,7 @@
 package html2windows.dom;
 
+import html2windows.css.DocumentAtRuleHandler;
+
 import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
@@ -127,6 +129,9 @@ public class UIParser {
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			org.w3c.dom.Document doc = dBuilder.parse(input);
 			Document outputDocument = new Document();
+			
+			outputDocument.setAtRuleHandler("document", new DocumentAtRuleHandler());
+			
 			Element outputElement = parseElement(doc.getDocumentElement(),outputDocument);
 			outputDocument.appendChild(outputElement);
 
