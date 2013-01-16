@@ -34,7 +34,7 @@ import static org.junit.Assert.*;
  * @author  bee040811
  */
 @SuppressWarnings(value = { "serial"  }) 
-public class FontTest { 
+public class CustomTest { 
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -94,22 +94,39 @@ public class FontTest {
         /**
          * Action
          * 
-         * setting Font Type :  test Case
+         * setting Font Type
          * font-size    : 30
-         * family       : Arial , Book Corsiva , 21111
-         * font-weight  : bold  , 11
+         * family       : Arial
+         * font-weight  : bold
          * font-variant : small-caps
-         * font-style   : italic    
-         * color        : #182bbc , #111111 , black
+         * font-style   : italic
+         *
          */
         style.setProperty("family","Arial");
-
         style.setProperty("font-size","12px");
         style.setProperty("font-weight","bold");
         style.setProperty("font-style","italic");
         style.setProperty("font-variant","small-caps");
+
+
+        /**
+         * Action
+         * 
+         * setting Block Type
+         * width        : 200
+         * height       : 100
+         * left         : 100
+         * top          : 100
+         * position     : relative
+         *
+         */
+        style.setProperty("width","200");
+        style.setProperty("height","100");
+        style.setProperty("left","100");
+        style.setProperty("top","100");
+        style.setProperty("position","relative");
         style.setProperty("text-decoration","line-through");
-        style.setProperty("color","black");
+        style.setProperty("color","#182bbc");
         /**
          * Test
          * 
