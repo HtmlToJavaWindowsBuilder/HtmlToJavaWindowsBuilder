@@ -93,7 +93,7 @@ public class CustomLayoutManager implements LayoutManager {
         if (maxWidth <= minWidth) {
             oneColumn = true;
         }
-
+        int floatKey = 0;
         for (int i = 0 ; i < nComps ; i++) {
             Component c = parent.getComponent(i);
             if (c instanceof Element) {
@@ -101,34 +101,43 @@ public class CustomLayoutManager implements LayoutManager {
                 Style style = cElement.getStyle();
                 int width = getWidth(style);
                 int height = getHeight(style);
-                int top = getTop(style);
-                int left = getLeft(style);
+                int marginTop = getMarginTop(style);
+                int marginLeft = getMarginLeft(style);
                 String floating = getFloat(style);
                 String position = getPosition(style);
                 Dimension d = new Dimension(width, height);
-
-                if( position == "absolute" ) {
-                    c.setBounds(left, top, d.width, d.height);
                 
-                    previousWidth = d.width;
+                if( position.equals("absolute")) {
+                    if(floating.equals("left")) {
+                        c.setBounds(x, marginTop, d.width, d.height);
+                    }
+                    else {
+                        c.setBounds(marginLeft, marginTop, d.width, d.height);
+                        previousWidth = 0;
+                    }
                 }
                 else {
-                    y += previousHeight + top;
-                    x += left;
+                    y = previousHeight + marginTop;
+                    x = previousWidth+ marginLeft;
                     c.setBounds(x, y, d.width, d.height);
-
-                    previousWidth = d.width;
-                    previousHeight = d.height;
+                    if(!floating.equals("left")) {
+                        previousHeight = y + d.height; 
+                        previousWidth = 0;
+                    }
+                    else {
+                        previousWidth = d.width;
+                    }
                 }
             }
             else if (c.isVisible()) {
                 Dimension d = c.getPreferredSize();
 
-                y += previousHeight;
+                y = previousHeight;
+                x = previousWidth;
                 c.setBounds(x, y, d.width, d.height);
 
-                previousWidth = d.width;
-                previousHeight = d.height;
+                previousWidth = 0;
+                previousHeight += d.height;
             }
         }
     }
@@ -225,7 +234,7 @@ public class CustomLayoutManager implements LayoutManager {
      * @return width    mean that width value  
      */
     private int getWidth(Style style) {
-        int width = 100;
+        int width = 70;
         int value = getPxNumber(style.getProperty("width"));
         if(value != 0) {
             return value;
@@ -256,12 +265,29 @@ public class CustomLayoutManager implements LayoutManager {
      * @return height   mean that height value
      */
     private int getHeight(Style style) {
-        int height = 100;
+        int height = 50;
         int value = getPxNumber(style.getProperty("height"));
         if(value != 0) {
             return value;
         }
         return height;
+    }
+
+
+    /**
+     * Function will get margin-left property
+     *
+     * @param style      mean Element style
+     *
+     * @return left      mean that top value  
+     */
+    private int getMarginLeft(Style style) {
+        int left = 0;
+        int value = getPxNumber(style.getProperty("margin-left"));
+        if(value != 0) {
+            return value;
+        }
+        return left;
     }
 
     /**
@@ -310,6 +336,10 @@ public class CustomLayoutManager implements LayoutManager {
             }
             else if(numString.matches("[0-9]+px")) {
                 numString = numString.replaceAll("([0-9]+)px","$1");          
+                return Integer.parseInt(numString);
+            }
+            else if(numString.matches("[0-9]+em")) {
+                numString = numString.replaceAll("([0-9]+)em","$1");          
                 return Integer.parseInt(numString);
             }
         }

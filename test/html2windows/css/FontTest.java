@@ -109,7 +109,7 @@ public class FontTest {
         style.setProperty("font-style","italic");
         style.setProperty("font-variant","small-caps");
         style.setProperty("text-decoration","line-through");
-        style.setProperty("color","black");
+        style.setProperty("color","#ff7b00");
         /**
          * Test
          * 
