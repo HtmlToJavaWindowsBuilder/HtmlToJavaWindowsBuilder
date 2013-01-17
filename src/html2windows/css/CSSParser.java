@@ -78,6 +78,7 @@ public class CSSParser {
      */
     private char getChar() {
         // css syntax is case-insensitive
+//        System.err.print( Character.toLowerCase(cssString.charAt(pos)));
         return Character.toLowerCase(cssString.charAt(pos));
     }
 
@@ -115,7 +116,10 @@ public class CSSParser {
      * Rule: ruleset | at-rule;
      */
     private void parseStatement() {
+            System.err.println("String : \n" + cssString);
         if (isNotEnd()) {
+            //System.err.println("Parse Statement");
+            //System.err.println("Pos " + pos + ", Char : " + getChar());
             if (getChar() == '@') {
                 pos++;
                 parseAtRule();

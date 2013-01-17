@@ -24,7 +24,8 @@ public class BorderPainter extends JPanel implements CSSPainter{
 	private int width=10;
 	private int top=0;
 	private int left=0;
-	
+	private int borderWidth = 2;
+
     public BorderPainter() { 
         initial();
     }
