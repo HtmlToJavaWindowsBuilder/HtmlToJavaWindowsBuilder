@@ -113,6 +113,10 @@ public class FontPainter extends JPanel implements CSSPainter {
         setFont();
         setColor();
 
+		System.err.println(this.text);
+		if (this.text == null || this.text.length() == 0)
+			return;
+
         AttributedString attributedString = new AttributedString(this.text);
         if( setFontVariant() != 0 ) {
             attributedString.addAttribute(TextAttribute.FONT,this.fontVariant, 0, 1);
@@ -315,9 +319,13 @@ public class FontPainter extends JPanel implements CSSPainter {
      * @param	element The element you want to get text from.  
      */
     private void getFontText(Element element){
+		this.text = "";
         NodeList nodeList =element.childNodes();
-        Node nodeText=nodeList.item(0);
-        this.text=nodeText.nodeValue();
+		System.err.println(nodeList.length());
+		for (Node node : nodeList){
+        	if (node.nodeType() == Node.TEXT_NODE)
+				this.text += node.nodeValue();
+		}
     }
 
 }

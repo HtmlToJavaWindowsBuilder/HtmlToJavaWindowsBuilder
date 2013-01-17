@@ -176,7 +176,6 @@ public class CSSParserTest {
          */
         assertEquals("text-color should be blue", "blue", bodyStyle.getProperty("text-color"));
         doc.setVisible(true);
-        while(true){}
     }
 
     @Test 

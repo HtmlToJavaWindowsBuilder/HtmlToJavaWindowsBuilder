@@ -5,6 +5,8 @@ import html2windows.dom.UIParser;
 import html2windows.css.CSS2Painter;
 import html2windows.css.CustomLayoutManager;
 
+import javax.swing.JFrame;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.channels.FileChannel;
@@ -42,9 +44,16 @@ public class simple {
     catch(Exception ex){
         ex.printStackTrace();
     }
+
+		JFrame frame = new JFrame();
+		frame.add(document.documentElement());
+		frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(Document.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+/*
         System.out.println(document.documentElement().getStyle().getProperty("background-color"));
-        document.setDefaultCloseOperation(document.EXIT_ON_CLOSE);
+        document.setDefaultCloseOperation(Document.EXIT_ON_CLOSE);
         document.setVisible(true);
         document.documentElement().repaint();
-    }
+*/    }
 }

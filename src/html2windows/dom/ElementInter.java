@@ -2,6 +2,7 @@ package html2windows.dom;
 
 import html2windows.css.CSSPainter;
 import html2windows.css.Style;
+import html2windows.css.CustomLayoutManager;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -39,6 +40,7 @@ public class ElementInter extends Element implements NodeInter {
     public ElementInter(String tagName) {
     	 tagNameValue = tagName;
     	 setStyle(null);
+		 setLayout(new CustomLayoutManager());
     }
     
     /**
@@ -674,7 +676,7 @@ public class ElementInter extends Element implements NodeInter {
 
     @Override
     protected void paintComponent(Graphics g) {
-        System.err.println("Paint Component!");
+        System.err.println("Paint " + this.tagName() + " Component!");
         CSSPainter painter = ownerDocument().getPainter();
         painter.paint(this.elementStyle, this, g);
     }
