@@ -665,9 +665,16 @@ public class ElementInter extends Element implements NodeInter {
         return false;
 
     }
+    
+    @Override
+        public void paint(Graphics g){
+            System.err.println("Paint!");
+            super.paint(g);
+        }
 
     @Override
     protected void paintComponent(Graphics g) {
+        System.err.println("Paint Component!");
         CSSPainter painter = ownerDocument().getPainter();
         painter.paint(this.elementStyle, this, g);
     }

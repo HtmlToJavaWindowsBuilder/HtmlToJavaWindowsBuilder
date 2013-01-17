@@ -63,6 +63,10 @@ public class BackgroundPainter extends JPanel implements CSSPainter{
         setWidth();
         setHeight();
         
+        System.err.println(width);
+        System.err.println(height);
+
+
         g2d.fillRect(0, 0,width ,height);
     }
     

@@ -3,6 +3,7 @@ import html2windows.css.FontPainter;
 import html2windows.dom.Document;
 import html2windows.dom.UIParser;
 import html2windows.css.CSS2Painter;
+import html2windows.css.CustomLayoutManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +20,7 @@ public class simple {
     public static void main(String[] args) {
         Document document = new UIParser().parse(new File("ui.html"));
         System.err.println("UI loaded");
-
+        document.setLayout(new CustomLayoutManager());
         document.setPainter(new CSS2Painter());
         document.setSize(400, 300);
         
@@ -41,6 +42,9 @@ public class simple {
     catch(Exception ex){
         ex.printStackTrace();
     }
+        System.out.println(document.documentElement().getStyle().getProperty("background-color"));
+        document.setDefaultCloseOperation(document.EXIT_ON_CLOSE);
         document.setVisible(true);
+        document.documentElement().repaint();
     }
 }
