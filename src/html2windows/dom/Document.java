@@ -1,4 +1,7 @@
 package html2windows.dom;
+
+import html2windows.css.AtRuleHandler;
+
 import java.awt.Component;
 
 import javax.swing.JFrame;
@@ -409,10 +412,11 @@ public class Document extends JFrame implements Node{
 	 * @param comp {@inheritDoc}
 	 * @param index {@inheritDoc}
 	 */
+	
 	@Override
 	protected void addImpl(Component comp, Object constraints, int index){
 		if(documentElement() == null){
-			if(comp instanceof Element){
+			if(comp instanceof Element || comp instanceof javax.swing.JRootPane){
 				super.addImpl(comp, constraints, index);
 			}
 		}
@@ -477,9 +481,9 @@ public class Document extends JFrame implements Node{
 		}
 		Element oldChild = documentElement();
 		if(oldChild != null)
-			getContentPane().remove(oldChild);
+			this.remove(oldChild);
 		if(element != null){
-			getContentPane().add(element);
+			this.add(element);
 		}
 	}
 
@@ -567,4 +571,22 @@ public class Document extends JFrame implements Node{
 		TextInter text = (TextInter)createTextNode(importedNode.data());
 		return text;
 	}
+
+	/**
+	 * Set global painter of document
+	 *
+	 * @param painter Global painter for document
+	 */
+    public void setPainter(CSSPainter painter) {
+        this.painter = painter;
+    }
+
+	/**
+	 * Return global painter of document
+	 *
+	 * return global painter of document
+	 */
+    public CSSPainter getPainter() {
+        return this.painter;
+    }
 }
