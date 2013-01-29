@@ -113,7 +113,6 @@ public class FontPainter extends JPanel implements CSSPainter {
         setFont();
         setColor();
 
-		System.err.println(this.text);
 		if (this.text == null || this.text.length() == 0)
 			return;
 
@@ -321,7 +320,6 @@ public class FontPainter extends JPanel implements CSSPainter {
     private void getFontText(Element element){
 		this.text = "";
         NodeList nodeList =element.childNodes();
-		System.err.println(nodeList.length());
 		for (Node node : nodeList){
         	if (node.nodeType() == Node.TEXT_NODE)
 				this.text += node.nodeValue();
