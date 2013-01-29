@@ -219,8 +219,9 @@ class TextInter extends Text implements NodeInter {
 	/**
 	 * The parent of this node.
 	 * 
+	 * If parent component is not a node, return null.
+	 *
 	 * @return The parent of this node
-	 * 
 	 */
 	@Override
 	public Node parentNode() {
