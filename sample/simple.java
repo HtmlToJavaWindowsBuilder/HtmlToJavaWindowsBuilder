@@ -4,6 +4,7 @@ import html2windows.dom.Document;
 import html2windows.dom.UIParser;
 import html2windows.css.CSS2Painter;
 import html2windows.css.CustomLayoutManager;
+import html2windows.css.DocumentAtRuleHandler;
 
 import javax.swing.JFrame;
 
@@ -21,39 +22,28 @@ public class simple {
      */
     public static void main(String[] args) {
         Document document = new UIParser().parse(new File("ui.html"));
-        System.err.println("UI loaded");
-        document.setLayout(new CustomLayoutManager());
         document.setPainter(new CSS2Painter());
-        document.setSize(400, 300);
+        document.setAtRuleHandler("document", new DocumentAtRuleHandler());
         
         try{
-        FileInputStream fin = new FileInputStream("style.css");
-        FileChannel fch = fin.getChannel();
+		    FileInputStream fin = new FileInputStream("style.css");
+		    FileChannel fch = fin.getChannel();
 
-        // map the contents of the file into ByteBuffer
-        ByteBuffer byteBuff = fch.map(FileChannel.MapMode.READ_ONLY, 0, fch.size());
+		    // map the contents of the file into ByteBuffer
+		    ByteBuffer byteBuff = fch.map(FileChannel.MapMode.READ_ONLY, 0, fch.size());
 
-        // convert ByteBuffer to CharBuffer
-        // CharBuffer chBuff = Charset.defaultCharset().decode(byteBuff);
-        CharBuffer chBuff = Charset.forName("UTF-8").decode(byteBuff);
-        String cssString = chBuff.toString();
+		    // convert ByteBuffer to CharBuffer
+		    // CharBuffer chBuff = Charset.defaultCharset().decode(byteBuff);
+		    CharBuffer chBuff = Charset.forName("UTF-8").decode(byteBuff);
+		    String cssString = chBuff.toString();
 
-        new CSSParser().parse(cssString, document);
-        System.err.println("Style loaded");
-        }
-    catch(Exception ex){
-        ex.printStackTrace();
-    }
+		    new CSSParser().parse(cssString, document);
+		    }
+		catch(Exception ex){
+		    ex.printStackTrace();
+		}
 
-		JFrame frame = new JFrame();
-		frame.add(document.documentElement());
-		frame.setSize(400, 300);
-        frame.setDefaultCloseOperation(Document.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-/*
-        System.out.println(document.documentElement().getStyle().getProperty("background-color"));
         document.setDefaultCloseOperation(Document.EXIT_ON_CLOSE);
         document.setVisible(true);
-        document.documentElement().repaint();
-*/    }
+	}
 }
