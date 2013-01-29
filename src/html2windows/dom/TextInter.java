@@ -20,7 +20,16 @@ class TextInter extends Text implements NodeInter {
 
 	private String dataValue = null;
 	private Document ownerDocument=null;
-
+	
+	/**
+	 * Parent node.
+	 *
+	 * Text can be appended to attribute node, which is not component, and
+	 * attr can not be get by getParent so it need a field to store the
+	 * reference of parent.
+	 */
+	private Node parent;
+	
 	/**
 	 * Constructor of this class
 	 * 
@@ -215,11 +224,16 @@ class TextInter extends Text implements NodeInter {
 	 */
 	@Override
 	public Node parentNode() {
-    	Component parent = getParent();
-    	if(parent instanceof Node)
-    		return (Node)parent;
-    	else
-    		return null;
+		Component parentComponent = getParent();
+		if (parentComponent != null) {
+			if(parentComponent instanceof Node)
+				return (Node)parentComponent;
+			else
+				return null;
+		}
+		else {
+			return parent;
+		}
     }
 	
 	
@@ -233,9 +247,8 @@ class TextInter extends Text implements NodeInter {
 		Node oldParentNode = parentNode();
 		if (oldParentNode != null)
 			oldParentNode.removeChild(this);
-	 
-	    newParent.appendChild(this);
-	    		
+		
+		parent = newParent;
 	}
 	
 	/**
