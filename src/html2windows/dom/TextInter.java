@@ -231,7 +231,8 @@ class TextInter extends Text implements NodeInter {
 	@Override
 	public void setParentNode(Node newParent){
 		Node oldParentNode = parentNode();
-		oldParentNode.removeChild(this);
+		if (oldParentNode != null)
+			oldParentNode.removeChild(this);
 	 
 	    newParent.appendChild(this);
 	    		
