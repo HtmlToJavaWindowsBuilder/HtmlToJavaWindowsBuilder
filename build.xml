@@ -28,11 +28,29 @@
 	<target name="compile" depends="init"
 		description="compile the source " >
 		<!-- Compile the java code from ${src} into ${build} -->
-        <javac includeantruntime="false" srcdir="${src}" destdir="${build}">
+        <javac debug="on" includeantruntime="false" srcdir="${src}" destdir="${build}">
 			<compilerarg value="-Xlint:all"/>
 		</javac>
 	</target>
 	
+	<target name="compile-sample" depends="compile"
+		description="compile the source " >
+		<!-- Compile the java code from ${src} into ${build} -->
+        <javac includeantruntime="false" srcdir="sample" destdir="${build}">
+			<compilerarg value="-Xlint:all"/>
+		</javac>
+	</target>
+
+    <target name="sample" depends="compile-sample">
+        <java classname="simple">
+            <arg value="-cp build"/>
+            <classpath>
+                <path refid="lib-classpath"/>
+                <pathelement path="${build}"/>
+            </classpath>
+        </java>
+    </target>
+
     <target name="dist" depends="compile" 
 		description="generate the distribution" >
 		<!-- Create the distribution directory -->
