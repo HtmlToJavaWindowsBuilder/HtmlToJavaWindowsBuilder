@@ -5,9 +5,12 @@ ANT := java -cp lib -jar ${ANT_JAR}
 all :
 	${ANT}
 	
-.PHONY : test
+.PHONY : test sample
 test :
 	${ANT} test
 
 clean :
 	${ANT} clean
+
+sample :
+	${ANT} sample
